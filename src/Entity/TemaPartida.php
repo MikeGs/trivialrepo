@@ -59,7 +59,7 @@ class TemaPartida
     private $idTema;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Preguntapartida", mappedBy="idTemaPartida")
+     * @ORM\OneToMany(targetEntity="App\Entity\PreguntaPartida", mappedBy="idTemaPartida")
      */
     private $preguntapartidas;
 
