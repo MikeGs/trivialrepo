@@ -63,6 +63,11 @@ class Pregunta
      */
     private $preguntapartidas;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $activa;
+
     public function __construct()
     {
         $this->preguntapartidas = new ArrayCollection();
@@ -196,6 +201,18 @@ class Pregunta
                 $preguntapartida->setIdPregunta(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getActiva(): ?bool
+    {
+        return $this->activa;
+    }
+
+    public function setActiva(bool $activa): self
+    {
+        $this->activa = $activa;
 
         return $this;
     }
