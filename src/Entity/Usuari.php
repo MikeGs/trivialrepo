@@ -50,12 +50,12 @@ class Usuari extends BaseUser
     private $opinio;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\partida", inversedBy="usuaris")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Partida", inversedBy="usuaris")
      */
     private $idPartida;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\temapartida", mappedBy="usuari")
+     * @ORM\OneToMany(targetEntity="App\Entity\TemaPartida", mappedBy="usuari")
      */
     private $idTemaPartida;
 

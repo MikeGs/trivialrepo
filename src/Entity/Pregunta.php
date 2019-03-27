@@ -44,24 +44,29 @@ class Pregunta
     private $resposta_incorrecta3;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\grup", inversedBy="preguntas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Grup", inversedBy="preguntas")
      */
     private $idGrup;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\dificultat", inversedBy="preguntas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Dificultat", inversedBy="preguntas")
      */
     private $idDificultat;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\tema", inversedBy="preguntas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tema", inversedBy="preguntas")
      */
     private $idTema;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Preguntapartida", mappedBy="idPregunta")
+     * @ORM\OneToMany(targetEntity="App\Entity\PreguntaPartida", mappedBy="idPregunta")
      */
     private $preguntapartidas;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $activa;
 
     public function __construct()
     {
@@ -196,6 +201,18 @@ class Pregunta
                 $preguntapartida->setIdPregunta(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getActiva(): ?bool
+    {
+        return $this->activa;
+    }
+
+    public function setActiva(bool $activa): self
+    {
+        $this->activa = $activa;
 
         return $this;
     }
