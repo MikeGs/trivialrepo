@@ -54,7 +54,7 @@ class TemaPartida
     private $partida;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\tema", inversedBy="temapartidas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tema", inversedBy="temapartidas")
      */
     private $idTema;
 

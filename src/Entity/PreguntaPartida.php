@@ -22,12 +22,12 @@ class PreguntaPartida
     private $resposta;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\temapartida", inversedBy="preguntapartidas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TemaPartida", inversedBy="preguntapartidas")
      */
     private $idTemaPartida;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\pregunta", inversedBy="preguntapartidas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pregunta", inversedBy="preguntapartidas")
      * @ORM\JoinColumn(nullable=false)
      */
     private $idPregunta;
