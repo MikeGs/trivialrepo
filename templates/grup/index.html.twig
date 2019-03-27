@@ -4,9 +4,15 @@
 
 {% block body %}
 
+<h1>Llistat de grups</h1>
+
 {% for grup in grups %}
 
-    <p>{{ grup.nom }}</p>
+    <div class="grup">
+        <p>{{ grup.nom }}</p>
+        <p>{{ grup.idAdministrador }}</p>
+    </div>
+
 
 {% endfor %}
 

@@ -54,12 +54,12 @@ class TemaPartida
     private $partida;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\tema", inversedBy="temapartidas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tema", inversedBy="temapartidas")
      */
     private $idTema;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Preguntapartida", mappedBy="idTemaPartida")
+     * @ORM\OneToMany(targetEntity="App\Entity\PreguntaPartida", mappedBy="idTemaPartida")
      */
     private $preguntapartidas;
 

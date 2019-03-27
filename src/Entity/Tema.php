@@ -29,12 +29,12 @@ class Tema
     private $preguntas;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\nivell", inversedBy="temas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Nivell", inversedBy="temas")
      */
     private $idNivell;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Temapartida", mappedBy="idTema")
+     * @ORM\OneToMany(targetEntity="App\Entity\TemaPartida", mappedBy="idTema")
      */
     private $temapartidas;
 
