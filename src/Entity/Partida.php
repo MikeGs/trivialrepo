@@ -24,13 +24,13 @@ class Partida
     private $data;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\nivell", inversedBy="partidas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Nivell", inversedBy="partidas")
      * @ORM\JoinColumn(nullable=false)
      */
     private $idNivell;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\tipuspartida", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\TipusPartida", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $idTipusPartida;
@@ -41,7 +41,7 @@ class Partida
     private $usuaris;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\temapartida", mappedBy="partida")
+     * @ORM\OneToMany(targetEntity="App\Entity\TemaPartida", mappedBy="partida")
      */
     private $idTemaPartida;
 

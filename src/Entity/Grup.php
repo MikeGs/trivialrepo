@@ -54,13 +54,13 @@ class Grup
     private $idAdministrador;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\nivell", inversedBy="grups")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Nivell", inversedBy="grups")
      * @ORM\JoinColumn(nullable=false)
      */
     private $idNivell;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\usuari", inversedBy="grups")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Usuari", inversedBy="grups")
      */
     private $idUsuari;
 
