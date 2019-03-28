@@ -32,7 +32,7 @@ class Opinio
     private $data;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\usuari", inversedBy="opinio", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Usuari", inversedBy="opinio", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $idUsuari;

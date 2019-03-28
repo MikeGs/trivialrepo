@@ -22,7 +22,7 @@ class Usuari extends BaseUser
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $codialumne;
+    private $codiAlumne;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -33,11 +33,6 @@ class Usuari extends BaseUser
      * @ORM\Column(type="string", length=255)
      */
     private $cognoms;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $nick;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Grup", mappedBy="idUsuari")
@@ -61,9 +56,11 @@ class Usuari extends BaseUser
 
     public function __construct()
     {
+        parent::__construct();
         $this->grups = new ArrayCollection();
         $this->idPartida = new ArrayCollection();
         $this->idTemaPartida = new ArrayCollection();
+        $this->roles = array('ROLE_STUDENT');
     }
 
     public function getId(): ?int
@@ -71,14 +68,14 @@ class Usuari extends BaseUser
         return $this->id;
     }
 
-    public function getCodialumne(): ?string
+    public function getCodiAlumne(): ?string
     {
         return $this->codiAlumne;
     }
 
-    public function setCodialumne(string $codialumne): self
+    public function setCodiAlumne(string $codiAlumne): self
     {
-        $this->codialumne = $codiAlumne;
+        $this->codiAlumne = $codiAlumne;
 
         return $this;
     }
@@ -103,18 +100,6 @@ class Usuari extends BaseUser
     public function setCognoms(string $cognoms): self
     {
         $this->cognoms = $cognoms;
-
-        return $this;
-    }
-
-    public function getNick(): ?string
-    {
-        return $this->nick;
-    }
-
-    public function setNick(string $nick): self
-    {
-        $this->nick = $nick;
 
         return $this;
     }
