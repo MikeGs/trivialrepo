@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+
+<h1>Afegir grup</h1>
+
+<form class="afegirgrup" action="" method="POST">
+
+<!-- id	id_nivell_id	nom	codi	datainici	datafinal	//finalitzat	tempsresposta	//id_administrador -->
+
+    <label for="nom">Nom: </label>
+    <input type="text" name="nom"/>
+
+    <label for="nom">Codi: </label>
+    <input type="text" name="codi"/>
+
+    <label for="nom">Data d'inici: </label>
+    <input type="date" name="datainici"/>
+
+    <label for="nom">Data final: </label>
+    <input type="date" name="datafinal"/>
+
+    <label for="tempsresposta">Temps de resposta: </label>
+    <input type="text" name="tempsresposta"/>
+
+    <label for="facil">Fàcil: </label>
+    <input type="text" name="facil"/>
+
+    <label for="mitja">Mitja: </label>
+    <input type="text" name="mitja"/>
+
+    <label for="dificil">Dificil: </label>
+    <input type="text" name="dificil"/>
+
+</form>
+
+{% endblock %}

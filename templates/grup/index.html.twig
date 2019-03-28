@@ -6,9 +6,11 @@
 
 <h1>Llistat de grups</h1>
 
-{% for grup in grups %}
-
 <div class="grups">
+
+<a href='{{path('afegirgrup')}}' class="">Afegir grup</a>
+
+{% for grup in grups %}
 
     <div class="grup">
         <p>Grup: {{ grup.nom }}</p>
@@ -32,9 +34,9 @@
         {{ grup.idAdministrador }}</p>
     </div>
 
-</div>
-
 
 {% endfor %}
+
+</div>
 
 {% endblock %}

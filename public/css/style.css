@@ -3,3 +3,18 @@
     display: block;
     overflow: hidden;
 }
+
+.afegirgrup {
+    max-width: 900px;
+    margin: 0 auto;
+    display: block;
+}
+
+.afegirgrup input, .afegirgrup label {
+    width: 100%;
+    display: block;
+}
+
+.afegirgrup input {
+    margin-bottom: 15px;
+}

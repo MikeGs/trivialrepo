@@ -69,6 +69,21 @@ class Grup
      */
     private $preguntas;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $puntuacio_facil;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $puntuacio_mitja;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $puntuacio_dificil;
+
     public function __construct()
     {
         $this->idUsuari = new ArrayCollection();
@@ -229,6 +244,42 @@ class Grup
                 $pregunta->setIdGrup(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPuntuacioFacil(): ?float
+    {
+        return $this->puntuacio_facil;
+    }
+
+    public function setPuntuacioFacil(float $puntuacio_facil): self
+    {
+        $this->puntuacio_facil = $puntuacio_facil;
+
+        return $this;
+    }
+
+    public function getPuntuacioMitja(): ?float
+    {
+        return $this->puntuacio_mitja;
+    }
+
+    public function setPuntuacioMitja(float $puntuacio_mitja): self
+    {
+        $this->puntuacio_mitja = $puntuacio_mitja;
+
+        return $this;
+    }
+
+    public function getPuntuacioDificil(): ?float
+    {
+        return $this->puntuacio_dificil;
+    }
+
+    public function setPuntuacioDificil(float $puntuacio_dificil): self
+    {
+        $this->puntuacio_dificil = $puntuacio_dificil;
 
         return $this;
     }

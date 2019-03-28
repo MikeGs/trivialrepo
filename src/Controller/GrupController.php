@@ -4,10 +4,15 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 use App\Entity\Grup;
 use App\Entity\Usuari;
 use App\Entity\Nivell;
+
+use App\Form\GrupType;
+
+use Symfony\Component\HttpFoundation\Request;
 
 class GrupController extends AbstractController
 {
@@ -31,6 +36,51 @@ class GrupController extends AbstractController
         ]);
 
     }
+
+    /**
+     * @Route("/afegirgrup", name="afegirgrup")
+     */
+    public function new(Request $request)
+    {
+        $grup = new Grup();
+        $form = $this->createForm(GrupType::class, $grup);
+        $form->handleRequest($request);
+
+         if ($form->isSubmitted() && $form->isValid()) {
+
+            //id	id_nivell_id	nom	codi	datainici	datafinal	//finalitzat	tempsresposta	//id_administrador
+
+            $grup->setNom($form->get('nom')->getData());
+            $grup->setCodi($form->get('codi')->getData());
+            $grup->setDatainici($form->get('datainici')->getData());
+            $grup->setDatafinal($form->get('datafinal')->getData());
+            $grup->setFinalitzat(false);
+            $grup->setTempsresposta($form->get('tempsresposta')->getData());
+            $grup->setPuntuacioFacil($form->get('facil')->getData());
+            $grup->setPuntuacioMitja($form->get('mitja')->getData());
+            $grup->setPuntuacioDificil($form->get('dificil')->getData());
+
+            /*$producte->setNom($form->get('nom')->getData());
+            $producte->setDescripcio($form->get('descripcio')->getData());
+            $producte->setCategoriaId($form->get('categoria_id')->getData());
+            $producte->setPreu($form->get('preu')->getData());*/
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($grup);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('index'));
+        }
+
+        $title = "Afegir grup | Trivial UB";
+
+        return $this->render('grup/afegir.html.twig', [
+            'controller_name' => 'GrupController',
+            'title' => $title,
+            
+        ]);
+    }
+
 
     public function getGrups() {
 

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,9 +24,19 @@ class Dificultat
     private $nom;
 
     /**
+     * @ORM\Column(type="float")
+     */
+    private $punts;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Pregunta", mappedBy="idDificultat")
      */
     private $preguntas;
+
+    public function __construct()
+    {
+        $this->preguntas = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -39,6 +51,18 @@ class Dificultat
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPunts(): ?float
+    {
+        return $this->punts;
+    }
+
+    public function setPunts(float $punts): self
+    {
+        $this->punts = $punts;
 
         return $this;
     }
@@ -74,3 +98,4 @@ class Dificultat
         return $this;
     }
 }
+
