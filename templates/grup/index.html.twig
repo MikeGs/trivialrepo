@@ -8,10 +8,31 @@
 
 {% for grup in grups %}
 
+<div class="grups">
+
     <div class="grup">
-        <p>{{ grup.nom }}</p>
-        <p>{{ grup.idAdministrador }}</p>
+        <p>Grup: {{ grup.nom }}</p>
+        <p>Nivell: 
+        
+        {% for nivell in nivells %}
+
+            {% if nivell.id == grup.idNivell.id %}
+                {{ nivell.nom }}
+            {% endif %}
+
+            {% else %}
+                No té categoria.
+        {% endfor %}
+        
+        </p>
+        <p>Administrador: 
+        
+        
+        
+        {{ grup.idAdministrador }}</p>
     </div>
+
+</div>
 
 
 {% endfor %}

@@ -73,12 +73,12 @@ class Usuari extends BaseUser
 
     public function getCodialumne(): ?string
     {
-        return $this->codialumne;
+        return $this->codiAlumne;
     }
 
     public function setCodialumne(string $codialumne): self
     {
-        $this->codialumne = $codialumne;
+        $this->codialumne = $codiAlumne;
 
         return $this;
     }
