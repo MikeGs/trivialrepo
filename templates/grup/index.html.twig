@@ -4,9 +4,36 @@
 
 {% block body %}
 
+<h1>Llistat de grups</h1>
+
 {% for grup in grups %}
 
-    <p>{{ grup.nom }}</p>
+<div class="grups">
+
+    <div class="grup">
+        <p>Grup: {{ grup.nom }}</p>
+        <p>Nivell: 
+        
+        {% for nivell in nivells %}
+
+            {% if nivell.id == grup.idNivell.id %}
+                {{ nivell.nom }}
+            {% endif %}
+
+            {% else %}
+                No té categoria.
+        {% endfor %}
+        
+        </p>
+        <p>Administrador: 
+        
+        
+        
+        {{ grup.idAdministrador }}</p>
+    </div>
+
+</div>
+
 
 {% endfor %}
 

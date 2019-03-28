@@ -20,11 +20,13 @@ class GrupController extends AbstractController
         $title = "Grups | Trivial UB";
         $grups = $this->getGrups();
         $nivells = $this->getNivells();
+        $administradors = $this->getAdministradors();
 
         return $this->render('grup/index.html.twig',[
             'controller_name' => 'GrupController',
             'grups' =>  $grups,
             'nivells' => $nivells,
+            'administradors' => $administradors,
             'title' => $title
         ]);
 
@@ -47,6 +49,20 @@ class GrupController extends AbstractController
             ->findAll();
 
         return $usuaris;
+
+    }
+
+    public function getAdministradors() {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $administradors = $em->getRepository(Usuari::class)->createQueryBuilder('u')
+            ->where('u.roles like :text')
+            ->setParameter('text', '%'.'ROLE_TEACHER'.'%')
+            ->getQuery()
+            ->getResult();
+
+        return $administradors;
 
     }
 
