@@ -40,6 +40,7 @@ html, body {
 #menuLateral {
 	background-color: #eeeeee;
 	width: 245px !important;
+	transition: width 1s ease-out;
 }
 
 #menuList {
