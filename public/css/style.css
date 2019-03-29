@@ -10,6 +10,11 @@ html, body {
 .navegacio {
     background-color: #005a9e;
     position: relative;
+    color: #fff;
+}
+
+.navegacio a {
+	color: #4ba5e5;
 }
 
 #botoMenu {
@@ -53,12 +58,28 @@ html, body {
 
 #menuList > li > a {
 	color: #999;
-	font-style: none;
 	font-weight: none;
+}
+
+#menuList > li > a:hover {
+	text-decoration: none;
 }
 
 #menuList > li.active > a {
 	color: #005a9e;
+}
+/* fi navegacio */
+
+/* footer */
+#footerLogo {
+	width: 175px;
+}
+
+#footer {
+	background-color: #4ba5e5;
+	color: #fff;
+	font-size: 0.8rem;
+	padding: 1rem;
 }
 
 #mainRow {
