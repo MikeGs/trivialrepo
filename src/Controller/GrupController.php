@@ -9,22 +9,27 @@ use App\Entity\Grup;
 use App\Entity\Usuari;
 use App\Entity\Nivell;
 
+
 class GrupController extends AbstractController
 {
     /**
-     * @Route("/", name="index")
+     * @Route("/grups", name="grups")
      */
     public function index()
     {
 
+        $user = $this->getUser();
         $title = "Grups | Trivial UB";
         $grups = $this->getGrups();
         $nivells = $this->getNivells();
+        $administradors = $this->getAdministradors();
 
         return $this->render('grup/index.html.twig',[
+            'user' => $user,
             'controller_name' => 'GrupController',
             'grups' =>  $grups,
             'nivells' => $nivells,
+            'administradors' => $administradors,
             'title' => $title
         ]);
 
@@ -47,6 +52,20 @@ class GrupController extends AbstractController
             ->findAll();
 
         return $usuaris;
+
+    }
+
+    public function getAdministradors() {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $administradors = $em->getRepository(Usuari::class)->createQueryBuilder('u')
+            ->where('u.roles like :text')
+            ->setParameter('text', '%'.'ROLE_TEACHER'.'%')
+            ->getQuery()
+            ->getResult();
+
+        return $administradors;
 
     }
 

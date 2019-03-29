@@ -2,11 +2,57 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+            <link rel="stylesheet" href="{{ asset('bootstrap4/css/bootstrap.min.css') }}"/>  
+            <link rel="stylesheet" href="{{ asset('fontAwesome/css/all.css') }}">      
+            <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+        {% endblock %}
+        {% block javascriptsTop %}
+        <script src="{{ asset('bootstrap4/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('js/jquery.js') }}"></script>
+        <script src="{{ asset('js/popper.js') }}"></script>      
+        {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {# barra superior #}
+        <div class="container-fluid p-0">
+            <nav class="navbar navegacio d-flex justify-content-start">
+                <button id="botoMenu" class="d-inline"><i class="fas fa-bars fa-sm"></i></button>
+                </button>
+                <a href="#" class="navbar-brand ml-3"><img id="logo" src="{{ asset('img/Logotip_UB.png') }}" alt="Logo Universitat Barcelona"></a>
+                <span class="ml-auto">
+                    Connectat com <a href="#">{{ user.username }}</a><a href="{{ path('fos_user_security_logout') }}" class="ml-4 text-white"><i class="fas fa-power-off"></i></a>
+                </span>
+            </nav>  
+        </div>
+        <div class="row h-100" id="mainRow">
+            {# barra lateral #}
+            <div id="menuLateral">
+                <ul id="menuList">
+                    <li><a href="#"><i class="fas fa-home mr-2"></i>INICI</a></li>
+                    <li class="{% if app.request.attributes.get('_route') == 'grups' %}active{% endif %}"><a href="#"><i class="fas fa-sitemap mr-2"></i>GRUPS</a></li>
+                    <li><a href="#"><i class="fas fa-users mr-2"></i>USUARIS</a></li>
+                    <li><a href="#"><i class="fas fa-trophy mr-2"></i>PARTIDES</a></li>
+                    <li><a href="#"><i class="fas fa-graduation-cap mr-2"></i>ENTRENAMENTS</a></li>
+                    <li><a href="#"><i class="fas fa-question mr-2"></i>PREGUNTES</a></li>
+                </ul>
+            </div>
+            {# contingut #}
+            <div class="col">
+                {% block body %}{% endblock %}
+            </div>
+        </div> 
+        {# footer #}
+        <div class="col-12 text-center" id="footer"><img src="{{ asset('img/vallbona.png') }}" id="footerLogo" alt="Logo IES Carles Vallbona"> | Creat per Miquel Saborit, Eduardo Priego i Bàrbara López | Tots els drets reservats©</div>
+        {% block javascriptsBottom %}
+            <script>
+                window.onload = function() {
+                    $('#botoMenu').click(function() {
+                        $('#menuLateral').animate({width:'toggle'},245);
+                });    
+                };
+            </script>
+        {% endblock %}
     </body>
 </html>
