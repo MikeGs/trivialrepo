@@ -17,17 +17,19 @@ use Symfony\Component\HttpFoundation\Request;
 class GrupController extends AbstractController
 {
     /**
-     * @Route("/", name="index")
+     * @Route("/grups", name="grups")
      */
     public function index()
     {
 
+        $user = $this->getUser();
         $title = "Grups | Trivial UB";
         $grups = $this->getGrups();
         $nivells = $this->getNivells();
         $administradors = $this->getAdministradors();
 
         return $this->render('grup/index.html.twig',[
+            'user' => $user,
             'controller_name' => 'GrupController',
             'grups' =>  $grups,
             'nivells' => $nivells,
