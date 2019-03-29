@@ -46,9 +46,10 @@ class GrupController extends AbstractController
         $form = $this->createForm(GrupType::class, $grup);
         $form->handleRequest($request);
 
-         if ($form->isSubmitted() && $form->isValid()) {
+         if ($form->isSubmitted()) {
+            echo "submitted";
 
-            //id	id_nivell_id	nom	codi	datainici	datafinal	//finalitzat	tempsresposta	//id_administrador
+            // id	id_nivell_id	nom	codi	datainici	datafinal	finalitzat	tempsresposta	id_administrador	puntuacio_facil	puntuacio_mitja	puntuacio_dificil
 
             $grup->setNom($form->get('nom')->getData());
             $grup->setCodi($form->get('codi')->getData());
@@ -56,14 +57,11 @@ class GrupController extends AbstractController
             $grup->setDatafinal($form->get('datafinal')->getData());
             $grup->setFinalitzat(false);
             $grup->setTempsresposta($form->get('tempsresposta')->getData());
-            $grup->setPuntuacioFacil($form->get('facil')->getData());
-            $grup->setPuntuacioMitja($form->get('mitja')->getData());
-            $grup->setPuntuacioDificil($form->get('dificil')->getData());
-
-            /*$producte->setNom($form->get('nom')->getData());
-            $producte->setDescripcio($form->get('descripcio')->getData());
-            $producte->setCategoriaId($form->get('categoria_id')->getData());
-            $producte->setPreu($form->get('preu')->getData());*/
+            $grup->setPuntuacioFacil($form->get('puntuacio_facil')->getData());
+            $grup->setPuntuacioMitja($form->get('puntuacio_mitja')->getData());
+            $grup->setPuntuacioDificil($form->get('puntuacio_dificil')->getData());
+            $grup->setIdAdministrador(1);
+            $grup->setIdNivell($this->getNivell($form->get('idNivell')->getData()));
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($grup);
@@ -76,6 +74,8 @@ class GrupController extends AbstractController
 
         return $this->render('grup/afegir.html.twig', [
             'controller_name' => 'GrupController',
+            'grup' => $grup,
+            'form' => $form->CreateView(),
             'title' => $title,
             
         ]);
@@ -123,6 +123,16 @@ class GrupController extends AbstractController
             ->findAll();
 
         return $nivells;
+
+    }
+
+    public function getNivell($id) {
+
+        $nivell = $this->getDoctrine()
+            ->getRepository(Nivell::class)
+            ->findOneBy(array('id' => $id));
+
+        return $nivell;
 
     }
 

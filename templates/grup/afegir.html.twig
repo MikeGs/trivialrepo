@@ -10,30 +10,19 @@
 
 <!-- id	id_nivell_id	nom	codi	datainici	datafinal	//finalitzat	tempsresposta	//id_administrador -->
 
-    <label for="nom">Nom: </label>
-    <input type="text" name="nom"/>
+    {{ form_start(form) }}
+        
+        {{ form_row(form.nom) }}
+        {{ form_row(form.codi) }}
+        {{ form_row(form.idNivell) }}
+        {{ form_row(form.datainici) }}
+        {{ form_row(form.datafinal) }}
+        {{ form_row(form.tempsresposta) }}
+        {{ form_row(form.puntuacio_facil) }}
+        {{ form_row(form.puntuacio_mitja) }}
+        {{ form_row(form.puntuacio_dificil) }}
+        <input type="submit" name="Submit" value="Afegir" />
 
-    <label for="nom">Codi: </label>
-    <input type="text" name="codi"/>
-
-    <label for="nom">Data d'inici: </label>
-    <input type="date" name="datainici"/>
-
-    <label for="nom">Data final: </label>
-    <input type="date" name="datafinal"/>
-
-    <label for="tempsresposta">Temps de resposta: </label>
-    <input type="text" name="tempsresposta"/>
-
-    <label for="facil">Fàcil: </label>
-    <input type="text" name="facil"/>
-
-    <label for="mitja">Mitja: </label>
-    <input type="text" name="mitja"/>
-
-    <label for="dificil">Dificil: </label>
-    <input type="text" name="dificil"/>
-
-</form>
+    {{ form_end(form, {'render_rest': false}) }}
 
 {% endblock %}
