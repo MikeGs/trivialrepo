@@ -29,9 +29,15 @@
         </p>
         <p>Administrador: 
         
-        
-        
-        {{ grup.idAdministrador }}</p>
+        {% for administrador in administradors %}
+
+            {% if administrador.id == grup.idAdministrador %}
+                {{ administrador.nom }}
+            {% endif %}
+
+            {% else %}
+                No té categoria.
+        {% endfor %}</p>
     </div>
 
 

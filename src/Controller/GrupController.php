@@ -44,6 +44,8 @@ class GrupController extends AbstractController
      */
     public function new(Request $request)
     {
+        $administradors = $this->getAdministradors();
+        $user = $this->getUser();
         $grup = new Grup();
         $form = $this->createForm(GrupType::class, $grup);
         $form->handleRequest($request);
@@ -79,6 +81,8 @@ class GrupController extends AbstractController
             'grup' => $grup,
             'form' => $form->CreateView(),
             'title' => $title,
+            'user' => $user,
+            'administradors' => $administradors,
             
         ]);
     }
