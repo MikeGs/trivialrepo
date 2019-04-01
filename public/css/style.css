@@ -28,6 +28,10 @@ html, body {
 	width: 120px;
 }
 
+.scroll {
+	overflow: auto;
+}
+
 .navegacio::after {
 	position: absolute;
 	width: 100%;
