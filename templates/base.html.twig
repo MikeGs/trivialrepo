@@ -21,12 +21,12 @@
                 <button id="botoMenu" class="d-inline"><i class="fas fa-bars fa-sm"></i></button>
                 </button>
                 <a href="#" class="navbar-brand ml-3"><img id="logo" src="{{ asset('img/Logotip_UB.png') }}" alt="Logo Universitat Barcelona"></a>
-                <span class="ml-auto">
-                    Connectat com <a href="#">{{ user.username }}</a><a href="{{ path('fos_user_security_logout') }}" class="ml-4 text-white"><i class="fas fa-power-off"></i></a>
+                <span class="ml-auto mr-2">
+                    Connectat com <a href="#"><i class="fas fa-user ml-2 mr-1"></i>{{ user.username }}</a><a href="{{ path('fos_user_security_logout') }}" class="ml-4 text-white"><i class="fas fa-power-off"></i></a>
                 </span>
             </nav>  
         </div>
-        <div class="row h-100" id="mainRow">
+        <div class="row m-0" id="mainRow">
             {# barra lateral #}
             <div id="menuLateral">
                 <ul id="menuList">
@@ -49,7 +49,7 @@
             <script>
                 window.onload = function() {
                     $('#botoMenu').click(function() {
-                        $('#menuLateral').animate({width:'toggle'},245);
+                        $('#menuLateral').toggleClass('amagat');
                 });    
                 };
             </script>

@@ -8,6 +8,7 @@ html, body {
 
 /* navegacio admin */
 .navegacio {
+	height: 62px;
     background-color: #005a9e;
     position: relative;
     color: #fff;
@@ -40,7 +41,11 @@ html, body {
 #menuLateral {
 	background-color: #eeeeee;
 	width: 245px !important;
-	transition: width 1s ease-out;
+	transition: margin 0.2s ease-out;
+}
+
+.amagat {
+	margin-left: -245px;
 }
 
 #menuList {
@@ -55,6 +60,17 @@ html, body {
 
 #menuList > li.active {
 	background-color: #fff;
+	position: relative;
+}
+
+#menuList > li.active::after {
+	position: absolute;
+	content: '';
+	width: 5px;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background-color: #4ba5e5;
 }
 
 #menuList > li > a {
@@ -81,10 +97,12 @@ html, body {
 	color: #fff;
 	font-size: 0.8rem;
 	padding: 1rem;
+	height: 62px;
 }
 
 #mainRow {
 	margin-top: 5px;
+	height: calc(100% - 124px);
 }
 
 .grups {
