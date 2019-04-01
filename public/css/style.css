@@ -4,6 +4,7 @@ html, body {
 	height: 100%;
 	font-family: 'Montserrat', sans-serif;
 	margin: 0;
+	overflow: hidden;
 }
 
 /* navegacio admin */
@@ -28,9 +29,6 @@ html, body {
 	width: 120px;
 }
 
-.scroll {
-	overflow: auto;
-}
 
 .navegacio::after {
 	position: absolute;
@@ -107,6 +105,11 @@ html, body {
 #mainRow {
 	margin-top: 5px;
 	height: calc(100% - 124px);
+}
+
+
+.scroll {
+	overflow: auto;
 }
 
 .grups {
