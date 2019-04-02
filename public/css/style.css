@@ -120,6 +120,47 @@ html, body {
 	color: #fff;
 }
 
+.text-middle th, .text-middle td {
+	vertical-align: middle;
+}
+/* fi taules */
+
+/* links & buttons */
+.link-blue {
+	color: #4ba5e5;
+	transition: all 0.2s ease-out;
+}
+
+.link-blue:hover {
+	color: #005a9e;
+	text-decoration: none;
+}
+
+.link-orange {
+	color: #e69138;
+	transition: all 0.2s ease-out;
+}
+
+.link-orange:hover {
+	color: #DA7B18;
+	text-decoration: none;
+}
+
+.link-red {
+	color: #cc0000;
+	transition: all 0.2s ease-out;
+}
+
+.link-red:hover {
+	color: #AE0505;
+	text-decoration: none;
+}
+
+.custom-btn-link {
+	padding: 5px;
+}
+
+
 .grups {
     margin: 0 auto;
     display: block;

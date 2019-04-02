@@ -8,7 +8,7 @@
 			<h1 class="h3">USUARIS</h1><button class="btn btn-link" onclick="window.history.back();"><i class="fas fa-arrow-left"></i> TORNAR</button>
 		</div>
 		<div class="card-body">
-			<table class="table w-100" id="llistatUsuaris">
+			<table class="table w-100 text-middle" id="llistatUsuaris">
 				<thead class="custom-thead">
 					<tr>
 						<th>Nom</th>
@@ -25,7 +25,7 @@
 					<tr>
 						<td>{{ usuari.nom }} {{ usuari.cognoms }}</td>
 						<td>{{ usuari.username }}</td>
-						<td>{{ usuari.email }}</td>
+						<td><a href="{{ usuari.email }}" class="link-blue">{{ usuari.email }}</a></td>
 						<td>
 							{% for rol in usuari.roles %}
 								{% if rol == 'ROLE_STUDENT' %}
@@ -45,7 +45,11 @@
 							{% endfor %}
 						</td>
 						<td>{{ usuari.lastLogin|date('d-m-Y H:i') }}</td>
-						<td></td>
+						<td>
+							<button class="btn btn-link link-blue custom-btn-link"><i class="fas fa-sitemap"></i></button>
+							<button class="btn btn-link link-orange custom-btn-link"><i class="fas fa-wrench"></i></button>
+							<button class="btn btn-link link-red custom-btn-link"><i class="fas fa-trash-alt"></i></button>
+						</td>
 					</tr>
 					{% endfor %}
 				</tbody>
