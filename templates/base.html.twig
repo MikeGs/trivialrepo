@@ -6,12 +6,14 @@
             <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
             <link rel="stylesheet" href="{{ asset('bootstrap4/css/bootstrap.min.css') }}"/>  
             <link rel="stylesheet" href="{{ asset('fontAwesome/css/all.css') }}">      
+            <link rel="stylesheet" type="text/css" href="{{ asset('Datatables/datatables.min.css') }}"/>
             <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
         {% endblock %}
         {% block javascriptsTop %}
         <script src="{{ asset('bootstrap4/js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('js/jquery.js') }}"></script>
-        <script src="{{ asset('js/popper.js') }}"></script>      
+        <script src="{{ asset('js/popper.js') }}"></script> 
+        <script type="text/javascript" src="{{ asset('Datatables/datatables.min.js') }}"></script>     
         {% endblock %}
     </head>
     <body>

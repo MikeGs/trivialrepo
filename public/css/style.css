@@ -101,15 +101,23 @@ html, body {
 	padding: 1rem;
 	height: 62px;
 }
+/* fi footer */
 
+/* base */
 #mainRow {
 	margin-top: 5px;
 	height: calc(100% - 124px);
 }
 
-
 .scroll {
 	overflow: auto;
+}
+/* fi base */
+
+/* taules */
+.custom-thead {
+	background-color: #005a9e;
+	color: #fff;
 }
 
 .grups {
