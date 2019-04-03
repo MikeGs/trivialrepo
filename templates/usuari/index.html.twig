@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Usuaris{% endblock %}
+
+{% block body %}
+	<div class="card border-0 m-5">
+		<div class="card-header border-bottom bg-white d-flex justify-content-between p-0">
+			<h1 class="h3">USUARIS</h1><button class="btn btn-link" onclick="window.history.back();"><i class="fas fa-arrow-left"></i> TORNAR</button>
+		</div>
+		<div class="card-body">
+			<table class="table w-100 custom-table" id="llistatUsuaris">
+				<thead class="custom-thead">
+					<tr>
+						<th>Nom</th>
+						<th>Nom d'usuari</th>
+						<th>Correu electrònic</th>
+						<th>Rol</th>
+						<th>Grup</th>
+						<th>Última connexió</th>
+						<th>Accions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for usuari in usuaris %}
+					<tr>
+						<td>{{ usuari.nom }} {{ usuari.cognoms }}</td>
+						<td>{{ usuari.username }}</td>
+						<td><a href="{{ usuari.email }}" class="link-blue">{{ usuari.email }}</a></td>
+						<td>
+							{% for rol in usuari.roles %}
+								{% if rol == 'ROLE_STUDENT' %}
+									Estudiant<br>
+								{% elseif rol == 'ROLE_TEACHER' %}
+									Professor<br>
+								{% elseif rol == 'ROLE_ADMIN' %}
+									Administrador<br>
+								{% endif %}
+							{% endfor %}
+						</td>
+						<td>
+							{% for grup in usuari.grups if grup %}
+								{{ grup.nom }}<br>
+							{% else %}
+								No assignat
+							{% endfor %}
+						</td>
+						<td>{{ usuari.lastLogin|date('d-m-Y H:i') }}</td>
+						<td>
+							<button class="btn btn-link link-blue custom-btn-link assignarGrupBtn" data-id="{{ usuari.id }}" data-usuari="{{ usuari.nom }} {{ usuari.cognoms }}"><i class="fas fa-sitemap"></i></button>
+							<button class="btn btn-link link-orange custom-btn-link"><i class="fas fa-wrench"></i></button>
+							<button class="btn btn-link link-red custom-btn-link"><i class="fas fa-trash-alt"></i></button>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+<div id="assignarGrupModal" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="assignarGrupModalTitol"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div id="assignarGrupModalMsg"></div>
+				<div class="form-group">
+					<label for="rols">Selecciona un rol</label>
+					<select name="rols" id="rols" class="form-control">
+						<option value="">---</option>
+						{% for rol in rols|keys if rol != 'ROLE_SUPER_ADMIN' %}
+							<option value="{{ rol }}">
+								{% if rol == 'ROLE_STUDENT' %}
+									Estudiant
+								{% elseif rol == 'ROLE_TEACHER' %}
+									Professor
+								{% elseif rol == 'ROLE_ADMIN' %}
+									Administrador
+								{% endif %}
+							</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="modal-footer" id="assignarGrupModalBtns">
+			</div>
+		</div>
+	</div>
+</div>
+	
+{% endblock %}
+{% block javascriptsBottom %}
+	{{ parent() }}
+	<script>
+		$(document).ready( function () {
+
+		    $('#llistatUsuaris').dataTable( {
+	            "language": {
+	                "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Catalan.json"
+	            }
+	        });
+
+		    $('body').on( 'click', '.assignarGrupBtn', function() {
+		    	var id = $(this).data('id');
+		    	var usuari = $(this).data('usuari');
+		    	$('#assignarGrupModalTitol').html(`Assignar rol a <strong>${usuari}</strong>`);
+		    	$('#assignarGrupModal').modal('show');
+		    });
+		} );
+	</script>
+{% endblock %}
