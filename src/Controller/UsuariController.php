@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 use App\Entity\Usuari;
 
@@ -28,9 +29,10 @@ class UsuariController extends AbstractController
     }
 
     /**
-     * @Route("/assignarRol/{$id}", name="assignarRol")
+     * @Route("/assignarRol", name="assignarRol")
      */
-    public function assignarRol($id) {
+    public function assignarRol(Request $request) {
         
+
     }
 }
