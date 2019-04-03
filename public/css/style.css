@@ -119,6 +119,10 @@ table.dataTable.custom-table {
 	border-bottom: 5px solid #ffd966 !important;
 }
 
+table.aligncenter .col {
+	text-align: center!important;
+}
+
 .custom-table > thead {
 	background-color: #005a9e;
 	color: #fff;
@@ -160,6 +164,16 @@ table.dataTable.custom-table {
 	text-decoration: none;
 }
 
+.link-green {
+	color: #32CD32;
+	transition: all 0.2s ease-out;
+}
+
+.link-green:hover {
+	color: #228B22;
+	text-decoration: none;
+}
+
 .custom-btn-link {
 	padding: 5px;
 }
@@ -173,6 +187,10 @@ table.dataTable.custom-table {
 
 .padding {
 	padding: 50px;
+}
+
+.nodeco {
+	text-decoration: none!important;
 }
 
 .afegirgrup input, .afegirgrup label {

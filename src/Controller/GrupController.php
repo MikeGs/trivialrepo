@@ -27,6 +27,7 @@ class GrupController extends AbstractController
         $grups = $this->getGrups();
         $nivells = $this->getNivells();
         $administradors = $this->getAdministradors();
+        $alumnes = $this->getAlumnes();
 
         return $this->render('grup/index.html.twig',[
             'user' => $user,
@@ -34,6 +35,7 @@ class GrupController extends AbstractController
             'grups' =>  $grups,
             'nivells' => $nivells,
             'administradors' => $administradors,
+            'alumnes' => $alumnes,
             'title' => $title
         ]);
 
@@ -71,7 +73,7 @@ class GrupController extends AbstractController
             $em->persist($grup);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('index'));
+            return $this->redirect($this->generateUrl('grups'));
         }
 
         $title = "Afegir grup | Trivial UB";
@@ -119,6 +121,26 @@ class GrupController extends AbstractController
             ->getResult();
 
         return $administradors;
+
+    }
+
+    public function getAlumnes() {
+
+        $em = $this->getDoctrine()->getManager();
+
+        /*$alumnes = $em->getRepository(Usuari::class)->createQueryBuilder('u')
+            ->where('u.roles like :text')
+            ->setParameter('text', '%'.'ROLE_USER'.'%')
+            ->getQuery()
+            ->getResult();*/
+
+            $em = $this->getDoctrine()->getManager(); // ...or getEntityManager() prior to Symfony 2.1
+            $connection = $em->getConnection();
+            $statement = $connection->prepare("SELECT * FROM grup_usuari");
+            $statement->execute();
+            $alumnes = $statement->fetchAll();
+
+        return $alumnes;
 
     }
 

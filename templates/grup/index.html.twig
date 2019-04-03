@@ -10,38 +10,62 @@
 
 <a href='{{path('afegirgrup')}}' class="">Afegir grup</a>
 
-{% for grup in grups %}
-
-    <div class="grup">
-        <p>Grup: {{ grup.nom }}</p>
-        <p>Nivell: 
-        
-        {% for nivell in nivells %}
+<table class="table aligncenter">
+  <thead>
+    <tr>
+      <th scope="col">Grup</th>
+      <th scope="col">Data d'inici</th>
+      <th scope="col">Data de fi</th>
+      <th scope="col">Nivell</th>
+      <th scope="col">Alumnes</th>
+      <th scope="col">Accions</th>  
+    </tr>
+  </thead>
+  <tbody>
+  {% for grup in grups %}
+    <tr>
+      <td scope="col">{{ grup.nom }}</td>
+      <td scope="col">{{ grup.datainici|date('d-m-Y') }}</td>
+      <td scope="col">{{ grup.datafinal|date('d-m-Y') }}</td>
+      <td>
+      
+      {% for nivell in nivells %}
 
             {% if nivell.id == grup.idNivell.id %}
                 {{ nivell.nom }}
             {% endif %}
 
             {% else %}
-                No té categoria.
+                No té nivell
         {% endfor %}
-        
-        </p>
-        <p>Administrador: 
-        
-        {% for administrador in administradors %}
 
-            {% if administrador.id == grup.idAdministrador %}
-                {{ administrador.nom }}
+      </td>
+      <td scope="col">
+        
+        {% set countalumnes = 0 %}
+        <a class="nodeco" href="#"><i class="fas fa-users mr-2 link-blue"></i>
+        {% for alumne in alumnes %}
+
+            {% if alumne.grup_id == grup.id %}
+            
+                {% set countalumnes = countalumnes + 1 %} 
+                {{ countalumnes }}
+
+            {% elseif countalumnes == 0 %}
+                Cap
             {% endif %}
+            
+        {% endfor %}
+        </a>
 
-            {% else %}
-                No té categoria.
-        {% endfor %}</p>
-    </div>
-
-
-{% endfor %}
+      </td>
+      <td scope="col">
+        <a href="#"><i class="fas fa-cog link-green"></i></a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 </div>
 
