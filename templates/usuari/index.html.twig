@@ -46,7 +46,7 @@
 						</td>
 						<td>{{ usuari.lastLogin|date('d-m-Y H:i') }}</td>
 						<td>
-							<button class="btn btn-link link-blue custom-btn-link"><i class="fas fa-sitemap"></i></button>
+							<button class="btn btn-link link-blue custom-btn-link assignarGrupBtn" data-id="{{ usuari.id }}" data-usuari="{{ usuari.nom }} {{ usuari.cognoms }}"><i class="fas fa-sitemap"></i></button>
 							<button class="btn btn-link link-orange custom-btn-link"><i class="fas fa-wrench"></i></button>
 							<button class="btn btn-link link-red custom-btn-link"><i class="fas fa-trash-alt"></i></button>
 						</td>
@@ -56,17 +56,60 @@
 			</table>
 		</div>
 	</div>
+
+<div id="assignarGrupModal" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="assignarGrupModalTitol"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div id="assignarGrupModalMsg"></div>
+				<div class="form-group">
+					<label for="rols">Selecciona un rol</label>
+					<select name="rols" id="rols" class="form-control">
+						<option value="">---</option>
+						{% for rol in rols|keys if rol != 'ROLE_SUPER_ADMIN' %}
+							<option value="{{ rol }}">
+								{% if rol == 'ROLE_STUDENT' %}
+									Estudiant
+								{% elseif rol == 'ROLE_TEACHER' %}
+									Professor
+								{% elseif rol == 'ROLE_ADMIN' %}
+									Administrador
+								{% endif %}
+							</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="modal-footer" id="assignarGrupModalBtns">
+			</div>
+		</div>
+	</div>
+</div>
 	
 {% endblock %}
 {% block javascriptsBottom %}
 	{{ parent() }}
 	<script>
 		$(document).ready( function () {
+
 		    $('#llistatUsuaris').dataTable( {
 	            "language": {
 	                "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Catalan.json"
 	            }
-	        } );
+	        });
+
+		    $('body').on( 'click', '.assignarGrupBtn', function() {
+		    	var id = $(this).data('id');
+		    	var usuari = $(this).data('usuari');
+		    	$('#assignarGrupModalTitol').html(`Assignar rol a <strong>${usuari}</strong>`);
+		    	$('#assignarGrupModal').modal('show');
+		    });
 		} );
 	</script>
 {% endblock %}
