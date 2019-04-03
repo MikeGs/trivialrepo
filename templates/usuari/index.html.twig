@@ -69,8 +69,8 @@
 			<div class="modal-body">
 				<div id="assignarGrupModalMsg"></div>
 				<div class="form-group">
-					<label for="rols">Selecciona un rol</label>
-					<select name="rols" id="rols" class="form-control">
+					<label for="rol">Selecciona un rol</label>
+					<select name="rol" id="rol" class="form-control">
 						<option value="">---</option>
 						{% for rol in rols|keys if rol != 'ROLE_SUPER_ADMIN' %}
 							<option value="{{ rol }}">
@@ -108,7 +108,22 @@
 		    	var id = $(this).data('id');
 		    	var usuari = $(this).data('usuari');
 		    	$('#assignarGrupModalTitol').html(`Assignar rol a <strong>${usuari}</strong>`);
+		    	var url = `{{ path('assignarRol', {'id' : '0'}) }}`;
+		    	url = url.replace("0", id);
+		    	$('#assignarGrupModalBtns').html(`<button class="cancelBtn btn btn-secondary mr-2">Cancel·lar</button><button id="grupAssignatBtn" class="btn btn-primary disabled">Continuar</button>`);
 		    	$('#assignarGrupModal').modal('show');
+		    });
+
+		    $('body').on('click', '.cancelBtn', function()  {
+		    	$('#assignarGrupModal').modal('hide');
+		    });
+
+		    $('body').on('change', '#rol', function() {
+		    	if ($(this).val() != '') {
+		    		$('#grupAssignatBtn').removeClass('disabled');
+		    	} else {
+		    		$('#grupAssignatBtn').addClass('disabled');
+		    	}
 		    });
 		} );
 	</script>

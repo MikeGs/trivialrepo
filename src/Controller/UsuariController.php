@@ -26,4 +26,11 @@ class UsuariController extends AbstractController
             'rols' => $rols,
         ]);
     }
+
+    /**
+     * @Route("/assignarRol/{$id}", name="assignarRol")
+     */
+    public function assignarRol($id) {
+        
+    }
 }
