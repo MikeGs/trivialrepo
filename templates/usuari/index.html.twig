@@ -5,7 +5,7 @@
 {% block body %}
 	<div class="card border-0 m-5">
 		<div class="card-header border-bottom bg-white d-flex justify-content-between p-0">
-			<h1 class="h3">USUARIS</h1><button class="btn btn-link" onclick="window.history.back();"><i class="fas fa-arrow-left"></i> TORNAR</button>
+			<h1 class="h3">USUARIS</h1><a class="btn btn-link" href="#"><i class="fas fa-arrow-left"></i> TORNAR</a>
 		</div>
 		<div class="card-body">
 			<table class="table w-100 custom-table" id="llistatUsuaris">
@@ -25,7 +25,7 @@
 					<tr>
 						<td>{{ usuari.nom }} {{ usuari.cognoms }}</td>
 						<td>{{ usuari.username }}</td>
-						<td><a href="{{ usuari.email }}" class="link-blue">{{ usuari.email }}</a></td>
+						<td><a href="{{ usuari.email }}" class="link-blue"><i class="fas fa-envelope"></i> {{ usuari.email }}</a></td>
 						<td>
 							{% for rol in usuari.roles %}
 								{% if rol == 'ROLE_STUDENT' %}
@@ -46,8 +46,8 @@
 						</td>
 						<td>{{ usuari.lastLogin|date('d-m-Y H:i') }}</td>
 						<td>
-							<button class="btn btn-link link-blue custom-btn-link"><i class="fas fa-sitemap"></i></button>
-							<button class="btn btn-link link-orange custom-btn-link"><i class="fas fa-wrench"></i></button>
+							<button class="btn btn-link link-blue custom-btn-link assignarGrupBtn" data-id="{{ usuari.id }}" data-usuari="{{ usuari.nom }} {{ usuari.cognoms }}"><i class="fas fa-sitemap"></i></button>
+							<button class="btn btn-link link-orange custom-btn-link assignarRolBtn" data-id="{{ usuari.id }}" data-usuari="{{ usuari.nom }} {{ usuari.cognoms }}"><i class="fas fa-wrench"></i></button>
 							<button class="btn btn-link link-red custom-btn-link"><i class="fas fa-trash-alt"></i></button>
 						</td>
 					</tr>
@@ -56,17 +56,105 @@
 			</table>
 		</div>
 	</div>
+
+<div id="assignarRolModal" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h6 class="modal-title" id="assignarRolModalTitol"></h6>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div id="assignarRolModalMsg">
+					<div class="form-group">
+						<label for="rol">Selecciona un rol</label>
+						<select name="rol" id="rol" class="form-control">
+							<option value="">---</option>
+							{% for rol in rols|keys if rol != 'ROLE_SUPER_ADMIN' %}
+								<option value="{{ rol }}">
+									{% if rol == 'ROLE_STUDENT' %}
+										Estudiant
+									{% elseif rol == 'ROLE_TEACHER' %}
+										Professor
+									{% elseif rol == 'ROLE_ADMIN' %}
+										Administrador
+									{% endif %}
+								</option>
+							{% endfor %}
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer" id="assignarRolModalBtns">
+			</div>
+		</div>
+	</div>
+</div>
 	
 {% endblock %}
 {% block javascriptsBottom %}
 	{{ parent() }}
 	<script>
 		$(document).ready( function () {
-		    $('#llistatUsuaris').dataTable( {
+
+		    llistatUsuaris = $('#llistatUsuaris').dataTable( {
 	            "language": {
 	                "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Catalan.json"
 	            }
-	        } );
+	        });
+
+		    $('body').on( 'click', '.assignarRolBtn', function() {
+		    	var id = $(this).data('id');
+		    	var usuari = $(this).data('usuari');
+		    	$('#assignarRolModalTitol').html(`Assignar rol a <strong>${usuari}</strong>`);
+		    	//var url = `{{ path('assignarRol', {'id' : '0', 'rol' : 'sense'}) }}`;
+		    	//url = url.replace("0", id);
+		    	$('#assignarRolModalBtns').html(`<button class="cancelBtn btn btn-secondary mr-2">Cancel·lar</button><button data-id="${id}" id="rolAssignatBtn" class="btn btn-primary disabled">Continuar</button>`);
+		    	$('#assignarRolModal').modal('show');
+
+		    	$('body').on('click', '#rolAssignatBtn', function() {
+		    		$.get()
+		    	});
+		    });
+
+		    $('body').on('click', '.cancelBtn', function()  {
+		    	$('#assignarRolModal').modal('hide');
+		    });
+
+		    $('body').on('change', '#rol', function() {
+		    	if ($(this).val() != '') {
+		    		$('#rolAssignatBtn').removeClass('disabled');
+		    	} else {
+		    		$('#rolAssignatBtn').addClass('disabled');
+		    	}
+		    });
+
+		    $('body').on('click', '#rolAssignatBtn', function(e) {
+		    	var id = $('#rolAssignatBtn').data('id');
+		    	var rol = $('#rol').val();
+		    	var url = `{{ path('assignarRol') }}`;
+		    	$.post(url, { 'idUsuari': id, 'rol': rol }) 
+		    		.done(function(response) {
+						$('#assignarRolModalMsg').html(`<div class="text-center"><i class="fas fa-check mb-2" style="color: green; font-size: 40px"></i><div>Rol assignat correctament.</div></div>`);
+		    			$('#assignarRolModalBtns').html(`<button class="reloadBtn btn btn-primary mr-2">Acceptar</button>`);
+		    			
+					})
+					.fail(errorAssignacioGrup);
+		    	e.preventDefault();
+		    });
+
+		    $('body').on('click', '.reloadBtn', function() {
+		    	var reload = `{{ path('usuaris') }}`;
+		    	window.location.replace(reload);
+		    });
+
+		    function errorAssignacioGrup() {
+		    	$('#assignarRolModalMsg').html(`<div class="text-center"><i class="fas fa-exclamation-triangle mb-2" style="color: red; font-size: 40px"></i><div>Error! No ha sigut possible assignar el rol a l'usuari.</div></div>`);
+		    	$('#assignarRolModalBtns').html(`<button class="cancelBtn btn btn-primary mr-2">Acceptar</button>`);
+		    }
+
 		} );
 	</script>
 {% endblock %}

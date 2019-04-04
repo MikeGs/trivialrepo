@@ -20,3 +20,5 @@
 \.env
 
 src/Entity/Usuari\.php
+
+vendor\.zip

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+
+<div class="padding">
+<h1 class="">Afegir grup</h1>
+
+<form class="afegirgrup" action="" method="POST">
+
+<!-- id	id_nivell_id	nom	codi	datainici	datafinal	//finalitzat	tempsresposta	//id_administrador -->
+
+    {{ form_start(form) }}
+        
+        {{ form_row(form.nom) }}
+        {{ form_row(form.codi) }}
+        {{ form_row(form.idNivell) }}
+        {{ form_row(form.datainici) }}
+        {{ form_row(form.datafinal) }}
+        {{ form_row(form.tempsresposta) }}
+        {{ form_row(form.puntuacio_facil) }}
+        {{ form_row(form.puntuacio_mitja) }}
+        {{ form_row(form.puntuacio_dificil) }}
+        <input type="submit" name="Submit" value="Afegir" />
+
+    {{ form_end(form, {'render_rest': false}) }}
+</div>
+{% endblock %}
