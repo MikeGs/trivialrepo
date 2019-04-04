@@ -28,6 +28,7 @@ class GrupController extends AbstractController
         $nivells = $this->getNivells();
         $administradors = $this->getAdministradors();
         $alumnes = $this->getAlumnes();
+        $alumnesDetailed = $this->getAlumnesDetailed();
 
         return $this->render('grup/index.html.twig',[
             'user' => $user,
@@ -36,6 +37,31 @@ class GrupController extends AbstractController
             'nivells' => $nivells,
             'administradors' => $administradors,
             'alumnes' => $alumnes,
+            'title' => $title
+        ]);
+
+    }
+
+    /**
+     * @Route("/grup/{id}", name="alumnesGrup")
+     */
+    public function grup($id)
+    {
+
+        $user = $this->getUser();
+        $title = "Grups | Trivial UB";
+        $grup = $this->getGrup($id);
+        $administradors = $this->getAdministradors();
+        $alumnes = $this->getAlumnes();
+        $alumnesDetailed = $this->getAlumnesDetailed();
+
+        return $this->render('grup/llistatalumnes.html.twig',[
+            'user' => $user,
+            'controller_name' => 'GrupController',
+            'grup' =>  $grup,
+            'administradors' => $administradors,
+            'alumnes' => $alumnes,
+            'alumnesDetailed' => $alumnesDetailed,
             'title' => $title
         ]);
 
@@ -100,6 +126,16 @@ class GrupController extends AbstractController
 
     }
 
+    public function getGrup($id) {
+
+        $grup = $this->getDoctrine()
+            ->getRepository(Grup::class)
+            ->find($id);
+
+        return $grup;
+
+    }
+
     public function getUsuaris() {
         
         $usuaris = $this->getDoctrine()
@@ -128,12 +164,6 @@ class GrupController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
 
-        /*$alumnes = $em->getRepository(Usuari::class)->createQueryBuilder('u')
-            ->where('u.roles like :text')
-            ->setParameter('text', '%'.'ROLE_USER'.'%')
-            ->getQuery()
-            ->getResult();*/
-
             $em = $this->getDoctrine()->getManager(); // ...or getEntityManager() prior to Symfony 2.1
             $connection = $em->getConnection();
             $statement = $connection->prepare("SELECT * FROM grup_usuari");
@@ -141,6 +171,20 @@ class GrupController extends AbstractController
             $alumnes = $statement->fetchAll();
 
         return $alumnes;
+
+    }
+
+    public function getAlumnesDetailed() {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $alumnesDetailed = $em->getRepository(Usuari::class)->createQueryBuilder('u')
+            ->where('u.roles like :text')
+            ->setParameter('text', '%'.'ROLE_STUDENT'.'%')
+            ->getQuery()
+            ->getResult();
+
+        return $alumnesDetailed;
 
     }
 

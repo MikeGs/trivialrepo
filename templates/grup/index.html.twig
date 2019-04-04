@@ -6,11 +6,13 @@
 
 <div class="m-5">
 
-    <h1>Llistat de grups</h1>
+    <div class="card-header border-bottom bg-white d-flex justify-content-between p-0">
+        <h1 class="h3">Llistat de grups</h1>
+    </div>
 
     <div class="grups">
 
-    <a href='{{path('afegirgrup')}}' class="btn btn-success float-right"><i class="fas fa-plus link-white mr-2"></i>Afegir grup</a>
+    <a href='{{path('afegirgrup')}}' class="btn btn-success float-right afegirbtn"><i class="fas fa-plus link-white mr-2"></i>Afegir grup</a>
 
     <div class="llegenda-taula">
     
@@ -26,7 +28,7 @@
 
             <div class="link-green float-left">
 
-                <i class="fas fa-cog link-green"></i>
+                <i class="fas fa-cog"></i>
                 <label>Modificar</label>
 
             </div>
@@ -34,15 +36,15 @@
 
     </div>
 
-    <table class="table custom-table">
+    <table class="table custom-table" id="llistatGrups">
     <thead>
         <tr>
-        <th scope="col">Grup</th>
-        <th scope="col">Data d'inici</th>
-        <th scope="col">Data de fi</th>
-        <th scope="col">Nivell</th>
-        <th scope="col">Alumnes</th>
-        <th scope="col">Accions</th>  
+            <th scope="col">Grup</th>
+            <th scope="col">Data d'inici</th>
+            <th scope="col">Data de fi</th>
+            <th scope="col">Nivell</th>
+            <th scope="col">Alumnes</th>
+            <th scope="col">Accions</th>  
         </tr>
     </thead>
     <tbody>
@@ -67,7 +69,7 @@
         <td scope="col">
             
             {% set countalumnes = 0 %}
-            <a class="nodeco" href="#"><i class="fas fa-users mr-2 link-blue"></i>
+            <a class="nodeco link-blue" href="{{ path('alumnesGrup', {id: grup.id}) }}"><i class="fas fa-users mr-2"></i>
             {% for alumne in alumnes %}
 
                 {% if alumne.grup_id == grup.id %}
@@ -93,4 +95,21 @@
 
     </div>
 </div>
+
+{% endblock %}
+{% block javascriptsBottom %}
+
+    {{ parent() }}
+
+    <script>
+		$(document).ready( function () {
+
+            llistatGrups = $('#llistatGrups').dataTable( {
+	            "language": {
+	                "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Catalan.json"
+	            }
+	        });
+        });
+
+</script>
 {% endblock %}
