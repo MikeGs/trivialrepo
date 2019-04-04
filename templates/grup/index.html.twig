@@ -4,15 +4,37 @@
 
 {% block body %}
 
-<div class="padding">
+<div class="m-5">
 
     <h1>Llistat de grups</h1>
 
     <div class="grups">
 
-    <a href='{{path('afegirgrup')}}' class="">Afegir grup</a>
+    <a href='{{path('afegirgrup')}}' class="btn btn-success float-right"><i class="fas fa-plus link-white mr-2"></i>Afegir grup</a>
 
-    <table class="table aligncenter">
+    <div class="llegenda-taula">
+    
+        <div class="float-right">
+            <p class="float-left mr-3">Llegenda: </p>
+
+            <div class="link-blue float-left mr-2">
+
+                <i class="fas fa-users"></i>
+                <label>Llistat d'alumnes</label>
+
+            </div>
+
+            <div class="link-green float-left">
+
+                <i class="fas fa-cog link-green"></i>
+                <label>Modificar</label>
+
+            </div>
+        </div>
+
+    </div>
+
+    <table class="table custom-table">
     <thead>
         <tr>
         <th scope="col">Grup</th>

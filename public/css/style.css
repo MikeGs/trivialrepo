@@ -169,6 +169,10 @@ table.aligncenter .col {
 	transition: all 0.2s ease-out;
 }
 
+.link-white {
+	color: #ffffff;
+}
+
 .link-green:hover {
 	color: #228B22;
 	text-decoration: none;
@@ -177,7 +181,6 @@ table.aligncenter .col {
 .custom-btn-link {
 	padding: 5px;
 }
-
 
 .grups {
     margin: 0 auto;
@@ -200,4 +203,12 @@ table.aligncenter .col {
 
 .afegirgrup input {
     margin-bottom: 15px;
+}
+
+/* LLEGENDA TAULA */
+
+.llegenda-taula {
+	overflow: hidden;
+	width: 100%;
+	padding-top: 15px;
 }
