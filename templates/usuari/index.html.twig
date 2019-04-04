@@ -5,7 +5,7 @@
 {% block body %}
 	<div class="card border-0 m-5">
 		<div class="card-header border-bottom bg-white d-flex justify-content-between p-0">
-			<h1 class="h3">USUARIS</h1><button class="btn btn-link" onclick="window.history.back();"><i class="fas fa-arrow-left"></i> TORNAR</button>
+			<h1 class="h3">USUARIS</h1><a class="btn btn-link" href="#"><i class="fas fa-arrow-left"></i> TORNAR</a>
 		</div>
 		<div class="card-body">
 			<table class="table w-100 custom-table" id="llistatUsuaris">
@@ -25,7 +25,7 @@
 					<tr>
 						<td>{{ usuari.nom }} {{ usuari.cognoms }}</td>
 						<td>{{ usuari.username }}</td>
-						<td><a href="{{ usuari.email }}" class="link-blue">{{ usuari.email }}</a></td>
+						<td><a href="{{ usuari.email }}" class="link-blue"><i class="fas fa-envelope"></i> {{ usuari.email }}</a></td>
 						<td>
 							{% for rol in usuari.roles %}
 								{% if rol == 'ROLE_STUDENT' %}
@@ -99,7 +99,7 @@
 	<script>
 		$(document).ready( function () {
 
-		    $('#llistatUsuaris').dataTable( {
+		    llistatUsuaris = $('#llistatUsuaris').dataTable( {
 	            "language": {
 	                "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Catalan.json"
 	            }
@@ -135,14 +135,24 @@
 		    	var id = $('#rolAssignatBtn').data('id');
 		    	var rol = $('#rol').val();
 		    	var url = `{{ path('assignarRol') }}`;
-		    	var data = `{ 'id': ${id}, 'rol': ${rol} }`;
-		    	$.post(url, data, assignacioRolCompleta).fail(errorAssignacioGrup);
+		    	$.post(url, { 'idUsuari': id, 'rol': rol }) 
+		    		.done(function(response) {
+						$('#assignarRolModalMsg').html(`<div class="text-center"><i class="fas fa-check mb-2" style="color: green; font-size: 40px"></i><div>Rol assignat correctament.</div></div>`);
+		    			$('#assignarRolModalBtns').html(`<button class="reloadBtn btn btn-primary mr-2">Acceptar</button>`);
+		    			
+					})
+					.fail(errorAssignacioGrup);
 		    	e.preventDefault();
 		    });
 
-		    function assignacioRolCompleta() {
-		    	$('#assignarRolModalMsg').html(`Rol assignat correctament.`);
-		    	$('#assignarRolModalBtns').html(`<button class="cancelBtn btn btn-secondary mr-2">Acceptar</button>`);
+		    $('body').on('click', '.reloadBtn', function() {
+		    	var reload = `{{ path('usuaris') }}`;
+		    	window.location.replace(reload);
+		    });
+
+		    function errorAssignacioGrup() {
+		    	$('#assignarRolModalMsg').html(`<div class="text-center"><i class="fas fa-exclamation-triangle mb-2" style="color: red; font-size: 40px"></i><div>Error! No ha sigut possible assignar el rol a l'usuari.</div></div>`);
+		    	$('#assignarRolModalBtns').html(`<button class="cancelBtn btn btn-primary mr-2">Acceptar</button>`);
 		    }
 
 		} );
