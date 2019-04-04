@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use App\Entity\Usuari;
 
@@ -25,5 +27,23 @@ class UsuariController extends AbstractController
             'usuaris' => $usuaris,
             'rols' => $rols,
         ]);
+    }
+
+    /**
+     * @Route("/assignarRol", name="assignarRol")
+     */
+    public function assignarRol(Request $request) : JsonResponse {
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $usuari = $em->getRepository(Usuari::class)->findOneById($request->request->get('idUsuari'));
+        
+        $usuari->removeRole($usuari->getRoles()[0]);
+        $usuari->setRoles(array($request->request->get('rol')));
+
+        $em->persist($usuari);
+        $em->flush();
+        
+        return new JsonResponse(['assignat' => true]);
     }
 }
