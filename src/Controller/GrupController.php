@@ -28,7 +28,6 @@ class GrupController extends AbstractController
         $nivells = $this->getNivells();
         $administradors = $this->getAdministradors();
         $alumnes = $this->getAlumnes();
-        $alumnesDetailed = $this->getAlumnesDetailed();
 
         return $this->render('grup/index.html.twig',[
             'user' => $user,
@@ -52,8 +51,8 @@ class GrupController extends AbstractController
         $title = "Grups | Trivial UB";
         $grup = $this->getGrup($id);
         $administradors = $this->getAdministradors();
-        $alumnes = $this->getAlumnes();
-        $alumnesDetailed = $this->getAlumnesDetailed();
+        $alumnes = $this->getAlumnesCurs($id);
+        $totsalumnes = $this->getTotsAlumnes();
 
         return $this->render('grup/llistatalumnes.html.twig',[
             'user' => $user,
@@ -61,7 +60,7 @@ class GrupController extends AbstractController
             'grup' =>  $grup,
             'administradors' => $administradors,
             'alumnes' => $alumnes,
-            'alumnesDetailed' => $alumnesDetailed,
+            'totsalumnes' => $totsalumnes,
             'title' => $title
         ]);
 
@@ -164,7 +163,6 @@ class GrupController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
 
-            $em = $this->getDoctrine()->getManager(); // ...or getEntityManager() prior to Symfony 2.1
             $connection = $em->getConnection();
             $statement = $connection->prepare("SELECT * FROM grup_usuari");
             $statement->execute();
@@ -172,6 +170,33 @@ class GrupController extends AbstractController
 
         return $alumnes;
 
+    }
+
+    public function getTotsAlumnes() {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $alumnes = $em->getRepository(Usuari::class)->createQueryBuilder('u')
+            ->where('u.roles like :text')
+            ->setParameter('text', '%'.'ROLE_STUDENT'.'%')
+            ->getQuery()
+            ->getResult();
+
+        return $alumnes;
+
+    }
+
+    public function getAlumnesCurs($idCurs) {
+        
+        $em = $this->getDoctrine()->getManager();
+
+            $connection = $em->getConnection();
+            $statement = $connection->prepare("SELECT gu.grup_id, gu.usuari_id, u.nom, u.cognoms, u.last_login from grup_usuari gu inner join usuari u on gu.usuari_id = u.id 
+            where gu.grup_id = " . $idCurs);
+            $statement->execute();
+            $alumnes = $statement->fetchAll();
+
+            return $alumnes;
     }
 
     public function getAlumnesDetailed() {

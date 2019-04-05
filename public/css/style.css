@@ -221,8 +221,23 @@ table.aligncenter .col {
 
 /* LLISTAT ALUMNES ETC */
 
-.elementLlista {
+.elementLlistaAlumnes, .elementLlistaAlumnesTd {
 	width: 100%;
 	display: block;
-	background-color: rgba(0,0,0,0.01);
+}
+
+.elementLlistaAlumnes {
+	padding: 10px;
+	transition: background-color .4s ease-in-out;
+	border-bottom: 1px solid rgba(41,41,41,0.2);
+}
+
+.elementLlistaAlumnes:hover {
+	background-color: rgba(0,0,0,0.1);
+}
+
+/* MODAL FIX PADDING RIGHT */
+
+.modal-open {
+	padding-right: 0px!important;
 }

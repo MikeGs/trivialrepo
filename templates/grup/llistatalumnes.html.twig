@@ -50,25 +50,18 @@
     <tbody>
     {% for alumne in alumnes %}
 
-        {% for alumneDetailed in alumnesDetailed  %}
-
-            {% if alumne.usuari_id == alumneDetailed.id and alumne.grup_id == grup.id %}
 
             <tr>
-            <td scope="col">{{ alumneDetailed.nom }}</td>
+            <td scope="col">{{ alumne.nom }}</td>
             <td scope="col">Jugades</td>
             <td scope="col">Guanyades</td>
             <td scope="col">Entrenaments F</td>
-            <td scope="col">{{ alumneDetailed.lastLogin|date('d-m-Y | h:m') }}</td>
+            <td scope="col">{{ alumne.last_login|date('d-m-Y | h:m') }}</td>
             <td scope="col">
                 <a href="#"><i class="fas fa-eye link-blue mr-2"></i></a>
                 <a href="#"><i class="fas fa-times link-red"></i></a>
             </td>
             </tr>
-
-            {% endif %}
-
-        {% endfor %}
 
     {% endfor %}    
     </tbody>
@@ -89,16 +82,19 @@
 			<div class="modal-body">
 				<div id="afegirUsuariModalMsg">
 					<div class="form-group">
-						<table>
+						<table class="col-12">
 
                             <tr>
-                                <th scope="col">Nom</th>
+                                <th scope="col">Llistat d'alumnes</th>
                             </tr>
                             
-                            {% for alumneDetailed in alumnesDetailed %}
+                            {% set ids = 0 %}
+                            {% for alumne in totsalumnes %}
                                 <tr>
-                                    <td><a class="elementLlista" href="#">{{alumneDetailed.nom}}</a></td>
+                                    <td class="elementLlistaAlumnesTd"><a class="elementLlistaAlumnes nodeco" id="al{{ ids }}" href="#"><span class="alumneNom">{{alumne.nom}}</span> <span class="alumneCognom">
+                                    {{alumne.cognoms}}</span></a></td>
                                 </tr>
+                            {% set ids = ids + 1 %}
                             {% endfor %}
 
                         </table>
@@ -124,6 +120,11 @@
 	                "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Catalan.json"
 	            }
 	        });
+
+            $(".elementLlistaAlumnes").click(function() {
+                var alumneid = this.id;
+                alert("Alumne:" + alumneid);
+            })
 
             $('body').on( 'click', '#afegirAlumneBtn', function() {
 		    	//$('#assignarRolModalBtns').html(`<button class="cancelBtn btn btn-secondary mr-2">Cancel·lar</button><button data-id="${id}" id="rolAssignatBtn" class="btn btn-primary disabled">Continuar</button>`);
