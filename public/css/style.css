@@ -169,6 +169,10 @@ table.aligncenter .col {
 	transition: all 0.2s ease-out;
 }
 
+.link-white {
+	color: #ffffff;
+}
+
 .link-green:hover {
 	color: #228B22;
 	text-decoration: none;
@@ -177,7 +181,6 @@ table.aligncenter .col {
 .custom-btn-link {
 	padding: 5px;
 }
-
 
 .grups {
     margin: 0 auto;
@@ -200,4 +203,41 @@ table.aligncenter .col {
 
 .afegirgrup input {
     margin-bottom: 15px;
+}
+
+/* LLEGENDA TAULA */
+
+.llegenda-taula {
+	overflow: hidden;
+	width: 100%;
+	padding-top: 15px;
+}
+
+/* AFEGIR BUTTON */
+
+.afegirbtn {
+	margin-top: 15px;
+}
+
+/* LLISTAT ALUMNES ETC */
+
+.elementLlistaAlumnes, .elementLlistaAlumnesTd {
+	width: 100%;
+	display: block;
+}
+
+.elementLlistaAlumnes {
+	padding: 10px;
+	transition: background-color .4s ease-in-out;
+	border-bottom: 1px solid rgba(41,41,41,0.2);
+}
+
+.elementLlistaAlumnes:hover {
+	background-color: rgba(0,0,0,0.1);
+}
+
+/* MODAL FIX PADDING RIGHT */
+
+.modal-open {
+	padding-right: 0px!important;
 }
