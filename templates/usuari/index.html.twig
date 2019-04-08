@@ -48,7 +48,7 @@
 						<td>
 							<button class="btn btn-link link-blue custom-btn-link assignarGrupBtn" data-id="{{ usuari.id }}" data-usuari="{{ usuari.nom }} {{ usuari.cognoms }}"><i class="fas fa-sitemap"></i></button>
 							<button class="btn btn-link link-orange custom-btn-link assignarRolBtn" data-id="{{ usuari.id }}" data-usuari="{{ usuari.nom }} {{ usuari.cognoms }}"><i class="fas fa-wrench"></i></button>
-							<button class="btn btn-link link-red custom-btn-link"><i class="fas fa-trash-alt"></i></button>
+							<button class="btn btn-link link-red custom-btn-link eliminarUsuariBtn" data-id="{{ usuari.id }}" data-usuari="{{ usuari.nom }} {{ usuari.cognoms }}"><i class="fas fa-trash-alt"></i></button>
 						</td>
 					</tr>
 					{% endfor %}
@@ -116,6 +116,25 @@
 				</div>
 			</div>
 			<div class="modal-footer" id="assignarGrupModalBtns">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="eliminarUsuariModal" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h6 class="modal-title" id="eliminarUsuariModalTitol"></h6>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div id="eliminarUsuariModalMsg">
+				</div>
+			</div>
+			<div class="modal-footer" id="eliminarUsuariModalBtns">
 			</div>
 		</div>
 	</div>
@@ -219,6 +238,33 @@
 		    function errorAssignacioGrup() {
 		    	$('#assignarGrupModalMsg').html(`<div class="text-center"><i class="fas fa-exclamation-triangle mb-2" style="color: red; font-size: 40px"></i><div>Error! No ha sigut possible assignar el grup a l'usuari.</div></div>`);
 		    	$('#assignarGrupModalBtns').html(`<button class="reloadBtn btn btn-primary mr-2">Acceptar</button>`);
+		    }
+
+		    $('body').on( 'click', '.eliminarUsuariBtn', function() {
+		    	var id = $(this).data('id');
+		    	var usuari = $(this).data('usuari');
+		    	$('#eliminarUsuariModalTitol').html(`Eliminar l'usuari <strong>${usuari}</strong>`);
+		    	$('#eliminarUsuariModalMsg').html(`<div class="text-center"><i class="fas fa-user-times mb-2" style="color: red; font-size: 40px"></i><div><strong>Atenció!</strong> Estàs segur que vols eliminar aquest usuari?<div class="alert alert-warning mt-2" style="font-size:11px;">Es perdrà tota la informació relacionada amb aquest usuari.</div></div></div>`);
+		    	$('#eliminarUsuariModalBtns').html(`<button class="cancelEliminarUsuariBtn btn btn-secondary mr-2">Cancel·lar</button><button data-id="${id}" id="usuariEliminatBtn" class="btn btn-primary">Continuar</button>`);
+		    	$('#eliminarUsuariModal').modal('show');
+		    });
+
+		    $('body').on('click', '#usuariEliminatBtn', function(e) {
+		    	var id = $('#usuariEliminatBtn').data('id');
+		    	var url = `{{ path('eliminarAlumne') }}`;
+		    	$.post(url, { 'idUsuari': id }) 
+		    		.done(function(response) {
+						$('#eliminarUsuariModalMsg').html(`<div class="text-center"><i class="fas fa-user-slash mb-2" style="color: green; font-size: 40px"></i><div>L'usuari s'ha eliminat correctament.</div></div>`);
+		    			$('#eliminarUsuariModalBtns').html(`<button class="reloadBtn btn btn-primary mr-2">Acceptar</button>`);
+		    			
+					})
+					.fail(errorEliminacioUsuari());
+		    	e.preventDefault();
+		    });
+
+		    function errorEliminacioUsuari() {
+		    	$('#eliminarUsuariModalMsg').html(`<div class="text-center"><i class="fas fa-exclamation-triangle mb-2" style="color: red; font-size: 40px"></i><div>Error! No ha sigut possible eliminar l'usuari.</div></div>`);
+		    	$('#eliminarUsuariModalBtns').html(`<button class="reloadBtn btn btn-primary mr-2">Acceptar</button>`);
 		    }
 
 		} );

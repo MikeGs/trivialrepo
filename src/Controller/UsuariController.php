@@ -75,8 +75,22 @@ class UsuariController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         $usuari = $em->getRepository(Usuari::class)->findOneById($request->request->get('idUsuari'));
-        $grups = $em->getRepository(Grup::class)->findByIdUsuari($usuari);
+        $grups = $em->getRepository(Grup::class)->getIdUsuari();
 
         return new JsonResponse(['grups' => $grups]);
+    }
+
+    /**
+     * @Route("/eliminar-alumne", name="eliminarAlumne")
+     */
+    public function eliminarUsuari(Request $request) : JsonResponse {
+
+        $em = $this->getDoctrine()->getManager();
+        $usuari = $em->getRepository(Usuari::class)->findOneById($request->request->get('idUsuari'));
+
+        $em->remove($usuari);
+        $em->flush();
+
+        return new JsonResponse(['eliminat' => true]);
     }
 }
