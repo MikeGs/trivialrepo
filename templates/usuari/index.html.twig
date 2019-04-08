@@ -182,6 +182,11 @@
 		    	var usuari = $(this).data('usuari');
 		    	$('#assignarGrupModalTitol').html(`Assignar un grup a <strong>${usuari}</strong>`);
 		    	$('#assignarGrupModalBtns').html(`<button class="cancelAssignarGrupBtn btn btn-secondary mr-2">Cancel·lar</button><button data-id="${id}" id="grupAssignatBtn" class="btn btn-primary disabled" data-toggle="popover" data-trigger="hover" data-content="Some content" data-placement="bottom">Continuar</button>`);
+		    	var url = `{{ path('llistarGrupsAlumne') }}`;
+		    	$.post(url, { 'idUsuari' : id })
+		    		.done(function(response) {
+		    			console.log(response.grups)
+		    		});
 		    	$('#assignarGrupModal').modal('show');
 		    });
 
@@ -202,7 +207,7 @@
 		    	var grup = $('#grup').val();
 		    	var url = `{{ path('assignarGrup') }}`;
 		    	$.post(url, { 'idUsuari': id, 'grup': grup }) 
-		    		.done(function(response) {
+		    		.done(function() {
 						$('#assignarGrupModalMsg').html(`<div class="text-center"><i class="fas fa-check mb-2" style="color: green; font-size: 40px"></i><div>Grup assignat correctament.</div></div>`);
 		    			$('#assignarGrupModalBtns').html(`<button class="reloadBtn btn btn-primary mr-2">Acceptar</button>`);
 		    			

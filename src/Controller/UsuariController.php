@@ -66,4 +66,17 @@ class UsuariController extends AbstractController
         
         return new JsonResponse(['assignat' => true]);
     }
+
+    /**
+     * @Route("/llistar-grups-alumne", name="llistarGrupsAlumne")
+     */
+    public function llistarGrupsAlumne(Request $request) : JsonResponse {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $usuari = $em->getRepository(Usuari::class)->findOneById($request->request->get('idUsuari'));
+        $grups = $em->getRepository(Grup::class)->findByIdUsuari($usuari);
+
+        return new JsonResponse(['grups' => $grups]);
+    }
 }
