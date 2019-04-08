@@ -19,27 +19,6 @@ class GrupRepository extends ServiceEntityRepository
         parent::__construct($registry, Grup::class);
     }
 
-    public function getAlumnesCurs($idCurs) {
-        
-        //$em = $this->getDoctrine()->getManager();
-
-            //$connection = $em->getConnection();
-
-            $alumnes = $this->createQueryBuilder('g')
-                ->getQuery()
-                ->getResult()
-            ;
-
-            var_dump($alumnes);
-
-            /*$statement = $this->prepare("SELECT gu.grup_id, gu.usuari_id, u.nom, u.cognoms, u.last_login from grup_usuari gu inner join usuari u on gu.usuari_id = u.id 
-            where gu.grup_id = " . $idCurs);
-            $statement->execute();
-            $alumnes = $statement->fetchAll();*/
-
-            return $alumnes;
-    }
-
     // /**
     //  * @return Grup[] Returns an array of Grup objects
     //  */

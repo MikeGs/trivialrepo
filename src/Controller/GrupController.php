@@ -203,7 +203,8 @@ class GrupController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
             $connection = $em->getConnection();
-            $statement = $connection->prepare("SELECT gu.grup_id, gu.usuari_id, u.nom, u.cognoms, u.last_login from grup_usuari gu inner join usuari u on gu.usuari_id = u.id 
+            $statement = $connection->prepare("SELECT gu.grup_id, gu.usuari_id, u.nom, u.cognoms, u.last_login 
+            from grup_usuari gu inner join usuari u on gu.usuari_id = u.id 
             where gu.grup_id = " . $idCurs);
             $statement->execute();
             $alumnes = $statement->fetchAll();
