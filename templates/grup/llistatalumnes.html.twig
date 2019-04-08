@@ -91,13 +91,14 @@
                             {% set ids = 0 %}
                             {% for alumne in totsalumnes %}
                                 <tr>
-                                    <td class="elementLlistaAlumnesTd"><a class="elementLlistaAlumnes nodeco" id="al{{ ids }}" href="#"><span class="alumneNom">{{alumne.nom}}</span> <span class="alumneCognom">
+                                    <td class="elementLlistaAlumnesTd"><a class="elementLlistaAlumnes nodeco" id="{{ alumne.id }}" href="#"><span class="alumneNom">{{alumne.nom}}</span> <span class="alumneCognom">
                                     {{alumne.cognoms}}</span></a></td>
                                 </tr>
                             {% set ids = ids + 1 %}
                             {% endfor %}
 
                         </table>
+                        <input type="submit" name="Submit" value="Afegir" id="afegirAlumnesBtn">
 					</div>
 				</div>
 			</div>
@@ -123,8 +124,36 @@
 
             $(".elementLlistaAlumnes").click(function() {
                 var alumneid = this.id;
-                alert("Alumne:" + alumneid);
+                
+                if (!$(this).hasClass("usuariSeleccionat")) {
+                    $(this).addClass("usuariSeleccionat");
+                } else {
+                    $(this).removeClass("usuariSeleccionat");
+                }
+
+                //alert("Alumne:" + alumneid);
             })
+
+            $("#afegirAlumnesBtn").click(function() {
+
+                var usuarisSeleccionats = $(".usuariSeleccionat");
+                var ids = [];
+
+                $.each( usuarisSeleccionats, function( key, value ) {
+                    ids.push(value.id);
+                });
+
+                console.log(ids);
+
+                var url = `{{ path('afegirAlumnes') }}`;
+
+                $.post(url, { 'Usuaris': ids }) 
+		    		.done(function(response) {
+		    			alert("done!");
+					})
+					.fail(alert("error"));
+
+            });
 
             $('body').on( 'click', '#afegirAlumneBtn', function() {
 		    	//$('#assignarRolModalBtns').html(`<button class="cancelBtn btn btn-secondary mr-2">Cancel·lar</button><button data-id="${id}" id="rolAssignatBtn" class="btn btn-primary disabled">Continuar</button>`);

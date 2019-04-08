@@ -46,4 +46,5 @@ class UsuariController extends AbstractController
         
         return new JsonResponse(['assignat' => true]);
     }
+
 }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use App\Entity\Grup;
 use App\Entity\Usuari;
@@ -22,7 +23,7 @@ class GrupController extends AbstractController
     public function index()
     {
 
-        $user = $this->getUser();
+        $user = $this->checkUser($this->getUser());
         $title = "Grups | Trivial UB";
         $grups = $this->getGrups();
         $nivells = $this->getNivells();
@@ -47,7 +48,7 @@ class GrupController extends AbstractController
     public function grup($id)
     {
 
-        $user = $this->getUser();
+        $user = $this->checkUser($this->getUser());
         $title = "Grups | Trivial UB";
         $grup = $this->getGrup($id);
         $administradors = $this->getAdministradors();
@@ -72,7 +73,7 @@ class GrupController extends AbstractController
     public function new(Request $request)
     {
         $administradors = $this->getAdministradors();
-        $user = $this->getUser();
+        $user = $this->checkUser($this->getUser());
         $grup = new Grup();
         $form = $this->createForm(GrupType::class, $grup);
         $form->handleRequest($request);
@@ -114,6 +115,17 @@ class GrupController extends AbstractController
         ]);
     }
 
+    public function checkUser($usuari) {
+
+        if ($usuari == null) {
+            $usuari = new Usuari();
+            $usuari->nickname = "Anònim";
+            $usuari->setUsername("Anònim");
+            $usuari->setNom("Anònim");
+        }
+        
+        return $usuari;
+    }
 
     public function getGrups() {
 
@@ -231,6 +243,26 @@ class GrupController extends AbstractController
 
         return $nivell;
 
+    }
+
+    /**
+     * @Route("/afegirAlumnes", name="afegirAlumnes")
+     */
+    public function assignarRol(Request $request) : JsonResponse {
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        var_dump($request->request->get('Usuaris'));
+
+        /*$usuari = $em->getRepository(Usuari::class)->findOneById($request->request->get('idUsuari'));
+        
+        $usuari->removeRole($usuari->getRoles()[0]);
+        $usuari->setRoles(array($request->request->get('rol')));
+
+        $em->persist($usuari);
+        $em->flush();*/
+        
+        return new JsonResponse(['afegits' => true]);
     }
 
 }
