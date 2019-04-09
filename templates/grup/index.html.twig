@@ -75,13 +75,13 @@
                 {% if alumne.grup_id == grup.id %}
                 
                     {% set countalumnes = countalumnes + 1 %} 
-                    {{ countalumnes }}
 
-                {% elseif countalumnes == 0 %}
-                    Cap
                 {% endif %}
                 
             {% endfor %}
+
+            {{ countalumnes }}
+
             </a>
 
         </td>

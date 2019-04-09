@@ -3,20 +3,25 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 use App\Entity\Usuari;
 
-class UsuariController extends AbstractController
+class UsuariController extends Controller
 {
     /**
      * @Route("/usuaris", name="usuaris")
      */
     public function index()
     {
-    	$user = $this->getUser();
+        //$user = $this->getUser();
+        
+        $user = $this->get('grupcontroller')->checkUser($this->getUser());
+
     	$em = $this->getDoctrine()->getManager();
     	$usuaris = $em->getRepository(Usuari::class)->findAll();
         $rols = $this->getParameter('security.role_hierarchy.roles');
@@ -37,7 +42,7 @@ class UsuariController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         
         $usuari = $em->getRepository(Usuari::class)->findOneById($request->request->get('idUsuari'));
-        
+
         $usuari->removeRole($usuari->getRoles()[0]);
         $usuari->setRoles(array($request->request->get('rol')));
 

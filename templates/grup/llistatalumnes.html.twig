@@ -91,14 +91,27 @@
                             {% set ids = 0 %}
                             {% for alumne in totsalumnes %}
                                 <tr>
-                                    <td class="elementLlistaAlumnesTd"><a class="elementLlistaAlumnes nodeco" id="{{ alumne.id }}" href="#"><span class="alumneNom">{{alumne.nom}}</span> <span class="alumneCognom">
-                                    {{alumne.cognoms}}</span></a></td>
+                                    <td class="elementLlistaAlumnesTd">
+                                    
+                                        <a class="elementLlistaAlumnes nodeco" id="{{ alumne.id }}" href="#">
+
+                                            <span class="alumneNom">
+                                                {{alumne.nom}}
+                                            </span> 
+                                            
+                                            <span class="alumneCognom">
+                                                {{alumne.cognoms}}
+                                            </span>
+
+                                        </a>
+
+                                    </td>
                                 </tr>
                             {% set ids = ids + 1 %}
                             {% endfor %}
 
                         </table>
-                        <input type="submit" name="Submit" value="Afegir" id="afegirAlumnesBtn">
+                        <input type="submit" name="Submit" value="Afegir" class="btn btn-primary disabled" id="afegirAlumnesBtn" data-grupid="{{ grup.id }}">
 					</div>
 				</div>
 			</div>
@@ -134,10 +147,11 @@
                 //alert("Alumne:" + alumneid);
             })
 
-            $("#afegirAlumnesBtn").click(function() {
+            $("#afegirAlumnesBtn").click(function(e) {
 
                 var usuarisSeleccionats = $(".usuariSeleccionat");
                 var ids = [];
+                var grup = $(this).data("grupid");
 
                 $.each( usuarisSeleccionats, function( key, value ) {
                     ids.push(value.id);
@@ -147,11 +161,13 @@
 
                 var url = `{{ path('afegirAlumnes') }}`;
 
-                $.post(url, { 'Usuaris': ids }) 
+                $.post(url, { 'Usuaris': ids, 'Grup': grup }) 
 		    		.done(function(response) {
-		    			alert("done!");
+		    			$('#afegirUsuariModalMsg').html(`<div class="text-center"><i class="fas fa-check mb-2" style="color: green; font-size: 40px"></i><div>Alumenes afegits correctament.</div></div>`);
+		    			$('#afegirUsuariModalBtns').html(`<button class="reloadBtn btn btn-primary mr-2">Acceptar</button>`);
 					})
-					.fail(alert("error"));
+					.fail(console.log("error"));
+                e.preventDefault();
 
             });
 
@@ -162,6 +178,11 @@
 		    	$('body').on('click', '#afegirAlumneBtn', function() {
 		    		$.get()
 		    	});
+		    });
+
+            $('body').on('click', '.reloadBtn', function() {
+		    	var reload = `{{ path('alumnesGrup' , {id: grup.id}) }}`;
+		    	window.location.replace(reload);
 		    });
 
         });

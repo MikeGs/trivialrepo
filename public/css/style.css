@@ -229,11 +229,16 @@ table.aligncenter .col {
 .elementLlistaAlumnes {
 	padding: 10px;
 	transition: background-color .4s ease-in-out;
+	border: 2px solid transparent;
 	border-bottom: 1px solid rgba(41,41,41,0.2);
 }
 
 .elementLlistaAlumnes:hover {
 	background-color: rgba(0,0,0,0.1);
+}
+
+.usuariSeleccionat {
+	background-color: rgba(0,255,0,0.1);
 }
 
 /* MODAL FIX PADDING RIGHT */

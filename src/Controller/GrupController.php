@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,7 +17,7 @@ use App\Form\GrupType;
 
 use Symfony\Component\HttpFoundation\Request;
 
-class GrupController extends AbstractController
+class GrupController extends Controller
 {
     /**
      * @Route("/grups", name="grups")
@@ -23,7 +25,9 @@ class GrupController extends AbstractController
     public function index()
     {
 
-        $user = $this->checkUser($this->getUser());
+        //$user = $this->checkUser($this->getUser());
+        $user = $this->get('grupcontroller')->checkUser($this->getUser());
+
         $title = "Grups | Trivial UB";
         $grups = $this->getGrups();
         $nivells = $this->getNivells();
@@ -48,11 +52,14 @@ class GrupController extends AbstractController
     public function grup($id)
     {
 
-        $user = $this->checkUser($this->getUser());
+        //$user = $this->checkUser($this->getUser());
+        $user = $this->get('grupcontroller')->checkUser($this->getUser());
+
         $title = "Grups | Trivial UB";
         $grup = $this->getGrup($id);
         $administradors = $this->getAdministradors();
         $alumnes = $this->getAlumnesCurs($id);
+
         $totsalumnes = $this->getTotsAlumnes();
 
         return $this->render('grup/llistatalumnes.html.twig',[
@@ -73,7 +80,9 @@ class GrupController extends AbstractController
     public function new(Request $request)
     {
         $administradors = $this->getAdministradors();
-        $user = $this->checkUser($this->getUser());
+        //$user = $this->checkUser($this->getUser());
+        $user = $this->get('grupcontroller')->checkUser($this->getUser());
+        
         $grup = new Grup();
         $form = $this->createForm(GrupType::class, $grup);
         $form->handleRequest($request);
@@ -249,19 +258,19 @@ class GrupController extends AbstractController
     /**
      * @Route("/afegirAlumnes", name="afegirAlumnes")
      */
-    public function assignarRol(Request $request) : JsonResponse {
+    public function afegirAlumnes(Request $request) : JsonResponse {
         
         $em = $this->getDoctrine()->getManager();
-        
-        var_dump($request->request->get('Usuaris'));
+        $alumnes = $request->request->get('Usuaris');
+        $grup = $em->getRepository(Grup::class)->findOneById($request->request->get('Grup'));
 
-        /*$usuari = $em->getRepository(Usuari::class)->findOneById($request->request->get('idUsuari'));
+        foreach($alumnes as $alumne) {
+            $alumne = $em->getRepository(Usuari::class)->findOneById($alumne);
+            $grup->addIdUsuari($alumne);
+        }
         
-        $usuari->removeRole($usuari->getRoles()[0]);
-        $usuari->setRoles(array($request->request->get('rol')));
-
-        $em->persist($usuari);
-        $em->flush();*/
+        $em->persist($grup);
+        $em->flush();
         
         return new JsonResponse(['afegits' => true]);
     }
