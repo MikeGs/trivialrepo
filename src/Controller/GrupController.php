@@ -275,4 +275,25 @@ class GrupController extends Controller
         return new JsonResponse(['afegits' => true]);
     }
 
+    /**
+     * @Route("/desvincular-alumne-grup", name="desvincularAlumneGrup")
+     */
+    public function eliminarAlumneDeGrupAjax(Request $request) : JsonResponse {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $usuari = $em->getRepository(Usuari::class)->findOneById($request->request->get('idUsuari'));
+
+        $grups = $usuari->getGrups();
+
+        foreach ($grups as $grup) {
+            if ($grup->getId() == $request->request->get('idGrup')) {
+                $usuari->removeGrup($grup);
+                $em->flush();
+            }
+        }
+
+        return new JsonResponse(['desvinculat' => true]);
+    }
+
 }
