@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+
+<div class="m-5">
+
+    <div class="card-header border-bottom bg-white d-flex justify-content-between p-0">
+        <h1 class="h3">{{grup.nom}} - Llistat d'alumnes</h1>
+    </div>
+
+    <div class="alumnes">
+
+    <a href='#' class="btn btn-success float-right afegirbtn" id="afegirAlumneBtn"><i class="fas fa-plus link-white mr-2"></i>Afegir alumne</a>
+
+    <div class="llegenda-taula">
+    
+        <div class="float-right">
+            <p class="float-left mr-3">Llegenda: </p>
+
+            <div class="link-blue float-left mr-2">
+
+                <i class="fas fa-eye"></i>
+                <label>Detalls</label>
+
+            </div>
+
+            <div class="link-red float-left">
+
+                <i class="fas fa-times"></i>
+                <label>Desvincular</label>
+
+            </div>
+        </div>
+
+    </div>
+
+    <table class="table custom-table" id="llistatAlumnes">
+    <thead>
+        <tr>
+        <th scope="col">Nom de l'alumne</th>
+        <th scope="col">Partides jugades</th>
+        <th scope="col">Partides guanyades</th>
+        <th scope="col">Entrenaments finalitzats</th>
+        <th scope="col">Última activitat</th>
+        <th scope="col">Accions</th>  
+        </tr>
+    </thead>
+    <tbody>
+    {% for alumne in alumnes %}
+
+
+            <tr>
+            <td scope="col">{{ alumne.nom }}</td>
+            <td scope="col">Jugades</td>
+            <td scope="col">Guanyades</td>
+            <td scope="col">Entrenaments F</td>
+            <td scope="col">{{ alumne.last_login|date('d-m-Y | h:m') }}</td>
+            <td scope="col">
+                <a href="#"><i class="fas fa-eye link-blue mr-2"></i></a>
+                <a href="#"><i class="fas fa-times link-red"></i></a>
+            </td>
+            </tr>
+
+    {% endfor %}    
+    </tbody>
+    </table>
+
+    </div>
+</div>
+
+<div id="afegirUsuariModal" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h6 class="modal-title" id="afegirUsuariModal"></h6>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div id="afegirUsuariModalMsg">
+					<div class="form-group">
+						<table class="col-12">
+
+                            <tr>
+                                <th scope="col">Llistat d'alumnes</th>
+                            </tr>
+                            
+                            {% set ids = 0 %}
+                            {% for alumne in totsalumnes %}
+                                <tr>
+                                    <td class="elementLlistaAlumnesTd"><a class="elementLlistaAlumnes nodeco" id="al{{ ids }}" href="#"><span class="alumneNom">{{alumne.nom}}</span> <span class="alumneCognom">
+                                    {{alumne.cognoms}}</span></a></td>
+                                </tr>
+                            {% set ids = ids + 1 %}
+                            {% endfor %}
+
+                        </table>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer" id="afegirUsuariModalBtns">
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+{% block javascriptsBottom %}
+
+    {{ parent() }}
+
+    <script>
+		$(document).ready( function () {
+
+            llistatGrups = $('#llistatAlumnes').dataTable( {
+	            "language": {
+	                "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Catalan.json"
+	            }
+	        });
+
+            $(".elementLlistaAlumnes").click(function() {
+                var alumneid = this.id;
+                alert("Alumne:" + alumneid);
+            })
+
+            $('body').on( 'click', '#afegirAlumneBtn', function() {
+		    	//$('#assignarRolModalBtns').html(`<button class="cancelBtn btn btn-secondary mr-2">Cancel·lar</button><button data-id="${id}" id="rolAssignatBtn" class="btn btn-primary disabled">Continuar</button>`);
+		    	$('#afegirUsuariModal').modal('show');
+
+		    	$('body').on('click', '#afegirAlumneBtn', function() {
+		    		$.get()
+		    	});
+		    });
+
+        });
+
+</script>
+{% endblock %}

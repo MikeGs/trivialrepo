@@ -133,10 +133,14 @@ table.aligncenter .col {
 }
 /* fi taules */
 
-/* links & buttons */
+/* text, links & buttons */
 .link-blue {
 	color: #4ba5e5;
 	transition: all 0.2s ease-out;
+}
+
+.text-blue {
+	color: #4ba5e5;
 }
 
 .link-blue:hover {
@@ -154,9 +158,17 @@ table.aligncenter .col {
 	text-decoration: none;
 }
 
+.text-orange {
+	color: #e69138;
+}
+
 .link-red {
 	color: #cc0000;
 	transition: all 0.2s ease-out;
+}
+
+.text-red {
+	color: #cc0000;
 }
 
 .link-red:hover {
@@ -169,6 +181,10 @@ table.aligncenter .col {
 	transition: all 0.2s ease-out;
 }
 
+.link-white {
+	color: #ffffff;
+}
+
 .link-green:hover {
 	color: #228B22;
 	text-decoration: none;
@@ -178,6 +194,45 @@ table.aligncenter .col {
 	padding: 5px;
 }
 
+.customAddBtn {
+	color: #fff;
+	background-color: #6aa84f;
+	border-radius: 0;
+}
+
+.customAddBtn:hover {
+	background-color: #228B22;
+	color: #fff;
+
+}
+
+.link-grey-times {
+	color: #C3C3C3;
+}
+
+.link-grey-times:hover {
+	color: #A8A8A8;
+	text-decoration: none;
+}
+
+.bg-list-grey:hover > .link-grey-times {
+	color: #939393;
+}
+
+.bg-list-grey:hover > .link-grey-times:hover {
+	color: #6F7172;
+}
+
+/* fi links & buttons */
+
+
+.bg-list-grey {
+	background-color: #F8F9FA;
+} 
+
+.bg-list-grey:hover {
+	background-color: #DFDFDF;
+}
 
 .grups {
     margin: 0 auto;
@@ -200,4 +255,41 @@ table.aligncenter .col {
 
 .afegirgrup input {
     margin-bottom: 15px;
+}
+
+/* LLEGENDA TAULA */
+
+.llegenda-taula {
+	overflow: hidden;
+	width: 100%;
+	padding-top: 15px;
+}
+
+/* AFEGIR BUTTON */
+
+.afegirbtn {
+	margin-top: 15px;
+}
+
+/* LLISTAT ALUMNES ETC */
+
+.elementLlistaAlumnes, .elementLlistaAlumnesTd {
+	width: 100%;
+	display: block;
+}
+
+.elementLlistaAlumnes {
+	padding: 10px;
+	transition: background-color .4s ease-in-out;
+	border-bottom: 1px solid rgba(41,41,41,0.2);
+}
+
+.elementLlistaAlumnes:hover {
+	background-color: rgba(0,0,0,0.1);
+}
+
+/* MODAL FIX PADDING RIGHT */
+
+.modal-open {
+	padding-right: 0px!important;
 }

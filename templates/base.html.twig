@@ -10,9 +10,9 @@
             <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
         {% endblock %}
         {% block javascriptsTop %}
-        <script src="{{ asset('js/jquery.js') }}"></script>
-        <script src="{{ asset('bootstrap4/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('js/jquery.js') }}"></script>    
         <script src="{{ asset('js/popper.js') }}"></script> 
+        <script src="{{ asset('bootstrap4/js/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('Datatables/datatables.min.js') }}"></script>     
         {% endblock %}
     </head>
@@ -33,7 +33,7 @@
             <div id="menuLateral">
                 <ul id="menuList">
                     <li><a href="#"><i class="fas fa-home mr-2"></i>INICI</a></li>
-                    <li class="{% if app.request.attributes.get('_route') == 'grups' %}active{% endif %}"><a href="{{ path('grups') }}"><i class="fas fa-sitemap mr-2"></i>GRUPS</a></li>
+                    <li class="{% if app.request.attributes.get('_route') == 'grups' or app.request.attributes.get('_route') == 'alumnesGrup' %}active{% endif %}"><a href="{{ path('grups') }}"><i class="fas fa-sitemap mr-2"></i>GRUPS</a></li>
                     <li class="{% if app.request.attributes.get('_route') == 'usuaris' %}active{% endif %}"><a href="{{ path('usuaris') }}"><i class="fas fa-users mr-2"></i>USUARIS</a></li>
                     <li><a href="#"><i class="fas fa-trophy mr-2"></i>PARTIDES</a></li>
                     <li><a href="#"><i class="fas fa-graduation-cap mr-2"></i>ENTRENAMENTS</a></li>
