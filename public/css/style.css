@@ -323,7 +323,7 @@ table.aligncenter .col {
 	width: 900px;
 	height: 1200px;
 	transform: rotate(-30deg);
-	margin-top: calc(100% - 120px);
+	margin-top: calc(100% - 220px);
 }
 
 #startMenu li a {
