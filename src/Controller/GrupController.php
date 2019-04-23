@@ -237,7 +237,7 @@ class GrupController extends AbstractController
     /**
      * @Route("/desvincular-alumne-grup", name="desvincularAlumneGrup")
      */
-    public function eliminarAlumneDeGrup(Request $request) : JsonResponse {
+    public function eliminarAlumneDeGrupAjax(Request $request) : JsonResponse {
 
         $em = $this->getDoctrine()->getManager();
 
