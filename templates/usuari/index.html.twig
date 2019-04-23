@@ -160,7 +160,16 @@
 		    llistatUsuaris = $('#llistatUsuaris').dataTable( {
 	            "language": {
 	                "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Catalan.json"
-	            }
+	            },
+	            "columnDefs": [
+	            		{ "orderable": false, "targets": 1 }, 
+	            		{ "orderable": false, "targets": 2 }, 
+	            		{ "orderable": false, "targets": 3 },
+	            		{ "orderable": false, "targets": 4 },
+                        { "orderable": false, "targets": 5 },
+                        { "orderable": false, "targets": -1 }
+                ],
+                "order": [[0, "asc"]]
 	        });
 
 		    $('body').on( 'click', '.assignarRolBtn', function() {
@@ -217,12 +226,17 @@
 		    	$.post(url, { 'idUsuari' : id })
 		    		.done(function(grups) {
 		    			var html = '<div class="mb-2">Grups assignats:</div>';
-		    			for (var i = 0; i < grups.length; i++) {
-		    				html += `<div class="w-100 p-2 pl-4 pr-3 bg-list-grey mb-1 rounded align-middle" style="font-size: 12px">
-		    							${i+1}. ${grups[i].nom}
-		    							<span class="link-grey-times float-right p-0 desvincularAlumneGrup" data-usuari="${id}" data-grup="${grups[i].id}" style="cursor: pointer"><i class="fas fa-times fa-xs"></i></span>
-	    							</div>`;
+		    			if (grups.length == 0) {
+		    				html += `<span class="text-muted pl-4" style="font-size: 12px">Aquest usuari no té alumnes assignats.</span>`;
+		    			} else {
+		    				for (var i = 0; i < grups.length; i++) {
+			    				html += `<div class="w-100 p-2 pl-4 pr-3 bg-list-grey mb-1 rounded align-middle" style="font-size: 12px">
+			    							${i+1}. ${grups[i].nom}
+			    							<span class="link-grey-times float-right p-0 desvincularAlumneGrup" data-usuari="${id}" data-grup="${grups[i].id}" style="cursor: pointer"><i class="fas fa-times fa-xs"></i></span>
+		    							</div>`;
+			    			}
 		    			}
+		    			
 		    			$('#llistatGrupsAlumne').html(html);
 		    		})
 		    		.fail(errorCarregarGrups);
