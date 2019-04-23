@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        {% block stylesheets %}
+            <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+            <link rel="stylesheet" href="{{ asset('bootstrap4/css/bootstrap.min.css') }}"/>  
+            <link rel="stylesheet" href="{{ asset('fontAwesome/css/all.css') }}">      
+            <link rel="stylesheet" type="text/css" href="{{ asset('Datatables/datatables.min.css') }}"/>
+            <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+        {% endblock %}
+        {% block javascriptsTop %}
+        <script src="{{ asset('js/jquery.js') }}"></script>
+        <script src="{{ asset('bootstrap4/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('js/popper.js') }}"></script> 
+        <script type="text/javascript" src="{{ asset('Datatables/datatables.min.js') }}"></script>     
+        {% endblock %}
+    </head>
+
+<body class="container row col col-12 m-0 p-0">
+
+    <div id="startMenu">
+
+        <h1 class="p-3">Trivial</h1>
+
+        <ul class="list-group alltransitionparent3">
+            <li><a class="list-group-item" href="#">Partida</a></li>
+            <li><a class="list-group-item" href="#">Entrenament</a></li>
+            <li><a class="list-group-item" href="#">Configuració</a></li>
+            <li><a id="sortirElement" class="list-group-item" href="#">Sortir</a></li>
+        </ul>
+
+        <div id="diagonalColorStart"></div>
+        
+
+    </div>
+
+    <div id="contingutStart" class="scroll">
+    <p>test</p>
+        {% block body %}{% endblock %}
+    </div>
+
+</body>

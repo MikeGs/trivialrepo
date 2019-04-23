@@ -246,3 +246,82 @@ table.aligncenter .col {
 .modal-open {
 	padding-right: 0px!important;
 }
+
+/* PARTIDA MENU STYLES */
+
+#startMenu {
+	width: 350px;
+	background-color: rgba(41,41,41,0.8);
+	overflow: hidden;
+	display: table-cell;
+	vertical-align: bottom;
+}
+
+#startMenu h1, #startMenu ul li {
+	color: white;
+}
+
+#startMenu li {
+	
+}
+
+#diagonalColorStart {
+	background-color: rgba(255,255,255,0.3);
+	display: block;
+	width: 900px;
+	height: 1200px;
+	transform: rotate(-30deg);
+	margin-top: calc(100% - 120px);
+}
+
+#startMenu li a {
+	border: 0px;
+	border-radius: 0px;
+	background-color: transparent!important;
+	font-size: 20px;
+}
+
+#startMenu #sortirElement {
+	color: red!important;
+	font-weight: bold;
+}
+
+#startMenu li a:hover {
+	color: orange!important;
+	background-color: rgba(0,0,0,0.3)!important;
+	transform: scale(1.05);
+}
+
+#contingutStart {
+	width: calc(100% - 350px);
+	background-color: rgba(41,41,41,1);
+}
+
+.list-group {
+	list-style: none;
+}
+
+.list-group a {
+	text-decoration: none;
+	color: inherit!important;
+}
+
+/* PARTIDA MENU STYLES END */
+
+/* TRANSICIONS */
+
+.alltransition3 {
+    -moz-transition: all 0.3s ease-in;
+    -webkit-transition: all 0.3s ease-in;
+    -o-transition: all 0.3s ease-in;
+    transition: all 0.3s ease-in;
+}
+
+.alltransitionparent3 *{
+	-moz-transition: all 0.3s ease-in;
+    -webkit-transition: all 0.3s ease-in;
+    -o-transition: all 0.3s ease-in;
+    transition: all 0.3s ease-in;
+}
+
+/* TRANSICIONS END */
