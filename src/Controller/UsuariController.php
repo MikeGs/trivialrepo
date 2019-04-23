@@ -33,9 +33,9 @@ class UsuariController extends AbstractController
     }
 
     /**
-     * @Route("/assignar-rol", name="assignarRol")
+     * @Route("/assignar-rol", name="assignarRolAjax")
      */
-    public function assignarRol(Request $request) : JsonResponse {
+    public function assignarRolAjax(Request $request) : JsonResponse {
         
         $em = $this->getDoctrine()->getManager();
         
@@ -51,9 +51,9 @@ class UsuariController extends AbstractController
     }
 
     /**
-     * @Route("/assignar-grup", name="assignarGrup")
+     * @Route("/assignar-grup", name="assignarGrupAjax")
      */
-    public function assignarGrup(Request $request) : JsonResponse {
+    public function assignarGrupAjax(Request $request) : JsonResponse {
         
         $em = $this->getDoctrine()->getManager();
         
@@ -68,22 +68,29 @@ class UsuariController extends AbstractController
     }
 
     /**
-     * @Route("/llistar-grups-alumne", name="llistarGrupsAlumne")
+     * @Route("/llistar-grups-alumne", name="llistarGrupsAlumneAjax")
      */
-    public function llistarGrupsAlumne(Request $request) : JsonResponse {
+    public function llistarGrupsAlumneAjax(Request $request) : JsonResponse {
 
         $em = $this->getDoctrine()->getManager();
 
         $usuari = $em->getRepository(Usuari::class)->findOneById($request->request->get('idUsuari'));
-        $grups = $em->getRepository(Grup::class)->getIdUsuari();
+        $grups = $usuari->getGrups();
 
-        return new JsonResponse(['grups' => $grups]);
+        $response = [];
+
+        foreach ($grups as $grup) {
+            $obj = [ 'id' => $grup->getId(),  'nom' => $grup->getNom() ];
+            array_push($response, $obj);
+        }
+
+        return new JsonResponse($response);
     }
 
     /**
-     * @Route("/eliminar-alumne", name="eliminarAlumne")
+     * @Route("/eliminar-alumne", name="eliminarAlumneAjax")
      */
-    public function eliminarUsuari(Request $request) : JsonResponse {
+    public function eliminarUsuariAjax(Request $request) : JsonResponse {
 
         $em = $this->getDoctrine()->getManager();
         $usuari = $em->getRepository(Usuari::class)->findOneById($request->request->get('idUsuari'));

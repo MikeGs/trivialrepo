@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use App\Entity\Grup;
 use App\Entity\Usuari;
@@ -231,6 +232,27 @@ class GrupController extends AbstractController
 
         return $nivell;
 
+    }
+
+    /**
+     * @Route("/desvincular-alumne-grup", name="desvincularAlumneGrup")
+     */
+    public function eliminarAlumneDeGrup(Request $request) : JsonResponse {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $usuari = $em->getRepository(Usuari::class)->findOneById($request->request->get('idUsuari'));
+
+        $grups = $usuari->getGrups();
+
+        foreach ($grups as $grup) {
+            if ($grup->getId() == $request->request->get('idGrup')) {
+                $usuari->removeGrup($grup);
+                $em->flush();
+            }
+        }
+
+        return new JsonResponse(['desvinculat' => true]);
     }
 
 }

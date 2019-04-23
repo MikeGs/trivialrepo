@@ -8,6 +8,16 @@
 			<h1 class="h3">USUARIS</h1><a class="btn btn-link" href="#"><i class="fas fa-arrow-left"></i> TORNAR</a>
 		</div>
 		<div class="card-body">
+			<div class="col-12 p-0 text-right mb-4">
+				<a href="#" class="btn customAddBtn"><i class="fas fa-plus"></i> Afegir alumne</a>
+			</div>
+			<div class="col-12 p-0 text-right mb-4">
+				LLegenda: 
+				<span class="text-blue"><i class="fas fa-sitemap ml-3 mr-1"></i> Assignar grup</span>
+				<span class="text-blue"><i class="fas fa-wrench ml-3 mr-1"></i></i> Assignar rol</span>
+				<span class="text-blue"><i class="fas fa-trash-alt ml-3 mr-1"></i> Eliminar</span>
+
+			</div>
 			<table class="table w-100 custom-table" id="llistatUsuaris">
 				<thead class="custom-thead">
 					<tr>
@@ -25,7 +35,7 @@
 					<tr>
 						<td>{{ usuari.nom }} {{ usuari.cognoms }}</td>
 						<td>{{ usuari.username }}</td>
-						<td><a href="{{ usuari.email }}" class="link-blue"><i class="fas fa-envelope"></i> {{ usuari.email }}</a></td>
+						<td><a href="mailto:{{ usuari.email }}" class="link-blue"><i class="fas fa-envelope"></i> {{ usuari.email }}</a></td>
 						<td>
 							{% for rol in usuari.roles %}
 								{% if rol == 'ROLE_STUDENT' %}
@@ -62,7 +72,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h6 class="modal-title" id="assignarRolModalTitol"></h6>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<button type="button" class="close cancelAssignarRolBtn" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -98,13 +108,14 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h6 class="modal-title" id="assignarGrupModalTitol"></h6>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<button type="button" class="close cancelAssignarGrupBtn" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
 				<div id="assignarGrupModalMsg">
-					<div class="form-group">
+					<div id="llistatGrupsAlumne"></div>
+					<div class="form-group mt-3">
 						<label for="rol">Selecciona un grup</label>
 						<select name="grup" id="grup" class="form-control">
 							<option value="">---</option>
@@ -121,12 +132,12 @@
 	</div>
 </div>
 
-<div id="eliminarUsuariModal" class="modal fade" tabindex="-1" role="dialog">
+<div id="eliminarUsuariModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h6 class="modal-title" id="eliminarUsuariModalTitol"></h6>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<button type="button" class="close cancelEliminarUsuariBtn" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -161,6 +172,7 @@
 		    });
 
 		    $('body').on('click', '.cancelAssignarRolBtn', function()  {
+		    	$('#rol').prop('selectedIndex',0);
 		    	$('#assignarRolModal').modal('hide');
 		    });
 
@@ -175,7 +187,7 @@
 		    $('body').on('click', '#rolAssignatBtn', function(e) {
 		    	var id = $('#rolAssignatBtn').data('id');
 		    	var rol = $('#rol').val();
-		    	var url = `{{ path('assignarRol') }}`;
+		    	var url = `{{ path('assignarRolAjax') }}`;
 		    	$.post(url, { 'idUsuari': id, 'rol': rol }) 
 		    		.done(function(response) {
 						$('#assignarRolModalMsg').html(`<div class="text-center"><i class="fas fa-check mb-2" style="color: green; font-size: 40px"></i><div>Rol assignat correctament.</div></div>`);
@@ -200,16 +212,44 @@
 		    	var id = $(this).data('id');
 		    	var usuari = $(this).data('usuari');
 		    	$('#assignarGrupModalTitol').html(`Assignar un grup a <strong>${usuari}</strong>`);
-		    	$('#assignarGrupModalBtns').html(`<button class="cancelAssignarGrupBtn btn btn-secondary mr-2">Cancel·lar</button><button data-id="${id}" id="grupAssignatBtn" class="btn btn-primary disabled" data-toggle="popover" data-trigger="hover" data-content="Some content" data-placement="bottom">Continuar</button>`);
-		    	var url = `{{ path('llistarGrupsAlumne') }}`;
+		    	$('#assignarGrupModalBtns').html(`<button class="cancelAssignarGrupBtn btn btn-secondary mr-2">Cancel·lar</button><button data-id="${id}" id="grupAssignatBtn" class="btn btn-primary disabled">Continuar</button>`);
+		    	var url = `{{ path('llistarGrupsAlumneAjax') }}`;
 		    	$.post(url, { 'idUsuari' : id })
-		    		.done(function(response) {
-		    			console.log(response.grups)
-		    		});
+		    		.done(function(grups) {
+		    			var html = '<div class="mb-2">Grups assignats:</div>';
+		    			for (var i = 0; i < grups.length; i++) {
+		    				html += `<div class="w-100 p-2 pl-4 pr-3 bg-list-grey mb-1 rounded align-middle" style="font-size: 12px">
+		    							${i+1}. ${grups[i].nom}
+		    							<span class="link-grey-times float-right p-0 desvincularAlumneGrup" data-usuari="${id}" data-grup="${grups[i].id}" style="cursor: pointer"><i class="fas fa-times fa-xs"></i></span>
+	    							</div>`;
+		    			}
+		    			$('#llistatGrupsAlumne').html(html);
+		    		})
+		    		.fail(errorCarregarGrups);
 		    	$('#assignarGrupModal').modal('show');
 		    });
 
+		    function errorCarregarGrups() {
+		    	$('#llistatGrupsAlumne').html(`<div style="font-size: 12px; color: red;">Error al carregar el llistat de grups assignats.</div>`);
+		    }
+
+		    $('body').on( 'click', '.desvincularAlumneGrup', function() {
+		    	var url = `{{ path('desvincularAlumneGrup') }}`;
+		    	$.post(url, { 'idGrup' : $(this).data('grup'), 'idUsuari' : $(this).data('usuari') })
+		    		.done(function(grups) {
+		    			$('#assignarGrupModalMsg').html(`<div class="text-center"><i class="fas fa-check mb-2" style="color: green; font-size: 40px"></i><div>S'ha desvinculat correctament l'usuari del grup.</div></div>`);
+		    			$('#assignarGrupModalBtns').html(`<button class="reloadBtn btn btn-primary mr-2">Acceptar</button>`);
+		    		})
+		    		.fail(errorDesvincularGrupUsuari);
+		    }); 
+
+		    function errorDesvincularGrupUsuari() {
+		    	$('#assignarGrupModalMsg').html(`<div class="text-center"><i class="fas fa-exclamation-triangle mb-2" style="color: red; font-size: 40px"></i><div>Error! No ha sigut possible desvincular l'usuari del grup seleccionat.</div></div>`);
+		    	$('#assignarGrupModalBtns').html(`<button class="reloadBtn btn btn-primary mr-2">Acceptar</button>`);
+		    }
+
 		    $('body').on('click', '.cancelAssignarGrupBtn', function()  {
+		    	$('#grup').prop('selectedIndex',0);
 		    	$('#assignarGrupModal').modal('hide');
 		    });
 
@@ -224,7 +264,7 @@
 		    $('body').on('click', '#grupAssignatBtn', function(e) {
 		    	var id = $('#grupAssignatBtn').data('id');
 		    	var grup = $('#grup').val();
-		    	var url = `{{ path('assignarGrup') }}`;
+		    	var url = `{{ path('assignarGrupAjax') }}`;
 		    	$.post(url, { 'idUsuari': id, 'grup': grup }) 
 		    		.done(function() {
 						$('#assignarGrupModalMsg').html(`<div class="text-center"><i class="fas fa-check mb-2" style="color: green; font-size: 40px"></i><div>Grup assignat correctament.</div></div>`);
@@ -251,7 +291,7 @@
 
 		    $('body').on('click', '#usuariEliminatBtn', function(e) {
 		    	var id = $('#usuariEliminatBtn').data('id');
-		    	var url = `{{ path('eliminarAlumne') }}`;
+		    	var url = `{{ path('eliminarAlumneAjax') }}`;
 		    	$.post(url, { 'idUsuari': id }) 
 		    		.done(function(response) {
 						$('#eliminarUsuariModalMsg').html(`<div class="text-center"><i class="fas fa-user-slash mb-2" style="color: green; font-size: 40px"></i><div>L'usuari s'ha eliminat correctament.</div></div>`);
@@ -262,10 +302,16 @@
 		    	e.preventDefault();
 		    });
 
+		    $('body').on('click', '.cancelEliminarUsuariBtn', function()  {
+		    	$('#eliminarUsuariModal').modal('hide');
+		    });
+
 		    function errorEliminacioUsuari() {
 		    	$('#eliminarUsuariModalMsg').html(`<div class="text-center"><i class="fas fa-exclamation-triangle mb-2" style="color: red; font-size: 40px"></i><div>Error! No ha sigut possible eliminar l'usuari.</div></div>`);
 		    	$('#eliminarUsuariModalBtns').html(`<button class="reloadBtn btn btn-primary mr-2">Acceptar</button>`);
 		    }
+
+
 
 		} );
 	</script>
