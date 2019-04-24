@@ -349,9 +349,13 @@ table.aligncenter .col {
 	background-color: rgba(41,41,41,1);
 }
 
-#contingutStart > .container {
+#contingutStart .container {
 	width: 100%;
 	max-width: none!important;
+}
+
+#contingutStart h2 {
+	color: white;
 }
 
 .list-group {
@@ -371,6 +375,7 @@ table.aligncenter .col {
 	background-color: rgba(255,255,255,0.1);
 	margin: 0 auto;
 	color: white;
+	border-radius: 5px;
 }
 
 #cardPartida #prepararPartida {

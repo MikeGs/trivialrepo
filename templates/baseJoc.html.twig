@@ -23,11 +23,11 @@
         <h1 class="p-3">Trivial</h1>
 
         <ul class="list-group alltransitionparent3">
-            <li><a id="partidaBtn" class="list-group-item" href="#">Partida</a></li>
-            <li><a id="entrenamentBtn" class="list-group-item" href="#">Entrenament</a></li>
-            <li><a id="rankingBtn" class="list-group-item" href="#">Rànquing</a></li>
-            <li><a id="settingsBtn" class="list-group-item" href="#">Configuració</a></li>
-            <li><a id="sortirElement" class="list-group-item" href="#">Sortir</a></li>
+            <li><a id="partidaBtn" class="buttonStart list-group-item" href="#">Partida</a></li>
+            <li><a id="entrenamentBtn" class="buttonStart list-group-item" href="#">Entrenament</a></li>
+            <li><a id="rankingBtn" class="buttonStart list-group-item" href="#">Rànquing</a></li>
+            <li><a id="settingsBtn" class="buttonStart list-group-item" href="#">Configuració</a></li>
+            <li><a id="sortirElement" class="buttonStart list-group-item" href="#">Sortir</a></li>
         </ul>
 
         <div id="diagonalColorStart"></div>
@@ -42,6 +42,19 @@
 
     <script>
 
+    var arrayButtons = $(".buttonStart");
+
+    function asActive(element) {
+
+        $.each( arrayButtons, function( key, value ) {
+            $("#"+value.id).removeClass("active");
+            console.log(value.id);
+        });
+
+        $(element).addClass("active");
+
+    }
+
     var contingut = $("#contingutStart");
 
     $("#partidaBtn").click(function() {
@@ -53,9 +66,15 @@
 		    .done(function(response) {
                 $("#contingutStart").html(response);
 			});
-
         
-            
+        asActive("#partidaBtn");
+
+    });
+
+    $("#entrenamentBtn").click(function() {
+
+        asActive("#entrenamentBtn");
+
     });
 
     </script>

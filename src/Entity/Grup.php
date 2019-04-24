@@ -77,11 +77,6 @@ class Grup
     /**
      * @ORM\Column(type="float")
      */
-    private $puntuacio_mitja;
-
-    /**
-     * @ORM\Column(type="float")
-     */
     private $puntuacio_dificil;
 
     public function __construct()
@@ -256,18 +251,6 @@ class Grup
     public function setPuntuacioFacil(float $puntuacio_facil): self
     {
         $this->puntuacio_facil = $puntuacio_facil;
-
-        return $this;
-    }
-
-    public function getPuntuacioMitja(): ?float
-    {
-        return $this->puntuacio_mitja;
-    }
-
-    public function setPuntuacioMitja(float $puntuacio_mitja): self
-    {
-        $this->puntuacio_mitja = $puntuacio_mitja;
 
         return $this;
     }

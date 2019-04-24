@@ -20,7 +20,6 @@ class GrupType extends AbstractType
             ->add('tempsresposta')
             ->add('idAdministrador')
             ->add('puntuacio_facil')
-            ->add('puntuacio_mitja')
             ->add('puntuacio_dificil')
             ->add('idNivell')
             ->add('idUsuari')

@@ -33,8 +33,13 @@ class PartidaController extends Controller
     public function getPartidaPortait() {
         
         $html = "
-        <div class='container row'>
-            <div id='cardPartida' class='col col-3 p-3'>
+        <div class='container row p-4'>
+
+            <div class='container'>
+                <h2>Partida multijugador</h2>
+            </div>
+
+            <div id='cardPartida' class='col col-4 p-4'>
                 <h3>Rànquing:</h3>
                 <table id='rankingJugadors'>
                     <tr>
@@ -42,7 +47,7 @@ class PartidaController extends Controller
                         <th>Puntuació</th>
                     </tr>
                 </table>
-                <a href='#' id='prepararPartida' class='btn btn-success'>Preparar</a>
+                <a href='#' id='prepararPartida' class='btn btn-success'>Jugar</a>
             </div>
         </div>
         ";

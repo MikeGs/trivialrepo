@@ -90,7 +90,7 @@ class GrupController extends Controller
          if ($form->isSubmitted()) {
             echo "submitted";
 
-            // id	id_nivell_id	nom	codi	datainici	datafinal	finalitzat	tempsresposta	id_administrador	puntuacio_facil	puntuacio_mitja	puntuacio_dificil
+            // id	id_nivell_id	nom	codi	datainici	datafinal	finalitzat	tempsresposta	id_administrador	puntuacio_facil	puntuacio_dificil
 
             $grup->setNom($form->get('nom')->getData());
             $grup->setCodi($form->get('codi')->getData());
@@ -99,7 +99,6 @@ class GrupController extends Controller
             $grup->setFinalitzat(false);
             $grup->setTempsresposta($form->get('tempsresposta')->getData());
             $grup->setPuntuacioFacil($form->get('puntuacio_facil')->getData());
-            $grup->setPuntuacioMitja($form->get('puntuacio_mitja')->getData());
             $grup->setPuntuacioDificil($form->get('puntuacio_dificil')->getData());
             $grup->setIdAdministrador(1);
             $grup->setIdNivell($this->getNivell($form->get('idNivell')->getData()));
