@@ -29,7 +29,6 @@ html, body {
 	width: 120px;
 }
 
-
 .navegacio::after {
 	position: absolute;
 	width: 100%;
@@ -309,6 +308,18 @@ table.aligncenter .col {
 	vertical-align: bottom;
 }
 
+#startMenuUl .active {
+	color: #005a9e!important;
+	transform: scale(1.05);
+	background-color: rgba(0,0,0,0.2)!important;
+	font-weight: bold;
+	filter: brightness(2);
+}
+
+#startMenuUl .active:hover {
+	filter: brightness(1)!important;
+}
+
 #startMenu h1, #startMenu ul li {
 	color: white;
 }
@@ -331,11 +342,13 @@ table.aligncenter .col {
 	border-radius: 0px;
 	background-color: transparent!important;
 	font-size: 20px;
+	box-sizing: border-box;
+	text-shadow: 1px 1px 10px rgba(0,0,0,0.3);
 }
 
 #startMenu #sortirElement {
 	color: red!important;
-	font-weight: bold;
+	filter: brightness(2);
 }
 
 #startMenu li a:hover {
@@ -388,6 +401,7 @@ table.aligncenter .col {
 #rankingJugadors {
 	width: 100%;
 	color: white;
+	box-sizing: border-box;
 }
 
 #rankingJugadors th, #rankingJugadors td {
@@ -409,6 +423,30 @@ table.aligncenter .col {
 
 #rankingJugadors td:nth-child(2), #rankingJugadors td:nth-child(2) {
 	width: 30%;
+}
+
+.verticalCard {
+	overflow: hidden;
+}
+
+.verticalCard a {
+	overflow: hidden;
+	display: block;
+}
+
+.verticalCard img {
+	height: 200px;
+	width: 100%;
+	background-color: rgba(255,255,255,0.2);
+}
+
+.verticalCard p {
+	position: absolute;
+	top: 0;
+	color: white;
+	font-size: 26px;
+	box-sizing: border-box;
+	display: block;
 }
 
 /* PREPARAR PARTIDA INTRO END */
