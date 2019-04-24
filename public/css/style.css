@@ -384,18 +384,67 @@ table.aligncenter .col {
 
 /* PREPARAR PARTIDA INTRO */
 
-#cardPartida {
-	background-color: rgba(255,255,255,0.1);
-	margin: 0 auto;
-	color: white;
-	border-radius: 5px;
+#multiplayerContainer {
+	margin: 0px!important;
 }
 
-#cardPartida #prepararPartida {
-	margin: 0 auto;
-	display: inline-block;
+#multiplayerContainer .container, #multiplayerContainer .row {
+	padding: 0px!important;
+	margin: 0px;
+}
+
+#verticalCardsContainer {
+	margin-top: 20px!important;
+}
+
+#multiHighlight {
+	margin-top: 35px!important;
+}
+
+#playMultiplayerCard {
+	padding-left: 0px;
+}
+
+#playMultiplayerCard a {
+	width: 100%;
+	display: table;
+	height: 450px;
+	width: 100%;
+	background-color: rgba(255,255,255,0.1);
+}
+
+#playMultiplayerCard img {
+	display: block;
+	margin: 0px!important;
+	width: calc(100% - 7.5px);
+	height: 100%;
+	box-sizing: border-box;
+	position: absolute;
+	z-index: 85;
+}
+
+#playMultiplayerCard p {
+	display: table-cell;
+	vertical-align: middle;
+	top: 0;
+	width: 100%;
 	text-align: center;
-	margin-top: 15px;
+	color: white;
+
+	text-transform: uppercase;
+	font-size: 25px;
+
+	z-index: 90;
+}
+
+#playMultiplayerCard, #cardRanking {
+	display: block;
+}
+
+#cardRanking {
+	background-color: rgba(255,255,255,0.1);
+	color: white;
+	border-radius: 5px;
 }
 
 #rankingJugadors {
@@ -426,16 +475,18 @@ table.aligncenter .col {
 }
 
 .verticalCard {
-	overflow: hidden;
+	display: block;
+	box-sizing: border-box;
+	padding-left: 0px;
 }
 
 .verticalCard a {
-	overflow: hidden;
+	position: relative;
 	display: block;
 }
 
 .verticalCard img {
-	height: 200px;
+	height: 300px;
 	width: 100%;
 	background-color: rgba(255,255,255,0.2);
 }

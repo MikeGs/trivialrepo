@@ -33,36 +33,36 @@ class PartidaController extends Controller
     public function getPartidaPortait() {
         
         $html = "
-        <div class='container row p-4'>
+        <div id='multiplayerContainer' class='container row p-4'>
 
             <div class='container'>
                 <h2>Partida multijugador</h2>
             </div>
 
-            <div class='container row'>
+            <div id='verticalCardsContainer' class='container row'>
 
-                <div class='verticalCard col col-3'>
+                <div class='verticalCard col col-2'>
                     <a href='#'>
                         <img src='#'/>
                         <p class='verticalCardDesc'>Juga amb els teus companys!</p>
                     </a>
                 </div>
 
-                <div class='verticalCard col col-3'>
+                <div class='verticalCard col col-2'>
                     <a href='#'>
                         <img src='#'/>
                         <p class='verticalCardDesc'>Treu la màxima puntuació!</p>
                     </a>
                 </div>
 
-                <div class='verticalCard col col-3'>
+                <div class='verticalCard col col-2'>
                     <a href='#'>
                         <img src='#'/>
                         <p class='verticalCardDesc'>Compara els teus resultats!</p>
                     </a>
                 </div>
 
-                <div class='verticalCard col col-3'>
+                <div class='verticalCard col col-2'>
                     <a href='#'>
                         <img src='#'/>
                         <p class='verticalCardDesc'>Entrena't per millorar!</p>
@@ -71,17 +71,29 @@ class PartidaController extends Controller
 
             </div>
 
-            <div id='cardPartida' class='col col-4 p-4'>
+            <div id='multiHighlight' class='container row'>
 
-                <h3>Rànquing:</h3>
+                <div class='col col-4' id='playMultiplayerCard'>
 
-                <table id='rankingJugadors'>
-                    <tr>
-                        <th>Jugador</th>
-                        <th>Puntuació</th>
-                    </tr>
-                </table>
-                <a href='#' id='prepararPartida' class='btn btn-success'>Jugar</a>
+                    <a href='#'>
+                        <img src='#'/>
+                        <p>Jugar</p>
+                    </a>
+                    
+                </div>
+
+                <div id='cardRanking' class='col col-4 p-4'>
+
+                    <h3>Rànquing:</h3>
+
+                    <table id='rankingJugadors'>
+                        <tr>
+                            <th>Jugador</th>
+                            <th>Puntuació</th>
+                        </tr>
+                    </table>
+                </div>
+
             </div>
         </div>
         ";
