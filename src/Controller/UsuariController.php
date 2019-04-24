@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Serializer\Exception\UniqueConstraintViolationException;
 
 use App\Entity\Usuari;
 use App\Entity\Grup;
@@ -124,36 +125,42 @@ class UsuariController extends AbstractController
 
             $nouUsuari = new Usuari();
 
-            $nouUsuari->setNom($nom);
-            $nouUsuari->setCognoms($cognoms);
-            $nouUsuari->setUsername($username);
-            $nouUsuari->setUsernameCanonical($username);
-            $nouUsuari->setEmail($email);
-            $nouUsuari->setEmailCanonical($email);
-            $nouUsuari->addRole($rol);
-            if ($codi != '') {
-                $nouUsuari->setCodiAlumne($codi);
-            }
+            try {
 
-            //generem una contrassenya segura per a l'usuari, que s'enviarà per mail al correu indicat
-            $length = 12;
-            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            $charactersLength = strlen($characters);
-            $randomString = '';
+                $nouUsuari->setNom($nom);
+                $nouUsuari->setCognoms($cognoms);
+                $nouUsuari->setUsername($username);
+                $nouUsuari->setUsernameCanonical($username);
+                $nouUsuari->setEmail($email);
+                $nouUsuari->setEmailCanonical($email);
+                $nouUsuari->addRole($rol);
+                if ($codi != '') {
+                    $nouUsuari->setCodiAlumne($codi);
+                }
 
-            for ($i = 0; $i < $length; $i++) {
-                $randomString .= $characters[rand(0, $charactersLength - 1)];
-            }
+                //generem una contrassenya segura per a l'usuari, que s'enviarà per mail al correu indicat
+                $length = 12;
+                $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $charactersLength = strlen($characters);
+                $randomString = '';
 
-            $encodedPass = $encoder->encodePassword($nouUsuari, $randomString);
-            $nouUsuari->setPassword($encodedPass);
+                for ($i = 0; $i < $length; $i++) {
+                    $randomString .= $characters[rand(0, $charactersLength - 1)];
+                }
 
-            $nouUsuari->setEnabled(true);
+                $encodedPass = $encoder->encodePassword($nouUsuari, $randomString);
+                $nouUsuari->setPassword($encodedPass);
 
-            $em->persist($nouUsuari);
-            $em->flush();
+                $nouUsuari->setEnabled(true);
 
-            $this->addFlash('success', 'Usuari creat correctament!' . $randomString);
+                $em->persist($nouUsuari);
+                $em->flush();
+    
+                $this->addFlash('success', 'Usuari creat correctament!' . $randomString);
+
+            } catch (UniqueConstraintViolationException $e) {
+                $this->addFlash('error', 'Error! Nom d\'usuari o correu electrònic ja existents.' . $randomString);
+            }  
 
         }
 
