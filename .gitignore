@@ -22,3 +22,5 @@
 src/Entity/Usuari\.php
 
 vendor\.zip
+
+src/Migrations/Version20190328194111\.php

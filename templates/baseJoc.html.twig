@@ -23,10 +23,10 @@
         <h1 class="p-3">Trivial</h1>
 
         <ul class="list-group alltransitionparent3">
-            <li><a class="list-group-item" href="#">Partida</a></li>
-            <li><a class="list-group-item" href="#">Entrenament</a></li>
-            <li><a class="list-group-item" href="#">Rànking</a></li>
-            <li><a class="list-group-item" href="#">Configuració</a></li>
+            <li><a id="partidaBtn" class="list-group-item" href="#">Partida</a></li>
+            <li><a id="entrenamentBtn" class="list-group-item" href="#">Entrenament</a></li>
+            <li><a id="rankingBtn" class="list-group-item" href="#">Rànquing</a></li>
+            <li><a id="settingsBtn" class="list-group-item" href="#">Configuració</a></li>
             <li><a id="sortirElement" class="list-group-item" href="#">Sortir</a></li>
         </ul>
 
@@ -39,5 +39,25 @@
     <p>test</p>
         {% block body %}{% endblock %}
     </div>
+
+    <script>
+
+    var contingut = $("#contingutStart");
+
+    $("#partidaBtn").click(function() {
+        
+        var url = "{{ path('getPartidaPortait') }}"
+        var codes;
+
+        $.post(url) 
+		    .done(function(response) {
+                $("#contingutStart").html(response);
+			});
+
+        
+            
+    });
+
+    </script>
 
 </body>

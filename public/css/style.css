@@ -349,6 +349,11 @@ table.aligncenter .col {
 	background-color: rgba(41,41,41,1);
 }
 
+#contingutStart > .container {
+	width: 100%;
+	max-width: none!important;
+}
+
 .list-group {
 	list-style: none;
 }
@@ -359,6 +364,49 @@ table.aligncenter .col {
 }
 
 /* PARTIDA MENU STYLES END */
+
+/* PREPARAR PARTIDA INTRO */
+
+#cardPartida {
+	background-color: rgba(255,255,255,0.1);
+	margin: 0 auto;
+	color: white;
+}
+
+#cardPartida #prepararPartida {
+	margin: 0 auto;
+	display: inline-block;
+	text-align: center;
+	margin-top: 15px;
+}
+
+#rankingJugadors {
+	width: 100%;
+	color: white;
+}
+
+#rankingJugadors th, #rankingJugadors td {
+	padding: 10px;
+}
+
+#rankingJugadors tr:nth-child(1) {
+	border-bottom: 1px solid white;
+}
+
+#rankingJugadors th:nth-child(2), #rankingJugadors td:nth-child(2) {
+	text-align: center;
+	border-left: 1px dotted white;
+}
+
+#rankingJugadors th:nth-child(1), #rankingJugadors th:nth-child(1) {
+	width: 70%;
+}
+
+#rankingJugadors td:nth-child(2), #rankingJugadors td:nth-child(2) {
+	width: 30%;
+}
+
+/* PREPARAR PARTIDA INTRO END */
 
 /* TRANSICIONS */
 
