@@ -93,22 +93,6 @@ class Pregunta
      */
     private $respostaIncorrecta3En;
 
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Grup", inversedBy="preguntas")
-     */
-    private $respostaIncorrecta3Cat;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $respostaIncorrecta3Es;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $respostaIncorrecta3En;
-
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Dificultat", inversedBy="preguntas")
      */
@@ -304,73 +288,6 @@ class Pregunta
     public function getIdGrup(): ?grup
     {
         return $this->respostaIncorrecta2Cat;
-    }
-
-    public function getRespostaIncorrecta2Es(): ?string
-    {
-        return $this->respostaIncorrecta2Es;
-    }
-
-    public function getRespostaIncorrecta2En(): ?string
-    {
-        return $this->respostaIncorrecta2En;
-    }
-
-    public function setRespostaIncorrecta2Cat(string $respostaIncorrecta2Cat): self
-    {
-        $this->respostaIncorrecta2Cat = $respostaIncorrecta2Cat;
-
-        return $this;
-    }
-
-    public function setRespostaIncorrecta2Es(string $respostaIncorrecta2Es): self
-    {
-        $this->respostaIncorrecta2Es = $respostaIncorrecta2Es;
-
-        return $this;
-    }
-
-    public function setRespostaIncorrecta2En(string $respostaIncorrecta2En): self
-    {
-        $this->respostaIncorrecta2Es = $respostaIncorrecta2En;
-
-        return $this;
-    }
-
-    public function getRespostaIncorrecta3Cat(): ?string
-    {
-        return $this->respostaIncorrecta3Cat;
-    }
-
-    public function getRespostaIncorrecta3Es(): ?string
-    {
-        return $this->respostaIncorrecta3Es;
-    }
-
-    public function getRespostaIncorrecta3En(): ?string
-    {
-        return $this->respostaIncorrecta3En;
-    }
-
-    public function setRespostaIncorrecta3Cat(string $respostaIncorrecta3Cat): self
-    {
-        $this->respostaIncorrecta3Cat = $respostaIncorrecta3Cat;
-
-        return $this;
-    }
-
-    public function setRespostaIncorrecta3Es(string $respostaIncorrecta3Es): self
-    {
-        $this->respostaIncorrecta3Es = $respostaIncorrecta3Es;
-
-        return $this;
-    }
-
-    public function setRespostaIncorrecta3En(string $respostaIncorrecta3En): self
-    {
-        $this->respostaIncorrecta3En = $respostaIncorrecta3En;
-
-        return $this;
     }
 
     public function getIdDificultat(): ?dificultat
