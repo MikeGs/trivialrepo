@@ -33,6 +33,7 @@ class PartidaController extends Controller
     public function getPartidaPortait() {
         
         $html = "
+
         <div id='multiplayerContainer' class='container row p-4'>
 
             <div class='container'>
@@ -41,28 +42,28 @@ class PartidaController extends Controller
 
             <div id='verticalCardsContainer' class='container row'>
 
-                <div class='verticalCard col col-2'>
+                <div class='verticalCard col col-md-2'>
                     <a href='#'>
                         <img src='#'/>
                         <p class='verticalCardDesc'>Juga amb els teus companys!</p>
                     </a>
                 </div>
 
-                <div class='verticalCard col col-2'>
+                <div class='verticalCard col col-md-2'>
                     <a href='#'>
                         <img src='#'/>
                         <p class='verticalCardDesc'>Treu la màxima puntuació!</p>
                     </a>
                 </div>
 
-                <div class='verticalCard col col-2'>
+                <div class='verticalCard col col-md-2'>
                     <a href='#'>
                         <img src='#'/>
                         <p class='verticalCardDesc'>Compara els teus resultats!</p>
                     </a>
                 </div>
 
-                <div class='verticalCard col col-2'>
+                <div class='verticalCard col col-md-2'>
                     <a href='#'>
                         <img src='#'/>
                         <p class='verticalCardDesc'>Entrena't per millorar!</p>
@@ -73,7 +74,7 @@ class PartidaController extends Controller
 
             <div id='multiHighlight' class='container row'>
 
-                <div class='col col-4' id='playMultiplayerCard'>
+                <div id='playMultiplayerCard' class='col col-sm-12 col-md-4'>
 
                     <a href='#'>
                         <img src='#'/>
@@ -82,20 +83,34 @@ class PartidaController extends Controller
                     
                 </div>
 
-                <div id='cardRanking' class='col col-4 p-4'>
+                <div id='cardRanking' class='col col-sm-12 col-md-4 p-4'>
 
                     <h3>Rànquing:</h3>
 
                     <table id='rankingJugadors'>
+                    <thead>
                         <tr>
-                            <th>Jugador</th>
-                            <th>Puntuació</th>
+                            <th scope='col'>#</th>
+                            <th scope='col'>Jugador</th>
+                            <th scope='col'>Puntuació</th>
                         </tr>
+                    </thead>
+                    <tbody style='border-top: 1px solid white'>
+                    </tbody>
                     </table>
                 </div>
 
             </div>
         </div>
+        <script>
+
+        rankingMultiplayer = $('#rankingJugadors').dataTable( {
+            'language': {
+                'url': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Catalan.json'
+            }
+        });
+
+        </script>
         ";
 
         return new Response(

@@ -36,8 +36,11 @@
     </div>
 
     <div id="contingutStart" class="scroll">
-    <p>test</p>
         {% block body %}{% endblock %}
+    </div>
+
+    <div class="backgroundRotate">
+        <img src="img/bgrotate.png"/>
     </div>
 
     <script>
@@ -48,7 +51,6 @@
 
         $.each( arrayButtons, function( key, value ) {
             $("#"+value.id).removeClass("active");
-            console.log(value.id);
         });
 
         $(element).addClass("active");
