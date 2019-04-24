@@ -22,7 +22,8 @@ security:
                 provider: fos_userbundle
                 csrf_token_generator: security.csrf.token_manager
 
-            logout:    true
+            logout: 
+                target: /login
             anonymous: true
 
             # activate different ways to authenticate
