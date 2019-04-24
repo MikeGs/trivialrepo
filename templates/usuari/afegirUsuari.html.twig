@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Afegir usuari{% endblock %}
+
+{% block body %}
+	<div class="card border-0 m-5">
+		
+		{% for message in app.flashes('success') %}
+            <div class="alert alert-success col-12">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="#" class="link-blue">Usuaris</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Nou usuari</li>
+			</ol>
+		</nav>
+		
+		<div class="card-header border-bottom bg-white d-flex justify-content-between p-0 mt-4">
+			<h1 class="h3">NOU USUARI</h1><a class="btn btn-link link-blue" href="#"><i class="fas fa-arrow-left"></i> TORNAR</a>
+		</div>
+		<div class="card-body">
+			<form action="" method="post">
+				<div class="form-row col-8">
+					<div class="col form-group">
+						<label for="nom">Nom  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
+						<input type="text" name="nom" id="nom" class="form-control" required>
+					</div>
+					<div class="col form-group">
+						<label for="cognoms">Cognoms  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
+						<input type="text" name="cognoms" id="cognoms" class="form-control" required>
+					</div>
+				</div>
+				<div class="form-row col-8">
+					<div class="col form-group">
+						<label for="username">Nom d'usuari  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
+						<input type="text" name="username" id="username" class="form-control" required>
+					</div>
+					<div class="col form-group">
+						<label for="email">Correu electrònic  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
+						<input type="email" name="email" id="email" class="form-control" required>
+					</div>
+				</div>
+				<div class="form-row col-8">
+					<div class="col form-group">
+						<label for="rol">Rol d'usuari</label>
+						<select name="rol" id="rol" class="form-control">
+							{% for rol in rols|keys if rol != 'ROLE_SUPER_ADMIN' %}
+								<option value="{{ rol }}">
+									{% if rol == 'ROLE_STUDENT' %}
+										Estudiant
+									{% elseif rol == 'ROLE_TEACHER' %}
+										Professor
+									{% elseif rol == 'ROLE_ADMIN' %}
+										Administrador
+									{% endif %}
+								</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="col form-group">
+						<label for="codi">Codi alumne <span class="badge" style="font-size: 12px; color: #B4B4B4">( opcional )</span></label>
+						<input type="number" name="codi" id="codi" class="form-control">
+					</div>
+				</div>
+				<div class="alert alert-info col-8 text-center" style="font-size: 12px">
+					Al crear l'usuari, s'enviarà al correu electrònic especificat una contrassenya autogenerada per poder accedir a l'aplicació.
+				</div>
+				
+				<div class="col-8 text-center">
+					<button type="submit" class="btn customAddBtn mt-3">Afegir usuari</button>
+				</div>
+			</form>
+		</div>
+	</div>
+{% endblock %}
