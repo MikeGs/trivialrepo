@@ -148,10 +148,12 @@ class UsuariController extends AbstractController
             $encodedPass = $encoder->encodePassword($nouUsuari, $randomString);
             $nouUsuari->setPassword($encodedPass);
 
+            $nouUsuari->setEnabled(true);
+
             $em->persist($nouUsuari);
             $em->flush();
 
-            $this->addFlash('success', 'Usuari creat correctament!');
+            $this->addFlash('success', 'Usuari creat correctament!' . $randomString);
 
         }
 
