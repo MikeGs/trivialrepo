@@ -37,7 +37,7 @@
                     <li class="{% if app.request.attributes.get('_route') == 'usuaris' %}active{% endif %}"><a href="{{ path('usuaris') }}"><i class="fas fa-users mr-2"></i>USUARIS</a></li>
                     <li><a href="#"><i class="fas fa-trophy mr-2"></i>PARTIDES</a></li>
                     <li><a href="#"><i class="fas fa-graduation-cap mr-2"></i>ENTRENAMENTS</a></li>
-                    <li><a href="#"><i class="fas fa-question mr-2"></i>PREGUNTES</a></li>
+                    <li class="{% if app.request.attributes.get('_route') == 'preguntes' %}active{% endif %}"><a href="{{ path('preguntes') }}"><i class="fas fa-question mr-2"></i>PREGUNTES</a></li>
                 </ul>
             </div>
             {# contingut #}

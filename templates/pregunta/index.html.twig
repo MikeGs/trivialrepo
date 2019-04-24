@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Preguntes{% endblock %}
+
+{% block body %}
+	
+	<div class="card border-0 m-5">
+		<div class="card-header border-bottom bg-white d-flex justify-content-between p-0">
+			<h1 class="h3">PREGUNTES</h1><a class="btn btn-link link-blue" href="javascript:history.back()"><i class="fas fa-arrow-left"></i> TORNAR</a>
+		</div>
+		<div class="card-body">
+			<div class="col-12 p-0 text-right mb-4">
+				<a href="" class="btn customAddBtn"><i class="fas fa-plus"></i> Afegir pregunta</a>
+			</div>
+			<div class="col-12 p-0 text-right mb-4">
+				LLegenda: 
+				{# <span class="text-blue"><i class="fas fa-sitemap ml-3 mr-1"></i> Assignar grup</span>
+				<span class="text-orange"><i class="fas fa-wrench ml-3 mr-1"></i></i> Assignar rol</span>
+				<span class="text-red"><i class="fas fa-trash-alt ml-3 mr-1"></i> Eliminar</span> #}
+
+			</div>
+			<table class="table w-100 custom-table" id="llistatPreguntes">
+				<thead class="custom-thead">
+					<tr>
+						<th>Id</th>
+						<th>Pregunta</th>
+						<th>Resposta correcta</th>
+						<th>Tema</th>
+						<th>Nivell</th>
+						<th>Dificultat</th>
+						<th>Estat</th>
+						<th>Tipus</th>
+						<th>Accions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for pregunta in preguntes %}
+						<tr>
+							<td>{{ pregunta.id }}</td>
+							<td>{{ pregunta.preguntaCat }}</td>
+							<td>{{ pregunta.respostaCorrectaCat }}</td>
+							<td>{{ pregunta.idTema }}</td>
+							<td>{{ pregunta.idTema.idNivell }}</td>
+							<td>{{ pregunta.idDificultat }}</td>
+							<td>{{ pregunta.activa }}</td>
+							<td>{{ pregunta.tipus }}</td>
+							<td></td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascriptsBottom %}
+	{{ parent() }}
+	<script>
+		$(document).ready( function () {
+
+		    llistatUsuaris = $('#llistatPreguntes').dataTable( {
+	            "language": {
+	                "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Catalan.json"
+	            },
+	            "order": [[0, "asc"]]
+	        });
+		});
+	</script>
+{% endblock %}

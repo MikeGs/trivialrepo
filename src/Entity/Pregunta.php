@@ -93,12 +93,6 @@ class Pregunta
      */
     private $respostaIncorrecta3En;
 
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Grup", inversedBy="preguntas")
-     */
-    private $idGrup;
-
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Dificultat", inversedBy="preguntas")
      */
@@ -123,7 +117,7 @@ class Pregunta
      * @ORM\ManyToOne(targetEntity="App\Entity\TipusPregunta", inversedBy="Preguntes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $Tipus;
+    private $tipus;
 
     public function __construct()
     {
@@ -287,18 +281,6 @@ class Pregunta
     public function setRespostaIncorrecta3En(string $respostaIncorrecta3En): self
     {
         $this->respostaIncorrecta3En = $respostaIncorrecta3En;
-
-        return $this;
-    }
-
-    public function getIdGrup(): ?grup
-    {
-        return $this->idGrup;
-    }
-
-    public function setIdGrup(?grup $idGrup): self
-    {
-        $this->idGrup = $idGrup;
 
         return $this;
     }
