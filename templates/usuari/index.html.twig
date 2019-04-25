@@ -304,7 +304,7 @@
 		    });
 
 		    $('body').on('click', '#usuariEliminatBtn', function(e) {
-		    	var id = $('#usuariEliminatBtn').data('id');
+		    	var id = $(this).data('id');
 		    	var url = `{{ path('eliminarAlumneAjax') }}`;
 		    	$.post(url, { 'idUsuari': id }) 
 		    		.done(function(response) {
@@ -312,7 +312,7 @@
 		    			$('#eliminarUsuariModalBtns').html(`<button class="reloadBtn btn btn-primary mr-2">Acceptar</button>`);
 		    			
 					})
-					.fail(errorEliminacioUsuari());
+					.fail(errorEliminacioUsuari);
 		    	e.preventDefault();
 		    });
 
