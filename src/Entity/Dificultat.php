@@ -43,14 +43,6 @@ class Dificultat
         return $this;
     }
 
-    /**
-     * @return Collection|Pregunta[]
-     */
-    public function getPreguntas(): Collection
-    {
-        return $this->preguntas;
-    }
-
     public function addPregunta(Pregunta $pregunta): self
     {
         if (!$this->preguntas->contains($pregunta)) {

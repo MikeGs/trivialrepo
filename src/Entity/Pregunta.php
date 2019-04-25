@@ -129,14 +129,38 @@ class Pregunta
         return $this->id;
     }
 
-    public function getText(): ?string
+    public function getPreguntaCat(): ?string 
     {
-        return $this->text;
+        return $this->preguntaCat;
     }
 
-    public function setText(string $text): self
+    public function getPreguntaEs(): ?string 
     {
-        $this->text = $text;
+        return $this->preguntaEs;
+    }
+
+    public function getPreguntaEn(): ?string 
+    {
+        return $this->preguntaEn;
+    }
+
+    public function setPreguntaCat(string $preguntaCat): self
+    {
+        $this->preguntaCat = $preguntaCat;
+
+        return $this;
+    }
+
+    public function setPreguntaEs(string $preguntaEs): self
+    {
+        $this->preguntaEs = $preguntaEs;
+
+        return $this;
+    }
+
+    public function setPreguntaEn(string $preguntaEn): self
+    {
+        $this->preguntaEn = $preguntaEn;
 
         return $this;
     }

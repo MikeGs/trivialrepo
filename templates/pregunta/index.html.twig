@@ -14,9 +14,9 @@
 			</div>
 			<div class="col-12 p-0 text-right mb-4">
 				LLegenda: 
-				{# <span class="text-blue"><i class="fas fa-sitemap ml-3 mr-1"></i> Assignar grup</span>
-				<span class="text-orange"><i class="fas fa-wrench ml-3 mr-1"></i></i> Assignar rol</span>
-				<span class="text-red"><i class="fas fa-trash-alt ml-3 mr-1"></i> Eliminar</span> #}
+				<span class="text-blue"><i class="far fa-eye ml-3 mr-1"></i>Veure detalls</span>
+				<span class="text-orange"><i class="far fa-check-square ml-3"></i> / <i class="far fa-square mr-1"></i> Activar/desactivar pregunta</span>
+				<span class="text-red"><i class="fas fa-trash-alt ml-3 mr-1"></i> Eliminar</span>
 
 			</div>
 			<table class="table w-100 custom-table" id="llistatPreguntes">
@@ -28,7 +28,6 @@
 						<th>Tema</th>
 						<th>Nivell</th>
 						<th>Dificultat</th>
-						<th>Estat</th>
 						<th>Tipus</th>
 						<th>Accions</th>
 					</tr>
@@ -39,12 +38,15 @@
 							<td>{{ pregunta.id }}</td>
 							<td>{{ pregunta.preguntaCat }}</td>
 							<td>{{ pregunta.respostaCorrectaCat }}</td>
-							<td>{{ pregunta.idTema }}</td>
-							<td>{{ pregunta.idTema.idNivell }}</td>
-							<td>{{ pregunta.idDificultat }}</td>
-							<td>{{ pregunta.activa }}</td>
-							<td>{{ pregunta.tipus }}</td>
-							<td></td>
+							<td>{{ pregunta.idTema.nom }}</td>
+							<td>{{ pregunta.idTema.idNivell.nom }}</td>
+							<td>{{ pregunta.idDificultat.nom }}</td>
+							<td>{{ pregunta.tipus.nom }}</td>
+							<td>
+								<button class="btn btn-link link-blue custom-btn-link assignarGrupBtn" data-id="{{ pregunta.id }}"><i class="far fa-eye"></i></button>
+								<button class="btn btn-link link-orange custom-btn-link assignarRolBtn" data-id="{{ pregunta.id }}"><i class="far fa-check-square"></i></button>
+								<button class="btn btn-link link-red custom-btn-link eliminarUsuariBtn" data-id="{{ pregunta.id }}"><i class="fas fa-trash-alt"></i></button>
+							</td>
 						</tr>
 					{% endfor %}
 				</tbody>
@@ -63,7 +65,16 @@
 	            "language": {
 	                "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Catalan.json"
 	            },
-	            "order": [[0, "asc"]]
+	            "columnDefs": [
+	            		{ "orderable": false, "targets": 1 }, 
+	            		{ "orderable": false, "targets": 2 }, 
+	            		{ "orderable": false, "targets": 3 },
+	            		{ "orderable": false, "targets": 4 },
+                        { "orderable": false, "targets": 5 },
+                        { "orderable": false, "targets": 6 },
+                        { "orderable": false, "targets": -1 }
+                ],
+                "order": [[0, "asc"]]
 	        });
 		});
 	</script>
