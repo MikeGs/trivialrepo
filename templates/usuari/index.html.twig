@@ -5,16 +5,16 @@
 {% block body %}
 	<div class="card border-0 m-5">
 		<div class="card-header border-bottom bg-white d-flex justify-content-between p-0">
-			<h1 class="h3">USUARIS</h1><a class="btn btn-link" href="#"><i class="fas fa-arrow-left"></i> TORNAR</a>
+			<h1 class="h3">USUARIS</h1><a class="btn btn-link link-blue" href="javascript:history.back()"><i class="fas fa-arrow-left"></i> TORNAR</a>
 		</div>
 		<div class="card-body">
 			<div class="col-12 p-0 text-right mb-4">
-				<a href="#" class="btn customAddBtn"><i class="fas fa-plus"></i> Afegir alumne</a>
+				<a href="{{ path('afegirUsuari') }}" class="btn customAddBtn"><i class="fas fa-plus"></i> Afegir usuari</a>
 			</div>
 			<div class="col-12 p-0 text-right mb-4">
 				LLegenda: 
 				<span class="text-blue"><i class="fas fa-sitemap ml-3 mr-1"></i> Assignar grup</span>
-				<span class="text-orange"><i class="fas fa-wrench ml-3 mr-1"></i></i> Assignar rol</span>
+				<span class="text-orange"><i class="fas fa-wrench ml-3 mr-1"></i> Assignar rol</span>
 				<span class="text-red"><i class="fas fa-trash-alt ml-3 mr-1"></i> Eliminar</span>
 
 			</div>
@@ -304,7 +304,7 @@
 		    });
 
 		    $('body').on('click', '#usuariEliminatBtn', function(e) {
-		    	var id = $('#usuariEliminatBtn').data('id');
+		    	var id = $(this).data('id');
 		    	var url = `{{ path('eliminarAlumneAjax') }}`;
 		    	$.post(url, { 'idUsuari': id }) 
 		    		.done(function(response) {
@@ -312,7 +312,7 @@
 		    			$('#eliminarUsuariModalBtns').html(`<button class="reloadBtn btn btn-primary mr-2">Acceptar</button>`);
 		    			
 					})
-					.fail(errorEliminacioUsuari());
+					.fail(errorEliminacioUsuari);
 		    	e.preventDefault();
 		    });
 

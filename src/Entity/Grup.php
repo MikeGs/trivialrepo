@@ -65,11 +65,6 @@ class Grup
     private $idUsuari;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Pregunta", mappedBy="idGrup")
-     */
-    private $preguntas;
-
-    /**
      * @ORM\Column(type="float")
      */
     private $puntuacio_facil;
@@ -207,37 +202,6 @@ class Grup
     {
         if ($this->idUsuari->contains($idUsuari)) {
             $this->idUsuari->removeElement($idUsuari);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Pregunta[]
-     */
-    public function getPreguntas(): Collection
-    {
-        return $this->preguntas;
-    }
-
-    public function addPregunta(Pregunta $pregunta): self
-    {
-        if (!$this->preguntas->contains($pregunta)) {
-            $this->preguntas[] = $pregunta;
-            $pregunta->setIdGrup($this);
-        }
-
-        return $this;
-    }
-
-    public function removePregunta(Pregunta $pregunta): self
-    {
-        if ($this->preguntas->contains($pregunta)) {
-            $this->preguntas->removeElement($pregunta);
-            // set the owning side to null (unless already changed)
-            if ($pregunta->getIdGrup() === $this) {
-                $pregunta->setIdGrup(null);
-            }
         }
 
         return $this;

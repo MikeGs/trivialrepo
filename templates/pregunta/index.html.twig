@@ -1,0 +1,161 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Preguntes{% endblock %}
+
+{% block body %}
+	
+	<div class="card border-0 m-5">
+		<div class="card-header border-bottom bg-white d-flex justify-content-between p-0">
+			<h1 class="h3">PREGUNTES</h1><a class="btn btn-link link-blue" href="javascript:history.back()"><i class="fas fa-arrow-left"></i> TORNAR</a>
+		</div>
+		<div class="card-body">
+			<div class="col-12 p-0 text-right mb-4">
+				<a href="" class="btn customAddBtn"><i class="fas fa-plus"></i> Afegir pregunta</a>
+			</div>
+			<div class="col-12 p-0 text-right mb-4">
+				LLegenda: 
+				<span class="text-blue"><i class="far fa-eye ml-3 mr-1"></i>Veure detalls</span>
+				<span class="text-orange"><i class="far fa-check-square ml-3"></i> / <i class="far fa-square mr-1"></i> Activar/desactivar pregunta</span>
+				<span class="text-red"><i class="fas fa-trash-alt ml-3 mr-1"></i> Eliminar</span>
+
+			</div>
+			<table class="table w-100 custom-table" id="llistatPreguntes">
+				<thead class="custom-thead">
+					<tr>
+						<th>Id</th>
+						<th>Pregunta</th>
+						<th>Resposta correcta</th>
+						<th>Tema</th>
+						<th>Nivell</th>
+						<th>Dificultat</th>
+						<th>Tipus</th>
+						<th>Accions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for pregunta in preguntes %}
+						<tr>
+							<td>{{ pregunta.id }}</td>
+							<td>{{ pregunta.preguntaCat }}</td>
+							<td>{{ pregunta.respostaCorrectaCat }}</td>
+							<td>{{ pregunta.idTema.nom }}</td>
+							<td>{{ pregunta.idTema.idNivell.nom }}</td>
+							<td>{{ pregunta.idDificultat.nom }}</td>
+							<td>{{ pregunta.tipus.nom }}</td>
+							<td>
+								<button class="btn btn-link link-blue custom-btn-link detallsPregunta" data-id="{{ pregunta.id }}"><i class="far fa-eye"></i></button>
+								<button class="btn btn-link link-orange custom-btn-link canviarEstatPregunta" data-id="{{ pregunta.id }}">
+									{% if pregunta.activa == 1 %}
+										<i class="far fa-check-square"></i>		
+									{% else %}
+										<i class="far fa-square"></i>
+									{% endif %}
+								</button>
+								<button class="btn btn-link link-red custom-btn-link eliminarPregunta" data-id="{{ pregunta.id }}"><i class="fas fa-trash-alt"></i></button>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div id="eliminarPreguntaModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h6 class="modal-title" id="eliminarPreguntaModalTitol"></h6>
+					<button type="button" class="close cancelEliminarPreguntaBtn" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div id="eliminarPreguntaModalMsg">
+					</div>
+				</div>
+				<div class="modal-footer" id="eliminarPreguntaModalBtns">
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascriptsBottom %}
+	{{ parent() }}
+	<script>
+		$(document).ready( function () {
+
+		    llistatUsuaris = $('#llistatPreguntes').dataTable( {
+	            "language": {
+	                "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Catalan.json"
+	            },
+	            "columnDefs": [
+	            		{ "orderable": false, "targets": 1 }, 
+	            		{ "orderable": false, "targets": 2 }, 
+	            		{ "orderable": false, "targets": 3 },
+	            		{ "orderable": false, "targets": 4 },
+                        { "orderable": false, "targets": 5 },
+                        { "orderable": false, "targets": 6 },
+                        { "orderable": false, "targets": -1 }
+                ],
+                "order": [[0, "asc"]]
+	        });
+
+		    $('body').on( 'click', '.canviarEstatPregunta', function() {
+		    	$('.alert').alert('close');
+		    	var idPregunta = $(this).data('id');
+		    	var url = `{{ path('canviarEstatPregunta') }}`;
+		    	var btn = $(this);
+		    	$.post(url, { 'idPregunta': idPregunta }) 
+		    		.done(function(response) {
+		    			if (response.estat == 1) {
+		    				btn.html('<i class="far fa-check-square"></i>');
+		    			} else {
+		    				btn.html('<i class="far fa-square"></i>');
+		    			}
+		    		})
+					.fail(errorCanviEstatPregunta);
+		    });
+
+		    function errorCanviEstatPregunta(xhr) {
+		    	var alerta = `<div class="alert alert-danger col-12">L'estat de la pregunta no ha pogut ser canviat degut a un error.<br>${xhr.status }: ${xhr.statusText}</div>`;
+		    	$('.card').prepend(alerta);
+			}
+
+			$('body').on( 'click', '.eliminarPregunta', function() {
+		    	var id = $(this).data('id');
+		    	$('#eliminarPreguntaModalTitol').html(`Eliminar pregunta <strong>${id}</strong>`);
+		    	$('#eliminarPreguntaModalMsg').html(`<div class="text-center"><i class="fas fa-user-times mb-2" style="color: red; font-size: 40px"></i><div><strong>Atenció!</strong> Estàs segur que vols eliminar aquesta pregunta?<div class="alert alert-warning mt-2" style="font-size:11px;">Es perdrà tota la informació relacionada amb aquesta pregunta.</div></div></div>`);
+		    	$('#eliminarPreguntaModalBtns').html(`<button class="cancelEliminarPreguntaBtn btn btn-secondary mr-2">Cancel·lar</button><button data-id="${id}" id="preguntaEliminadaBtn" class="btn btn-primary">Continuar</button>`);
+		    	$('#eliminarPreguntaModal').modal('show');
+		    });
+
+		    $('body').on('click', '#preguntaEliminadaBtn', function(e) {
+		    	var id = $(this).data('id');
+		    	var url = `{{ path('eliminarPreguntaAjax') }}`;
+		    	$.post(url, { 'idPregunta': id }) 
+		    		.done(function(response) {
+						$('#eliminarPreguntaModalMsg').html(`<div class="text-center"><i class="fas fa-user-slash mb-2" style="color: green; font-size: 40px"></i><div>La pregunta s'ha eliminat correctament.</div></div>`);
+		    			$('#eliminarPreguntaModalBtns').html(`<button class="reloadBtn btn btn-primary mr-2">Acceptar</button>`);
+					})
+					.fail(errorEliminacioPregunta);
+		    	e.preventDefault();
+		    });
+
+		    $('body').on('click', '.cancelEliminarPreguntaBtn', function()  {
+		    	$('#eliminarPreguntaModal').modal('hide');
+		    });
+
+		    function errorEliminacioPregunta() {
+		    	$('#eliminarPreguntaModalMsg').html(`<div class="text-center"><i class="fas fa-exclamation-triangle mb-2" style="color: red; font-size: 40px"></i><div>Error! No ha sigut possible eliminar la pregunta.</div></div>`);
+		    	$('#eliminarPreguntaModalBtns').html(`<button class="reloadBtn btn btn-primary mr-2">Acceptar</button>`);
+		    }
+
+		    $('body').on('click', '.reloadBtn', function() {
+		    	var reload = `{{ path('usuaris') }}`;
+		    	window.location.replace(reload);
+		    });
+		});
+	</script>
+{% endblock %}
