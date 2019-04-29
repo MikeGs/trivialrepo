@@ -435,3 +435,9 @@ table.aligncenter .col {
 }
 
 /* TRANSICIONS END */
+
+/*Eddy LOGIN*/
+.fondo-eddy{
+	background-image: url("./public/img/books.jpg");
+}
+/*FIN Eddy LOGIN*/
