@@ -553,6 +553,26 @@ div.dataTables_wrapper div.dataTables_filter input {
 	min-width: 250px!important;
 }
 
+#vertical1 a {
+	background-image: url("../img/Vertical1.png");
+}
+
+#vertical2 a {
+	background-image: url("../img/stats.png");
+}
+
+#vertical3 a {
+	background-image: url("../img/compara.png");
+}
+
+#vertical4 a {
+	background-image: url("../img/train.png");
+}
+
+.verticalCardDesc {
+	background-color: rgba(0,0,0,0.5);
+}
+
 .verticalCard a {
 	position: relative;
 	display: table;
@@ -560,6 +580,9 @@ div.dataTables_wrapper div.dataTables_filter input {
 
 	height: 300px;
 	text-decoration: none;
+
+	background-size: cover;
+	background-repeat: no-repeat;
 }
 
 .verticalCard img {
@@ -584,6 +607,8 @@ div.dataTables_wrapper div.dataTables_filter input {
 	z-index: 90;
 	width: 100%;
 	text-align: center;
+
+	text-shadow: 1px 1px 10px rgba(0,0,0,0.8);
 }
 
 /* PREPARAR PARTIDA INTRO END */

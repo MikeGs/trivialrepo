@@ -42,30 +42,30 @@ class PartidaController extends Controller
 
             <div id='verticalCardsContainer' class='container row'>
 
-                <div class='verticalCard col col-md-2'>
+                <div id='vertical1' class='verticalCard col col-md-2'>
                     <a href='#'>
-                        <img src='#'/>
+                    
                         <p class='verticalCardDesc'>Juga amb els teus companys!</p>
                     </a>
                 </div>
 
-                <div class='verticalCard col col-md-2'>
+                <div id='vertical2' class='verticalCard col col-md-2'>
                     <a href='#'>
-                        <img src='#'/>
+                        
                         <p class='verticalCardDesc'>Treu la màxima puntuació!</p>
                     </a>
                 </div>
 
-                <div class='verticalCard col col-md-2'>
+                <div id='vertical3' class='verticalCard col col-md-2'>
                     <a href='#'>
-                        <img src='#'/>
+                        
                         <p class='verticalCardDesc'>Compara els teus resultats!</p>
                     </a>
                 </div>
 
-                <div class='verticalCard col col-md-2'>
+                <div id='vertical4' class='verticalCard col col-md-2'>
                     <a href='#'>
-                        <img src='#'/>
+                        
                         <p class='verticalCardDesc'>Entrena't per millorar!</p>
                     </a>
                 </div>
@@ -77,7 +77,7 @@ class PartidaController extends Controller
                 <div id='playMultiplayerCard' class='col col-sm-12 col-md-4'>
 
                     <a href='#'>
-                        <img src='#'/>
+                        
                         <p>Jugar</p>
                     </a>
                     
