@@ -402,7 +402,7 @@ table.aligncenter .col {
 	margin: 0px;
 }
 
-#verticalCardsContainer {
+#verticalCardsContainer, #topLobby {
 	margin-top: 15px!important;
 }
 
@@ -626,6 +626,22 @@ div.dataTables_wrapper div.dataTables_filter input {
 	max-height: 350px;
 }
 
+.carousel-inner {
+	min-height: 300px;
+}
+
+#tipusPartidaSlider {
+	background-color: rgba(0,180,255,0.7);
+}
+
+.ontopCarousel {
+	position: relative;
+	width: 100%;
+	text-align: center;
+
+	color: white;
+}
+
 #playerList {
 	color: white;
 }
@@ -647,6 +663,9 @@ div.dataTables_wrapper div.dataTables_filter input {
 
 	text-shadow: 1px 1px 10px rgba(0,0,0,0.4);
 	padding: 5px;
+
+	overflow: hidden;
+	
 }
 
 #playerList ul li a:hover {
@@ -659,6 +678,70 @@ div.dataTables_wrapper div.dataTables_filter input {
 
 #playerListHead {
 	padding-bottom: 10px;
+}
+
+#afegirJugador {
+	float: right;
+}
+
+.tableNormes {
+	color: white;
+	list-style: none;
+}
+
+#containerNormes {
+	margin-top: 40px;
+}
+
+.tableNormes li {
+	padding: 10px;
+}
+
+.tableNormes li p {
+	width: 50%;
+	float: left;
+}
+
+.tableNormes select {
+	width: 100%;
+	background-color: transparent;
+	border: 0px solid transparent;
+	border-radius: 5px;
+	color: white;
+
+	outline: none;
+}
+
+.tableNormes option {
+	color: black;
+}
+
+.tableHead {
+	text-align: center;
+
+	background-color: transparent!important;
+	border-bottom: 1px solid white;
+}
+
+.tableNormes li:nth-child(2) {
+	margin-top: 10px;
+}
+
+.tableHead p {
+	width: 100%!important;
+}
+
+.tableNormes p {
+	margin-bottom: 0px!important;
+}
+
+.tableNormes li:nth-child(odd) {
+	background-color: rgba(255,255,255,0.2);
+} 
+
+
+#topLobby {
+	margin-left: 0px!important;
 }
 
 /* PARTIDA LOBBY END */

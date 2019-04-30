@@ -23,7 +23,7 @@ class PartidaController extends Controller
         return $this->render('partida/index.html.twig', [
             'controller_name' => 'PartidaController',
             'title' => $title,
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
@@ -31,7 +31,7 @@ class PartidaController extends Controller
      * @Route("/getPartidaPortait", name="getPartidaPortait")
      */
     public function getPartidaPortait() {
-        
+
         $html = "
 
         <div id='multiplayerContainer' class='row p-4 col-9'>
@@ -137,25 +137,27 @@ class PartidaController extends Controller
      */
     function partidaLobby() {
 
+    $user = $this->get('grupcontroller')->checkUser($this->getUser());
+    $currentPlayer = $user->getUsername();
+
+    
+
     $html = "<div id='multiplayerLobby' class='row p-4 col-9'>
 
     <div class='container'>
         <h2>Sala d'espera | Partida multijugador</h2>
     </div>
 
-    <div class='container row'>
+    <div class='container row' id='topLobby'>
     
-        <div id='tipusPartidaSlider' class='col col-md-5 carousel slide' data-ride='carousel'>
+        <div id='tipusPartidaSlider' class='col col-md-6 carousel slide' data-ride='carousel'>
 
             <div class='carousel-inner'>
                 <div class='carousel-item active'>
-                <img class='d-block w-100' src='#' alt='First slide'>
+                    <p class='ontopCarousel'>Partida multijugador</p>
                 </div>
                 <div class='carousel-item'>
-                <img class='d-block w-100' src='#' alt='Second slide'>
-                </div>
-                <div class='carousel-item'>
-                <img class='d-block w-100' src='#' alt='Third slide'>
+                    <p class='ontopCarousel'>Entrenament</p>
                 </div>
             </div>
 
@@ -174,43 +176,40 @@ class PartidaController extends Controller
         <div id='playerList' class='col col-md-4'>
             <ul>
                 <li id='playerListHead'>Jugadors:</li>
-                <li><a href='#'>Player test 1</a></li>
-                <li><a href='#'>Player test 2</a></li>
-                <li><a href='#'>Player test 3</a></li>
-                <li><a href='#'>Player test 4</a></li>
+                <li><a href='#' id='currentPlayer'><i class='fas fa-user mr-2'></i>" . $currentPlayer . "</a></li>
             </ul>
+            <a href='#' class='btn btn-info' id='afegirJugador'>Afegir jugador</a>
         </div>
 
     </div>
 
-    <div class='container'>
+    <div class='container' id='containerNormes'>
         
-        <div class='tableNormes'>
-            <thead>
-            <tr>
-                <th>Normes</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Temps de resposta</td>
-                <td><select id='tempsResposta'>
-                        <option value='10'>10 segons</option>
-                        <option value='15'>15 segons</option>
-                        <option value='20'>20 segons</option>
-                        <option value='25'>25 segons</option>
-                </select></td>
-            </tr>
-            <tr>
-                <td>Temps de resposta</td>
-                <td>Damn</td>
-            </tr>
-            <tr>
-                <td>Temps de resposta</td>
-                <td>Damn2</td>
-            </tr>
-            </tbody>
-        </table>
+        <ul class='tableNormes col col-6'>
+            <li class='row tableHead'>
+                <p>Normes</p>
+            </li>
+            <li class='row'>
+                <p class='col col-md-6'>Temps de resposta</p>
+                <p class='col col-md-6'>10 segons</p>
+            </li>
+            <li class='row'>
+                <p class='col col-md-6'>Nivell</p>
+                <p class='col col-md-6'><select id='selectNivell'>
+                    <option value='q3'>Q3</option>
+                    <option value='q4'>Q4</option>
+                    <option value='e5'>E5</option>
+            </select></p>
+            </li>
+            <li class='row'>
+                <p class='col col-md-6'>Duració aproximada</p>
+                <p class='col col-md-6'>60 minuts</p>
+            </li>
+            <li class='row'>
+                <p class='col col-md-6'>Formatgets</p>
+                <p class='col col-md-6'>5</p>
+            </li>
+        </ul>
 
     </container>
         
