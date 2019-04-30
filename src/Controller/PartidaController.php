@@ -34,7 +34,7 @@ class PartidaController extends Controller
         
         $html = "
 
-        <div id='multiplayerContainer' class='container row p-4'>
+        <div id='multiplayerContainer' class='row p-4 col-9'>
 
             <div class='container'>
                 <h2>Partida multijugador</h2>
@@ -42,31 +42,31 @@ class PartidaController extends Controller
 
             <div id='verticalCardsContainer' class='container row'>
 
-                <div id='vertical1' class='verticalCard col col-md-2'>
+                <div id='vertical1' class='verticalCard col col-md-3'>
                     <a href='#'>
                     
-                        <p class='verticalCardDesc'>Juga amb els teus companys!</p>
+                        <p class='verticalCardDesc alltransition3'>Juga amb els teus companys!</p>
                     </a>
                 </div>
 
-                <div id='vertical2' class='verticalCard col col-md-2'>
+                <div id='vertical2' class='verticalCard col col-md-3'>
                     <a href='#'>
                         
-                        <p class='verticalCardDesc'>Treu la màxima puntuació!</p>
+                        <p class='verticalCardDesc alltransition3'>Treu la màxima puntuació!</p>
                     </a>
                 </div>
 
-                <div id='vertical3' class='verticalCard col col-md-2'>
+                <div id='vertical3' class='verticalCard col col-md-3'>
                     <a href='#'>
                         
-                        <p class='verticalCardDesc'>Compara els teus resultats!</p>
+                        <p class='verticalCardDesc alltransition3'>Compara els teus resultats!</p>
                     </a>
                 </div>
 
-                <div id='vertical4' class='verticalCard col col-md-2'>
+                <div id='vertical4' class='verticalCard col col-md-3'>
                     <a href='#'>
                         
-                        <p class='verticalCardDesc'>Entrena't per millorar!</p>
+                        <p class='verticalCardDesc alltransition3'>Entrena't per millorar!</p>
                     </a>
                 </div>
 
@@ -74,16 +74,16 @@ class PartidaController extends Controller
 
             <div id='multiHighlight' class='container row'>
 
-                <div id='playMultiplayerCard' class='col col-sm-12 col-md-4'>
+                <div id='playMultiplayerCard' class='col col-md-5'>
 
-                    <a href='#'>
+                    <a href='#' id='playButton'>
                         
                         <p>Jugar</p>
                     </a>
                     
                 </div>
 
-                <div id='cardRanking' class='col col-sm-12 col-md-4 p-4'>
+                <div id='cardRanking' class='col col-md-7 p-7'>
 
                     <h3>Rànquing:</h3>
 
@@ -110,11 +110,115 @@ class PartidaController extends Controller
             }
         });
 
+        $('#playButton').click(function() {
+
+            var url = '/partidaLobby'
+            var codes;
+    
+            $.post(url) 
+                .done(function(response) {
+                    $('#contingutStart').html(response);
+                });
+            
+            asActive('#partidaBtn');
+    
+        });
+
         </script>
         ";
 
         return new Response(
             $html
         );
+    }
+
+    /**
+     * @Route("/partidaLobby", name="partidaLobby")
+     */
+    function partidaLobby() {
+
+    $html = "<div id='multiplayerLobby' class='row p-4 col-9'>
+
+    <div class='container'>
+        <h2>Sala d'espera | Partida multijugador</h2>
+    </div>
+
+    <div class='container row'>
+    
+        <div id='tipusPartidaSlider' class='col col-md-5 carousel slide' data-ride='carousel'>
+
+            <div class='carousel-inner'>
+                <div class='carousel-item active'>
+                <img class='d-block w-100' src='#' alt='First slide'>
+                </div>
+                <div class='carousel-item'>
+                <img class='d-block w-100' src='#' alt='Second slide'>
+                </div>
+                <div class='carousel-item'>
+                <img class='d-block w-100' src='#' alt='Third slide'>
+                </div>
+            </div>
+
+            <a class='carousel-control-prev' href='#tipusPartidaSlider' role='button' data-slide='prev'>
+                <span class='carousel-control-prev-icon' aria-hidden='true'></span>
+                <span class='sr-only'>Previous</span>
+            </a>
+
+            <a class='carousel-control-next' href='#tipusPartidaSlider' role='button' data-slide='next'>
+                <span class='carousel-control-next-icon' aria-hidden='true'></span>
+                <span class='sr-only'>Next</span>
+            </a>
+
+        </div>
+
+        <div id='playerList' class='col col-md-4'>
+            <ul>
+                <li id='playerListHead'>Jugadors:</li>
+                <li><a href='#'>Player test 1</a></li>
+                <li><a href='#'>Player test 2</a></li>
+                <li><a href='#'>Player test 3</a></li>
+                <li><a href='#'>Player test 4</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class='container'>
+        
+        <div class='tableNormes'>
+            <thead>
+            <tr>
+                <th>Normes</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Temps de resposta</td>
+                <td><select id='tempsResposta'>
+                        <option value='10'>10 segons</option>
+                        <option value='15'>15 segons</option>
+                        <option value='20'>20 segons</option>
+                        <option value='25'>25 segons</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td>Temps de resposta</td>
+                <td>Damn</td>
+            </tr>
+            <tr>
+                <td>Temps de resposta</td>
+                <td>Damn2</td>
+            </tr>
+            </tbody>
+        </table>
+
+    </container>
+        
+    </div>";
+
+    return new Response(
+        $html
+    );
+
     }
 }
