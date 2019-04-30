@@ -65,4 +65,17 @@ class PreguntaController extends AbstractController
 
         return new JsonResponse(['eliminada' => true]);
     }
+
+    /**
+     * @Route("/afegir-pregunta", name="afegirPregunta")
+     */
+    public function afegirUsuari(Request $request) {
+
+        $user = $this->getUser();
+
+        return $this->render('pregunta/afegirPregunta.html.twig', [
+            'user' => $user,
+          
+        ]);
+    }
 }

@@ -38,6 +38,7 @@ html, body {
 	left: 0;
 	bottom: -5px;
 	background-color: #4ba5e5;
+	z-index: 2;
 }
 
 #menuLateral {
@@ -417,6 +418,26 @@ table.aligncenter .col {
 }
 
 /* PREPARAR PARTIDA INTRO END */
+
+/* images */
+.language-icon {
+	width: 20px; 
+	height: 20px;
+	border: 1px solid #fff;
+}
+
+/* preguntes */
+
+.preguntesLanguageHeader {
+	height: 30px;
+	line-height: 30px;
+}
+
+.card-blue {
+	background-color: #005a9e;
+	color: #fff;
+	font-weight: bold;
+}
 
 /* TRANSICIONS */
 
