@@ -438,7 +438,35 @@ table.aligncenter .col {
 
 /*Eddy LOGIN*/
 .fondo-eddy{
-	background-image: url("../img/books.jpg");
+	background-image: url("../img/books.jpg") ;
+	background-position: right;
+}
+
+.formulario-login{
+	background-color:rgba(255,255,255,0.5);
+	width: 80%;
+	max-width: 500px;
+	margin-top: 200px;
+	border: #AE0505 10px solid;
+	padding: 10px;
+}
+
+.formulario-login input, .formulario-login label, .formulario-login textarea {
+	width: 100%;
+}
+
+#rememberDiv {
+	margin-top: 10px;
+}
+
+.formulario-login input[type="checkbox"] {
+	margin-right: 10px;
+	height: 20px!important;
+}
+
+.formulario-login input[type="checkbox"], .formulario-login .remember {
+	width: auto!important;
+	float: left;
 }
 
 /*FIN Eddy LOGIN*/
