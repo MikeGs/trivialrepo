@@ -1,12 +1,20 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 <div class="container-fluid d-flex justify-content-center">
+<div class="formulario-register">
+
+<div class="formheader">
+    <h2>Registrar-se</h2>
+</div>
+
 {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
     {{ form_widget(form) }}
     <div>
-    
-        <input class="btn btn-primary submit-register" type="submit" value="{{ 'registration.submit'|trans }}" />
+    <div class="col col-lg-12 buttonLoginRegisterDiv">
+        <input class="btn btn-primary buttonLoginRegister" type="submit" value="{{ 'registration.submit'|trans }}" />
+    </div>
     </div>
 
 {{ form_end(form) }}
+</div>
 </div>
