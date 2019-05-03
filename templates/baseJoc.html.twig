@@ -25,9 +25,9 @@
         <ul id="startMenuUl" class="list-group alltransitionparent3">
             <li>
             <a id="partidaBtn" class="buttonStart list-group-item" href="#">Partida</a>
-            <ul id="llistatGrups">
+            <ul id="llistatGrupsJoc">
                 {% for grup in usuari.grups %}
-                <li><a class="list-group-item" href='#'> - {{ grup.nom }}</a></li>
+                <li><a id='{{ grup.id }}' class="buttonStart partidaBtnGrup list-group-item" href='#'> - {{ grup.nom }}</a></li>
                 {% endfor %}
             </ul>
             </li>
@@ -66,17 +66,18 @@
 
     var contingut = $("#contingutStart");
 
-    $("#partidaBtn").click(function() {
+    $(".partidaBtnGrup").click(function() {
 
-        var url = "{{ path('getPartidaPortait', {'usuariid' : app.user.id }) }}"
+        var grup = this.id;
+        var url = "{{ path('getPartidaPortait') }}"
         var codes;
 
-        $.post(url) 
+        $.post(url, { 'grup': grup}) 
 		    .done(function(response) {
                 $("#contingutStart").html(response);
 			});
         
-        asActive("#partidaBtn");
+        asActive(".partidaBtnGrup#" + grup);
 
     });
 

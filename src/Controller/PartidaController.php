@@ -7,6 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
+use App\Entity\Usuari;
+use App\Entity\Grup;
+
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PartidaController extends Controller
@@ -35,7 +39,10 @@ class PartidaController extends Controller
     /**
      * @Route("/getPartidaPortait", name="getPartidaPortait")
      */
-    public function getPartidaPortait() {
+    public function getPartidaPortait(Request $request) {
+
+        $em = $this->getDoctrine()->getManager();
+        $grup = $em->getRepository(Grup::class)->findOneById($request->request->get('grup'));
 
         $html = "
 
@@ -47,6 +54,10 @@ class PartidaController extends Controller
 
             <div class='container'>
                 <h2>Partida multijugador</h2>
+            </div>
+
+            <div class='container'>
+                <h3>Grup: " . $grup->getNom() . "</h3>
             </div>
 
             <div id='verticalCardsContainer' class='container row'>
@@ -121,7 +132,7 @@ class PartidaController extends Controller
 
         $('#playButton').click(function() {
 
-            var url = '/partidaLobby'
+            var url = '/partidaLobby/" . $grup->getId() . "'
             var codes;
     
             $.post(url) 
@@ -129,7 +140,7 @@ class PartidaController extends Controller
                     $('#contingutStart').html(response);
                 });
             
-            asActive('#partidaBtn');
+            
     
         });
 
@@ -141,20 +152,32 @@ class PartidaController extends Controller
         );
     }
 
+    public function getGrup($id) {
+
+        $grup = $this->getDoctrine()
+            ->getRepository(Grup::class)
+            ->find($id);
+
+        return $grup;
+
+    }
+
     /**
-     * @Route("/partidaLobby", name="partidaLobby")
+     * @Route("/partidaLobby/{grupid}", name="partidaLobby")
      */
-    function partidaLobby() {
+    function partidaLobby($grupid) {
 
     $user = $this->get('grupcontroller')->checkUser($this->getUser());
-    $currentPlayer = $user->getUsername();
-
-    
+    $grup = $this->getGrup($grupid);
 
     $html = "<div id='multiplayerLobby' class='row p-4 col-9'>
 
     <div class='container'>
         <h2>Sala d'espera | Partida multijugador</h2>
+    </div>
+
+    <div class='container'>
+        <h3>Grup: " . $grup->getNom() . "</h3>
     </div>
 
     <div class='container row' id='topLobby'>
@@ -185,7 +208,7 @@ class PartidaController extends Controller
         <div id='playerList' class='col col-md-4'>
             <ul>
                 <li id='playerListHead'>Jugadors:</li>
-                <li><a href='#' id='currentPlayer'><i class='fas fa-user mr-2'></i>" . $currentPlayer . "</a></li>
+                <li><a href='#' id='currentPlayer'><i class='fas fa-user mr-2'></i>" . $user->getUsername() . "</a></li>
             </ul>
             <a href='#' class='btn btn-info' id='afegirJugador'>Afegir jugador</a>
         </div>
