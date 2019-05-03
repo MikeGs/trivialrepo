@@ -6,7 +6,14 @@
 <div> 
 <div class="container-fluid d-flex justify-content-center">
 
-<form action="{{ path("fos_user_security_check") }}" method="post" class="d-flex justify-content-center formulario-login">
+<div class="formulario-login">
+
+<div class="formheader">
+    <h2>Iniciar sessió</h2>
+</div>
+
+<form action="{{ path("fos_user_security_check") }}" method="post" class="d-flex justify-content-center">
+
     {% if csrf_token %}
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
     {% endif %}
@@ -18,7 +25,7 @@
     </div>
     
     <div class="col-lg-12">
-    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" autocomplete="username" />
+    <input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}" required="required" autocomplete="username" />
     </div>
 
     <div class="col-lg-12">
@@ -26,19 +33,21 @@
     </div>
 
     <div class="col-lg-12">
-    <input type="password" id="password" name="_password" required="required" autocomplete="current-password" />
+    <input type="password" class="form-control" id="password" name="_password" required="required" autocomplete="current-password" />
     </div>
 
-    <div class="col-lg-12" id="rememberDiv">
-    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-    <label class="remember" for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
     
-
-     
-    <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+    <div class="col-lg-12" id="rememberDiv">
+        <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+        <label class="remember" for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
     </div>
+
+    <div class="col col-lg-12 buttonLoginRegisterDiv">
+        <input class="btn btn-primary buttonLoginRegister" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+     </div>
 </div>
 </form>
+</div>
             
         </div>
     </div>

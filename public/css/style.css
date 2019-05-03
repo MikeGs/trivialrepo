@@ -1,3 +1,9 @@
+/* FONTS */
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+/* FONTS END */
+
 /* normalitzacio d'estils */
 
 html, body {
@@ -795,21 +801,79 @@ div.dataTables_wrapper div.dataTables_filter input {
 
 /*Eddy LOGIN*/
 .fondo-eddy{
-	background-image: url("../img/books.jpg") ;
+	
+	background-image: url("../img/estudio.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
 	background-position: right;
+	position: absolute;
+	z-index: 0;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	opacity: 0.05;
 }
 
-.formulario-login{
+.askuser {
+	background-color: rgba(255,255,255,1); 
+	min-height: 100vh;
+	overflow: hidden;
+}
+
+.formulario-login, .formulario-register{
 	background-color:rgba(255,255,255,0.5);
 	width: 80%;
 	max-width: 500px;
 	margin-top: 200px;
-	border: blue 1px solid;
+	box-shadow: 10px 10px 17px 0px rgba(0,0,0,0.25);
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	font-family: 'Montserrat', sans-serif;
+	z-index: 1;
+	background-color: white;
+}
+
+.askuser form {
+	padding: 15px;
+}
+
+.formheader {
+	width: 100%;
+	text-align: center;
+	background-color: #005a9e;
+	color: white;
+	display: table;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.formheader h2 {
+	display: table-cell;
+	vertical-align: middle;
 	padding: 10px;
 }
 
-.formulario-login input, .formulario-login label, .formulario-login textarea {
+.buttonLoginRegisterDiv {
+	margin-top: 10px;
+	text-align: center;
+}
+
+.buttonLoginRegister {
+	width: 50%!important;
+	display: inline-block;
+}
+
+.formulario-register{
+	margin-top: 50px!important;
+}
+
+.formulario-login input, .fos_user_registration_register input, .formulario-login label, .fos_user_registration_register label, .formulario-login textarea, .fos_user_registration_register textarea {
 	width: 100%;
+}
+
+.fos_user_registration_register input{
+margin-bottom:10px;
 }
 
 .label_p{
@@ -828,6 +892,10 @@ div.dataTables_wrapper div.dataTables_filter input {
 .formulario-login input[type="checkbox"], .formulario-login .remember {
 	width: auto!important;
 	float: left;
+}
+
+.submit-register{
+	margin-top: 20px;
 }
 
 /*FIN Eddy LOGIN*/

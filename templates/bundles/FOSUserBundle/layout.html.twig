@@ -8,7 +8,9 @@
         <script src="{{ asset('js/popper.js') }}"></script> 
         <script src="{{ asset('bootstrap4/js/bootstrap.min.js') }}"></script>
     </head>
-    <body class="fondo-eddy">
+    <body>
+    <div class='fondo-eddy'></div>
+    <div class="askuser">
         <div>
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                 {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
@@ -30,9 +32,11 @@
             {% endfor %}
         {% endif %}
 
-        <div>
-            {% block fos_user_content %}
-            {% endblock fos_user_content %}
+            <div>
+                {% block fos_user_content %}
+                {% endblock fos_user_content %}
+            </div>
+
         </div>
     </body>
 </html>
