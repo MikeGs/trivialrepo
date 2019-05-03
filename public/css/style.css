@@ -438,21 +438,34 @@ table.aligncenter .col {
 
 /*Eddy LOGIN*/
 .fondo-eddy{
-	background-image: url("../img/books.jpg") ;
+	background-image: url("../img/estudio.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
 	background-position: right;
 }
 
-.formulario-login{
+.formulario-login, .fos_user_registration_register{
 	background-color:rgba(255,255,255,0.5);
 	width: 80%;
 	max-width: 500px;
 	margin-top: 200px;
-	border: blue 1px solid;
+	border: gray 1px solid;
 	padding: 10px;
+	-webkit-box-shadow: 25px 15px 36px 1px rgba(0,0,0,0.56);
+	-moz-box-shadow: 25px 15px 36px 1px rgba(0,0,0,0.56);
+	box-shadow: 25px 15px 36px 1px rgba(0,0,0,0.56);
 }
 
-.formulario-login input, .formulario-login label, .formulario-login textarea {
+.fos_user_registration_register{
+	margin-top: 50px!important;
+}
+
+.formulario-login input, .fos_user_registration_register input, .formulario-login label, .fos_user_registration_register label, .formulario-login textarea, .fos_user_registration_register textarea {
 	width: 100%;
+}
+
+.fos_user_registration_register input{
+margin-bottom:10px;
 }
 
 .label_p{
@@ -471,6 +484,10 @@ table.aligncenter .col {
 .formulario-login input[type="checkbox"], .formulario-login .remember {
 	width: auto!important;
 	float: left;
+}
+
+.submit-register{
+	margin-top: 20px;
 }
 
 /*FIN Eddy LOGIN*/
