@@ -685,9 +685,17 @@ div.dataTables_wrapper div.dataTables_filter input {
 	float: right;
 }
 
-.tableNormes {
+.tableNormes, #llistatGrups {
 	color: white;
 	list-style: none;
+}
+
+#llistatGrups {
+	padding: 0px;
+}
+
+#llistatGrups a {
+	font-size: 15px!important;
 }
 
 #containerNormes {

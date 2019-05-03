@@ -18,13 +18,18 @@ class PartidaController extends Controller
     {
 
         $title = "Trivial | UB";
-        $user = $this->get('grupcontroller')->checkUser($this->getUser());
+        $usuari = $this->get('grupcontroller')->checkUser($this->getUser());
 
         return $this->render('partida/index.html.twig', [
             'controller_name' => 'PartidaController',
             'title' => $title,
-            'user' => $user,
+            'usuari' => $usuari,
         ]);
+    }
+
+    public function getNivells($grup) {
+        $nivells = $grup->getIdNivell();
+        return $nivells;
     }
 
     /**
@@ -33,6 +38,10 @@ class PartidaController extends Controller
     public function getPartidaPortait() {
 
         $html = "
+
+        <script>   
+
+        </script>
 
         <div id='multiplayerContainer' class='row p-4 col-9'>
 

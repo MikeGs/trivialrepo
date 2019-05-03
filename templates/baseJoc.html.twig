@@ -23,7 +23,14 @@
         <h1 class="p-3">Trivial</h1>
 
         <ul id="startMenuUl" class="list-group alltransitionparent3">
-            <li><a id="partidaBtn" class="buttonStart list-group-item" href="#">Partida</a></li>
+            <li>
+            <a id="partidaBtn" class="buttonStart list-group-item" href="#">Partida</a>
+            <ul id="llistatGrups">
+                {% for grup in usuari.grups %}
+                <li><a class="list-group-item" href='#'> - {{ grup.nom }}</a></li>
+                {% endfor %}
+            </ul>
+            </li>
             <li><a id="entrenamentBtn" class="buttonStart list-group-item" href="#">Entrenament</a></li>
             <li><a id="rankingBtn" class="buttonStart list-group-item" href="#">Rànquing</a></li>
             <li><a id="settingsBtn" class="buttonStart list-group-item" href="#">Configuració</a></li>
@@ -60,8 +67,8 @@
     var contingut = $("#contingutStart");
 
     $("#partidaBtn").click(function() {
-        
-        var url = "{{ path('getPartidaPortait') }}"
+
+        var url = "{{ path('getPartidaPortait', {'usuariid' : app.user.id }) }}"
         var codes;
 
         $.post(url) 
