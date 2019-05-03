@@ -409,6 +409,10 @@ table.aligncenter .col {
 	margin: 0px;
 }
 
+#multiplayerContainer h3, #multiplayerLobby h3 {
+	color: white;
+}
+
 #verticalCardsContainer, #topLobby {
 	margin-top: 15px!important;
 }
@@ -691,16 +695,16 @@ div.dataTables_wrapper div.dataTables_filter input {
 	float: right;
 }
 
-.tableNormes, #llistatGrups {
+.tableNormes, #llistatGrupsJoc {
 	color: white;
 	list-style: none;
 }
 
-#llistatGrups {
+#llistatGrupsJoc {
 	padding: 0px;
 }
 
-#llistatGrups a {
+#llistatGrupsJoc a {
 	font-size: 15px!important;
 }
 
