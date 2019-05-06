@@ -24,10 +24,6 @@ class GrupController extends Controller
      */
     public function index()
     {
-
-        //$user = $this->checkUser($this->getUser());
-        $user = $this->get('grupcontroller')->checkUser($this->getUser());
-
         $title = "Grups | Trivial UB";
         $grups = $this->getGrups();
         $nivells = $this->getNivells();
@@ -35,7 +31,6 @@ class GrupController extends Controller
         $alumnes = $this->getAlumnes();
 
         return $this->render('grup/index.html.twig',[
-            'user' => $user,
             'controller_name' => 'GrupController',
             'grups' =>  $grups,
             'nivells' => $nivells,
@@ -51,9 +46,6 @@ class GrupController extends Controller
      */
     public function grup($id)
     {
-
-        //$user = $this->checkUser($this->getUser());
-        $user = $this->get('grupcontroller')->checkUser($this->getUser());
 
         $title = "Grups | Trivial UB";
         $grup = $this->getGrup($id);
@@ -80,9 +72,7 @@ class GrupController extends Controller
     public function new(Request $request)
     {
         $administradors = $this->getAdministradors();
-        //$user = $this->checkUser($this->getUser());
-        $user = $this->get('grupcontroller')->checkUser($this->getUser());
-        
+
         $grup = new Grup();
         $form = $this->createForm(GrupType::class, $grup);
         $form->handleRequest($request);
@@ -117,23 +107,11 @@ class GrupController extends Controller
             'grup' => $grup,
             'form' => $form->CreateView(),
             'title' => $title,
-            'user' => $user,
             'administradors' => $administradors,
             
         ]);
     }
 
-    public function checkUser($usuari) {
-
-        if ($usuari == null) {
-            $usuari = new Usuari();
-            $usuari->nickname = "Anònim";
-            $usuari->setUsername("Anònim");
-            $usuari->setNom("Anònim");
-        }
-        
-        return $usuari;
-    }
 
     public function getGrups() {
 

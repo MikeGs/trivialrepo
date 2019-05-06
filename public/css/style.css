@@ -437,6 +437,11 @@ table.aligncenter .col {
 	background-color: #005a9e;
 	color: #fff;
 	font-weight: bold;
+	transition: background-color 0.2s ease-out;
+}
+
+.card-blue:hover {
+	background-color: #4ba5e5;
 }
 
 /* TRANSICIONS */
