@@ -64,7 +64,7 @@ html, body {
 
 #menuList > li {
 	display: block;
-	padding: 20px 0px 20px 50px;
+	padding: 20px 0px 20px 40px;
 }
 
 #menuList > li:hover {
@@ -783,6 +783,11 @@ div.dataTables_wrapper div.dataTables_filter input {
 	background-color: #005a9e;
 	color: #fff;
 	font-weight: bold;
+	transition: background-color 0.2s ease-out;
+}
+
+.card-blue:hover {
+	background-color: #4ba5e5;
 }
 
 /* TRANSICIONS */

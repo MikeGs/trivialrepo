@@ -8,6 +8,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 use App\Entity\Pregunta;
+use App\Entity\Nivell;
+use App\Entity\Tema;
+use App\Entity\Dificultat;
+use App\Entity\TipusPregunta;
 
 class PreguntaController extends AbstractController
 {
@@ -16,14 +20,12 @@ class PreguntaController extends AbstractController
      */
     public function index()
     {
-    	$user = $this->getUser();
 
     	$em = $this->getDoctrine()->getManager();
 
     	$preguntes = $em->getRepository(Pregunta::class)->findAll();
 
         return $this->render('pregunta/index.html.twig', [
-            'user' => $user,
             'preguntes' => $preguntes
         ]);
     }
@@ -47,7 +49,7 @@ class PreguntaController extends AbstractController
         }
 
         $em->persist($pregunta);
-        $em->flush();
+        $em->flush();     
 
         return new JsonResponse(['estat' => $estat]);
     }
@@ -69,13 +71,68 @@ class PreguntaController extends AbstractController
     /**
      * @Route("/afegir-pregunta", name="afegirPregunta")
      */
-    public function afegirUsuari(Request $request) {
+    public function afegirPregunta(Request $request) {
 
-        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+    
+        $nivells = $em->getRepository(Nivell::class)->findAll();
+        $dificultats = $em->getRepository(Dificultat::class)->findAll();
+        $tipus = $em->getRepository(TipusPregunta::class)->findAll();
+
+        if($request->isMethod('post')) {
+
+            $pregunta = new Pregunta();
+            $pregunta->setIdTema($em->getRepository(Tema::class)->findOneById($request->request->get('tema')));
+            $pregunta->setIdDificultat($em->getRepository(Dificultat::class)->findOneById($request->request->get('dificultat')));
+            $pregunta->setTipus($em->getRepository(TipusPregunta::class)->findOneById($request->request->get('tipus')));
+            $pregunta->setActiva($request->request->get('estat'));
+            $pregunta->setPreguntaCat($request->request->get('preguntaCat'));
+            $pregunta->setPreguntaEs($request->request->get('preguntaEs'));
+            $pregunta->setPreguntaEN($request->request->get('preguntaEn'));
+            $pregunta->setRespostaCorrectaCat($request->request->get('correctaCat'));
+            $pregunta->setRespostaCorrectaEs($request->request->get('correctaEs'));
+            $pregunta->setRespostaCorrectaEn($request->request->get('correctaEn'));
+            $pregunta->setRespostaIncorrecta1Cat($request->request->get('incorrectaCat1'));
+            $pregunta->setRespostaIncorrecta2Cat($request->request->get('incorrectaCat2'));
+            $pregunta->setRespostaIncorrecta3Cat($request->request->get('incorrectaCat3'));
+            $pregunta->setRespostaIncorrecta1Es($request->request->get('incorrectaEs1'));
+            $pregunta->setRespostaIncorrecta2Es($request->request->get('incorrectaEs2'));
+            $pregunta->setRespostaIncorrecta3Es($request->request->get('incorrectaEs3'));
+            $pregunta->setRespostaIncorrecta1En($request->request->get('incorrectaEn1'));
+            $pregunta->setRespostaIncorrecta2En($request->request->get('incorrectaEn2'));
+            $pregunta->setRespostaIncorrecta3En($request->request->get('incorrectaEn3'));
+
+            $em->persist($pregunta);
+            $em->flush();
+
+            $this->addFlash('success', 'La pregunta s\'ha creat correctament!');
+        }
 
         return $this->render('pregunta/afegirPregunta.html.twig', [
-            'user' => $user,
-          
+            'nivells' => $nivells,
+            'dificultats' => $dificultats,
+            'tipus' => $tipus,
         ]);
+    }
+
+    /**
+     * @Route("/llistar-temes", name="llistaTemes")
+     */
+    public function llistaTemes(Request $request) : JsonResponse 
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $temes = $em->getRepository(Tema::class)->findByIdNivell($request->request->get('nivell'));
+
+        $response = array();
+ 
+        foreach ($temes as $tema) {
+            $temaJson = array();
+            $temaJson['id'] = $tema->getId();
+            $temaJson['nom'] = $tema->getNom();
+            array_push($response, $temaJson);
+        }
+
+        return new JsonResponse($response);
     }
 }
