@@ -1,0 +1,21 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="container-fluid d-flex justify-content-center">
+<div class="formulario-register">
+
+<div class="formheader">
+    <h2>Editar informació</h2>
+</div>
+
+
+{{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
+    {{ form_widget(form) }}
+    <div>
+    <div class="col col-lg-12 buttonLoginRegisterDiv">
+        <input class="btn btn-primary buttonLoginRegister" type="submit" value="{{ 'profile.edit.submit'|trans }}" />
+    </div>
+     </div>
+{{ form_end(form) }}
+
+</div>
+</div>

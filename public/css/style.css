@@ -803,7 +803,7 @@ div.dataTables_wrapper div.dataTables_filter input {
 
 /* TRANSICIONS END */
 
-/*Eddy LOGIN*/
+/*Eddy LOGIN y REGISTER*/
 .fondo-eddy{
 	
 	background-image: url("../img/estudio.jpg");
@@ -859,7 +859,7 @@ div.dataTables_wrapper div.dataTables_filter input {
 }
 
 .buttonLoginRegisterDiv {
-	margin-top: 10px;
+	margin-top: 30px;
 	text-align: center;
 }
 
@@ -876,8 +876,21 @@ div.dataTables_wrapper div.dataTables_filter input {
 	width: 100%;
 }
 
-.fos_user_registration_register input{
-margin-bottom:10px;
+.fos_user_registration_register input:not(.btn){
+	margin-bottom: 10px;
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
 .label_p{
@@ -902,8 +915,67 @@ margin-bottom:10px;
 	margin-top: 20px;
 }
 
-/*FIN Eddy LOGIN*/
+/*FIN LOGIN y REGISTER*/
 
+/* CHANGE PASSWORD */
+.fos_user_change_password label, .fos_user_change_password input {
+	width: 100%;
+}
+
+.fos_user_change_password input:not(.btn){
+	margin-bottom: 10px;
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.buttonChangePasswordDiv {
+	margin-top: 30px;
+	text-align: center;
+}
+
+.buttonChangePassword {
+	width: 50%!important;
+	display: inline-block;
+}
+/* FIN CHANGE PASSWORD */
+
+
+.fos_user_profile_edit, .askuser div:first-child{
+	z-index: 99999;
+    position: relative;
+}
+
+.fos_user_profile_edit label, .fos_user_profile_edit input {
+	width: 100%;
+}
+
+.fos_user_profile_edit input:not(.btn){
+	margin-bottom: 10px;
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
 /* ANIMATIONS */
 
 @keyframes rotate360 {
