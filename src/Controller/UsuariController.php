@@ -21,9 +21,6 @@ class UsuariController extends Controller
      */
     public function index()
     {
-        //$user = $this->getUser();
-        
-        $user = $this->get('grupcontroller')->checkUser($this->getUser());
 
     	$em = $this->getDoctrine()->getManager();
     	$usuaris = $em->getRepository(Usuari::class)->findAll();
@@ -32,7 +29,6 @@ class UsuariController extends Controller
 
 
         return $this->render('usuari/index.html.twig', [
-        	'user' => $user,
             'usuaris' => $usuaris,
             'grups' => $grups,
             'rols' => $rols,
@@ -113,7 +109,6 @@ class UsuariController extends Controller
      */
     public function afegirUsuari(Request $request, UserPasswordEncoderInterface $encoder) {
 
-        $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
 
         $rols = $this->getParameter('security.role_hierarchy.roles');
@@ -130,47 +125,40 @@ class UsuariController extends Controller
 
             $nouUsuari = new Usuari();
 
-            try {
+            $nouUsuari->setNom($nom);
+            $nouUsuari->setCognoms($cognoms);
+            $nouUsuari->setUsername($username);
+            $nouUsuari->setUsernameCanonical($username);
+            $nouUsuari->setEmail($email);
+            $nouUsuari->setEmailCanonical($email);
+            $nouUsuari->addRole($rol);
+            if ($codi != '') {
+                $nouUsuari->setCodiAlumne($codi);
+            }
 
-                $nouUsuari->setNom($nom);
-                $nouUsuari->setCognoms($cognoms);
-                $nouUsuari->setUsername($username);
-                $nouUsuari->setUsernameCanonical($username);
-                $nouUsuari->setEmail($email);
-                $nouUsuari->setEmailCanonical($email);
-                $nouUsuari->addRole($rol);
-                if ($codi != '') {
-                    $nouUsuari->setCodiAlumne($codi);
-                }
+            //generem una contrassenya segura per a l'usuari, que s'enviarà per mail al correu indicat
+            $length = 12;
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $charactersLength = strlen($characters);
+            $randomString = '';
 
-                //generem una contrassenya segura per a l'usuari, que s'enviarà per mail al correu indicat
-                $length = 12;
-                $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                $charactersLength = strlen($characters);
-                $randomString = '';
+            for ($i = 0; $i < $length; $i++) {
+                $randomString .= $characters[rand(0, $charactersLength - 1)];
+            }
 
-                for ($i = 0; $i < $length; $i++) {
-                    $randomString .= $characters[rand(0, $charactersLength - 1)];
-                }
+            $encodedPass = $encoder->encodePassword($nouUsuari, $randomString);
+            $nouUsuari->setPassword($encodedPass);
 
-                $encodedPass = $encoder->encodePassword($nouUsuari, $randomString);
-                $nouUsuari->setPassword($encodedPass);
+            $nouUsuari->setEnabled(true);
 
-                $nouUsuari->setEnabled(true);
+            $em->persist($nouUsuari);
+            $em->flush();
 
-                $em->persist($nouUsuari);
-                $em->flush();
-    
-                $this->addFlash('success', 'Usuari creat correctament!' . $randomString);
-
-            } catch (UniqueConstraintViolationException $e) {
-                $this->addFlash('error', 'Error! Nom d\'usuari o correu electrònic ja existents.' . $randomString);
-            }  
+            $this->addFlash('success', 'Usuari creat correctament!' . $randomString);
 
         }
 
         return $this->render('usuari/afegirUsuari.html.twig', [
-            'user' => $user,
             'rols' => $rols
         ]);
     }
