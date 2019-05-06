@@ -35,11 +35,11 @@
 				</div>
 				<div class="form-row col-8">
 					<div class="col form-group">
-						<label for="username">Nom d'usuari  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
+						<label for="username" id="userNameLabel">Nom d'usuari  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
 						<input type="text" name="username" id="username" class="form-control" required>
 					</div>
 					<div class="col form-group">
-						<label for="email">Correu electrònic  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
+						<label for="email" id="emailLabel">Correu electrònic  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
 						<input type="email" name="email" id="email" class="form-control" required>
 					</div>
 				</div>
@@ -75,4 +75,54 @@
 			</form>
 		</div>
 	</div>
+{% endblock %}
+{% block javascriptsBottom %}
+	{{ parent() }}
+	<script>
+		$(document).ready(function() {
+			$('#username').on('keyup change', function() {
+				validarNomDusuari();
+			});
+			$('#email').on('keyup change', function() {
+				validarEmail();
+			});
+						
+		});
+
+		function validar() {
+
+		}
+
+		function validarNomDusuari() {
+			if ($('#username').val() != '') {
+				var url = `{{ path('comprovarUsername') }}`
+				$.post(url, { username : $('#username').val() })
+				.done(function(response) {
+					if (response) {
+						if ($('#usernameError').length == 0) {
+							$('#userNameLabel').append('<span style="font-size: 12px; color: red;" id="usernameError" class="pt-1 float-right">Usuari ja existent.</span>');		
+						}	
+					} else {
+						$('#usernameError').remove();
+					}
+				});
+			}
+		}
+
+		function validarEmail() {
+			if ($('#email').val() != '') {
+				var url = `{{ path('comprovarEmail') }}`
+				$.post(url, { email : $('#email').val() })
+				.done(function(response) {
+					if (response) {
+						if ($('#emailError').length == 0) {
+							$('#emailLabel').append('<span style="font-size: 12px; color: red;" id="emailError" class="pt-1 float-right">Correu electrònic ja existent.</span>');		
+						}	
+					} else {
+						$('#emailError').remove();
+					}
+				});
+			}
+		}
+	</script>
 {% endblock %}

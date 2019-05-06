@@ -162,4 +162,40 @@ class UsuariController extends Controller
             'rols' => $rols
         ]);
     }
+
+
+    /**
+     * @Route("/comprovar-username", name="comprovarUsername")
+     */
+    public function comprovarUsername(Request $request) : JsonResponse
+    {
+        $em = $this->getDoctrine()->getManager();
+        $usuari = $em->getRepository(Usuari::class)->findOneByUsername($request->request->get('username'));
+
+        if ($usuari != null) {
+            $response = true;
+        } else {
+            $response = false;
+        }
+
+        return new JsonResponse($response);
+    }
+
+
+    /**
+     * @Route("/comprovar-email", name="comprovarEmail")
+     */
+    public function comprovarEmail(Request $request) : JsonResponse
+    {
+        $em = $this->getDoctrine()->getManager();
+        $email = $em->getRepository(Usuari::class)->findOneByEmail($request->request->get('email'));
+
+        if ($email != null) {
+            $response = true;
+        } else {
+            $response = false;
+        }
+
+        return new JsonResponse($response);
+    }
 }
