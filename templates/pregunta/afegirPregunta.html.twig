@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Afegir pregunta{% endblock %}
+
+{% block body %}
+	<div class="card border-0 m-5">
+		
+		{% for message in app.flashes('success') %}
+            <div class="alert alert-success col-12">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{{ path('usuaris') }}" class="link-blue"><i class="fas fa-question mr-2"></i>Preguntes</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Afegir pregunta</li>
+			</ol>
+		</nav>
+		
+		<div class="card-header border-bottom bg-white d-flex justify-content-between p-0 mt-4">
+			<h1 class="h3">NOVA PREGUNTA</h1><a class="btn btn-link link-blue" href="javascript:history.back()"><i class="fas fa-arrow-left"></i> TORNAR</a>
+		</div>
+		<div class="card-body">
+			<form>
+				<div class="accordion" id="idiomesPregunta">
+					{% set idiomes = ['Cat', 'Es', 'En'] %}
+					{% for idioma in idiomes %}
+						<div class="card rounded-0 border-white">
+							<div class="card-header h-auto card-blue border-0 rounded-0" id="heading{{ idioma }}" data-toggle="collapse" data-target="#collapse{{ idioma }}" aria-expanded="{% if loop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ idioma }}">
+								<span class="mb-0 preguntesLanguageHeader">
+								  <img src="{% if idioma == 'Cat' %}{{ asset('img/cat.jpg') }}{% elseif idioma == 'Es' %}{{ asset('img/esp.gif') }}{% else %}{{ asset('img/en.png') }}{% endif %}" alt="" class="mr-2 rounded-circle language-icon">
+								   {% if idioma == 'Cat' %}Català{% elseif idioma == 'Es' %}Castellà{% else %}Anglès{% endif %}
+								  <span class=" float-right d-none" id="{{ idioma }}Valid"><i class="fas fa-check text-success"></i></span>
+								</span>
+							</div>
+							<div id="collapse{{ idioma }}" class="collapse {% if loop.first %}show{% endif %}" aria-labelledby="heading{{ idioma }}" data-parent="#idiomesPregunta">
+								<div class="card-body">
+									<div class="form-row col-8">
+										<div class="col form-group">
+											<label for="nom">Text de la pregunta  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
+											<textarea name="pregunta{{ idioma }}" rows="3" id="pregunta{{ idioma }}" class="form-control" required></textarea>
+										</div>
+									</div>
+									<div class="form-row col-8">
+										<div class="col form-group">
+											<label for="nom">Resposta correcta  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
+											<textarea name="correcta{{ idioma }}" id="correcta{{ idioma }}" class="form-control" required></textarea>
+										</div>
+										<div class="col form-group">
+											<label for="cognoms">Resposta incorrecta 1  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
+											<textarea name="incorrecta{{ idioma }}1" id="incorrecta{{ idioma }}1" class="form-control" required></textarea>
+										</div>
+									</div>
+									<div class="form-row col-8">
+										<div class="col form-group">
+											<label for="username">Resposta incorrecta 2  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
+											<textarea name="incorrecta{{ idioma }}2" id="incorrecta{{ idioma }}2" class="form-control" required></textarea>
+										</div>
+										<div class="col form-group">
+											<label for="email">Resposta incorrecta 3 <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
+											<textarea name="incorrecta{{ idioma }}3" id="incorrecta{{ idioma }}3" class="form-control" required></textarea>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+				<div class="col-12 text-center">
+					<button id="addBtn" type="submit" class="btn customAddBtn mt-3" disabled><i class="fas fa-plus mr-2"></i>Afegir pregunta</button>
+				</div>
+			</form>
+		</div>
+	</div>
+{% endblock %}
+{% block javascriptsBottom %}
+	{{ parent() }}
+	<script>
+		$( document ).ready(function() {
+			$('textarea').on('change', function() {
+				var cat = validar('Cat');
+				var es = validar('Es');
+				var en = validar('En');
+				if (cat || es || en) {
+					$('#addBtn').prop('disabled', false);
+				} else {
+					$('#addBtn').prop('disabled', true);
+				}
+			});
+		});
+
+		function validar(idioma) {
+			if ($('#pregunta' + idioma).val() != '' && $('#correcta' + idioma).val() != '' && $('#incorrecta' + idioma + '1').val() != '' && $('#incorrecta' + idioma + '2').val() != '' && $('#incorrecta' + idioma + '3').val() != '') {
+				$('#' + idioma + 'Valid').removeClass('d-none');
+				return true;
+			} else {
+				$('#' + idioma + 'Valid').addClass('d-none');
+				return false;
+			}
+
+		}
+
+	</script>
+{% endblock %}
