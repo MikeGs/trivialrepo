@@ -198,4 +198,21 @@ class UsuariController extends Controller
 
         return new JsonResponse($response);
     }
+
+    /**
+     * @Route("/comprovar-codi", name="comprovarCodi")
+     */
+    public function comprovarCodi(Request $request) : JsonResponse
+    {
+        $em = $this->getDoctrine()->getManager();
+        $codi = $em->getRepository(Usuari::class)->findOneByCodiAlumne($request->request->get('codi'));
+
+        if ($codi != null) {
+            $response = true;
+        } else {
+            $response = false;
+        }
+
+        return new JsonResponse($response);
+    }
 }
