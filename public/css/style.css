@@ -59,7 +59,7 @@ html, body {
 
 #menuList > li {
 	display: block;
-	padding: 20px 0px 20px 50px;
+	padding: 20px 0px 20px 40px;
 }
 
 #menuList > li:hover {
