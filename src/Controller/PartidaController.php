@@ -22,12 +22,10 @@ class PartidaController extends Controller
     {
 
         $title = "Trivial | UB";
-        $usuari = $this->get('grupcontroller')->checkUser($this->getUser());
 
         return $this->render('partida/index.html.twig', [
             'controller_name' => 'PartidaController',
             'title' => $title,
-            'usuari' => $usuari,
         ]);
     }
 
@@ -162,15 +160,57 @@ class PartidaController extends Controller
 
     }
 
+    public function getAlumnesCurs($idCurs) {
+        
+        $em = $this->getDoctrine()->getManager();
+
+            $connection = $em->getConnection();
+            $statement = $connection->prepare("SELECT gu.grup_id, gu.usuari_id, u.nom, u.cognoms, u.last_login 
+            from grup_usuari gu inner join usuari u on gu.usuari_id = u.id 
+            where gu.grup_id = " . $idCurs);
+            $statement->execute();
+            $alumnes = $statement->fetchAll();
+
+            return $alumnes;
+    }
+
     /**
      * @Route("/partidaLobby/{grupid}", name="partidaLobby")
      */
     function partidaLobby($grupid) {
 
-    $user = $this->get('grupcontroller')->checkUser($this->getUser());
     $grup = $this->getGrup($grupid);
+    $user = $this->getUser();
+    $jugadorsGrup = $this->getAlumnesCurs($grupid);
 
-    $html = "<div id='multiplayerLobby' class='row p-4 col-9'>
+    $llistat = "";
+
+    foreach($jugadorsGrup as $jugador) {
+
+        if ($jugador["usuari_id"] != $user->getId()) {
+
+            $llistat = $llistat . "<tr>
+            <td class='elementLlistaJugadorTd'>
+            
+                <a class='elementLlistaJugadors nodeco' name='". $jugador["nom"] . " " . $jugador["cognoms"] ."' id='" . $jugador['usuari_id'] . "' href='#'>
+
+                    <span class='jugadorNom'>
+                        " . $jugador["nom"] . " " . $jugador["cognoms"] . "
+                    </span> 
+
+                </a>
+
+            </td>
+            
+        </tr>";
+
+        }
+
+    }
+
+    $html = "
+    
+    <div id='multiplayerLobby' class='row p-4 col-9'>
 
     <div class='container'>
         <h2>Sala d'espera | Partida multijugador</h2>
@@ -245,6 +285,97 @@ class PartidaController extends Controller
 
     </container>
         
+    <div id='afegirJugadorModal' class='modal fade' tabindex='-1' role='dialog'>
+	<div class='modal-dialog' role='document'>
+		<div class='modal-content'>
+			<div class='modal-header'>
+				<h6 class='modal-title' id='afegirJugadorModal'></h6>
+				<button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+					<span aria-hidden='true'>&times;</span>
+				</button>
+			</div>
+			<div class='modal-body'>
+				<div id='afegirJugadorModalMsg'>
+					<div class='form-group'>
+						<table class='col-12'>
+
+                            <tr>
+                                <th scope='col'>Llistat de jugadors</th>
+                            </tr>
+                            " .
+
+                            $llistat
+
+                            /* {% set ids = 0 %}
+                            {% for jugador in totsjugadors %}
+                                <tr>
+                                    <td class='elementLlistaJugadorTd'>
+                                    
+                                        <a class='elementLlistaJugadors nodeco' id='{{ jugador.id }}' href='#'>
+
+                                            <span class='jugadorNom'>
+                                                {{jugador.nom}}
+                                            </span> 
+
+                                        </a>
+
+                                    </td>
+                                </tr>
+                            {% set ids = ids + 1 %}
+                            {% endfor %} */
+                        . "
+                        </table>
+                        <input type='submit' name='Submit' value='Afegir' class='btn btn-primary disabled' id='afegirJugadorsBtn' data-grupid='{{ grup.id }}'>
+					</div>
+				</div>
+			</div>
+			<div class='modal-footer' id='afegirJugadorModalBtns'>
+			</div>
+		</div>
+	</div>
+</div>
+
+    <script>
+        
+    $('body').on( 'click', '#afegirJugador', function() {
+
+        $('#afegirJugadorModal').modal('show');
+
+        $('body').on('click', '#afegirJugador', function() {
+            $.get()
+        });
+    });
+
+    $('.elementLlistaJugadors').click(function() {
+        var alumneid = this.id;
+        
+        if (!$(this).hasClass('usuariSeleccionat')) {
+            $(this).addClass('usuariSeleccionat');
+        } else {
+            $(this).removeClass('usuariSeleccionat');
+        }
+    })
+
+    $('#afegirJugadorsBtn').click(function(e) {
+
+        var usuarisSeleccionats = $('.usuariSeleccionat');
+        var ids = [];
+        var jugadors = [];
+
+        $.each( usuarisSeleccionats, function( key, value ) {
+            ids.push(value.id);
+            var jugador = [value.id, value.name];
+            jugadors.push(jugador);
+        });
+
+        console.log(jugadors);
+
+        $('#afegirJugadorModal').modal('hide');
+
+    });
+
+    </script>
+
     </div>";
 
     return new Response(

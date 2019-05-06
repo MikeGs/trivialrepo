@@ -26,7 +26,7 @@
             <li>
             <a id="partidaBtn" class="buttonStart list-group-item" href="#">Partida</a>
             <ul id="llistatGrupsJoc">
-                {% for grup in usuari.grups %}
+                {% for grup in app.user.grups %}
                 <li><a id='{{ grup.id }}' class="buttonStart partidaBtnGrup list-group-item" href='#'> - {{ grup.nom }}</a></li>
                 {% endfor %}
             </ul>
