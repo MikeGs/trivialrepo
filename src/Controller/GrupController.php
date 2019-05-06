@@ -24,6 +24,16 @@ class GrupController extends Controller
      */
     public function index()
     {
+        if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('fos_user_security_login');
+
+        } else if ($authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('joc');
+
+        } 
+
         $title = "Grups | Trivial UB";
         $grups = $this->getGrups();
         $nivells = $this->getNivells();
@@ -71,6 +81,16 @@ class GrupController extends Controller
      */
     public function new(Request $request)
     {
+        if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('fos_user_security_login');
+
+        } else if ($authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('joc');
+
+        } 
+        
         $administradors = $this->getAdministradors();
 
         $grup = new Grup();

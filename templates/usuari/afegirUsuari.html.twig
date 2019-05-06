@@ -101,7 +101,7 @@
 
 		function validarNomDusuari() {
 			if ($('#username').val() != '') {
-				var url = `{{ path('comprovarUsername') }}`
+				var url = `{{ path('comprovarUsername') }}`;
 				$.post(url, { username : $('#username').val() })
 				.done(function(response) {
 					if (response) {
@@ -121,7 +121,7 @@
 
 		function validarEmail() {
 			if ($('#email').val() != '') {
-				var url = `{{ path('comprovarEmail') }}`
+				var url = `{{ path('comprovarEmail') }}`;
 				$.post(url, { email : $('#email').val() })
 				.done(function(response) {
 					if (response) {

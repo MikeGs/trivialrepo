@@ -20,6 +20,15 @@ class PreguntaController extends AbstractController
      */
     public function index()
     {
+        if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('fos_user_security_login');
+
+        } else if ($authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('joc');
+
+        } 
 
     	$em = $this->getDoctrine()->getManager();
 
@@ -72,6 +81,16 @@ class PreguntaController extends AbstractController
      * @Route("/afegir-pregunta", name="afegirPregunta")
      */
     public function afegirPregunta(Request $request) {
+
+        if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('fos_user_security_login');
+
+        } else if ($authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('joc');
+
+        } 
 
         $em = $this->getDoctrine()->getManager();
     

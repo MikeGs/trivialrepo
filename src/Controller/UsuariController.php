@@ -21,6 +21,20 @@ class UsuariController extends Controller
      */
     public function index()
     {
+        $authChecker = $this->container->get('security.authorization_checker');
+
+        if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('fos_user_security_login');
+
+        } else if ($authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('joc');
+
+        } else if ($authChecker->isGranted('ROLE_TEACHER')) {
+
+            return $this->redirectToRoute('inici');
+        }
 
     	$em = $this->getDoctrine()->getManager();
     	$usuaris = $em->getRepository(Usuari::class)->findAll();
@@ -108,6 +122,19 @@ class UsuariController extends Controller
      * @Route("/afegir-usuari", name="afegirUsuari")
      */
     public function afegirUsuari(Request $request, UserPasswordEncoderInterface $encoder) {
+
+        if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('fos_user_security_login');
+
+        } else if ($authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('joc');
+
+        } else if ($authChecker->isGranted('ROLE_TEACHER')) {
+
+            return $this->redirectToRoute('inici');
+        }
 
         $em = $this->getDoctrine()->getManager();
 
