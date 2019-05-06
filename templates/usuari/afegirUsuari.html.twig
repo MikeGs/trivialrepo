@@ -26,27 +26,27 @@
 				<div class="form-row col-8">
 					<div class="col form-group">
 						<label for="nom">Nom  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
-						<input type="text" name="nom" id="nom" class="form-control" required>
+						<input type="text" name="nom" id="nom" class="form-control userField" required>
 					</div>
 					<div class="col form-group">
 						<label for="cognoms">Cognoms  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
-						<input type="text" name="cognoms" id="cognoms" class="form-control" required>
+						<input type="text" name="cognoms" id="cognoms" class="form-control userField" required>
 					</div>
 				</div>
 				<div class="form-row col-8">
 					<div class="col form-group">
-						<label for="username">Nom d'usuari  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
-						<input type="text" name="username" id="username" class="form-control" required>
+						<label for="username" id="userNameLabel">Nom d'usuari  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
+						<input type="text" name="username" id="username" class="form-control userField" required>
 					</div>
 					<div class="col form-group">
-						<label for="email">Correu electrònic  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
-						<input type="email" name="email" id="email" class="form-control" required>
+						<label for="email" id="emailLabel">Correu electrònic  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
+						<input type="email" name="email" id="email" class="form-control userField" required>
 					</div>
 				</div>
 				<div class="form-row col-8">
 					<div class="col form-group">
 						<label for="rol">Rol d'usuari</label>
-						<select name="rol" id="rol" class="form-control">
+						<select name="rol" id="rol" class="form-control userField">
 							{% for rol in rols|keys if rol != 'ROLE_SUPER_ADMIN' %}
 								<option value="{{ rol }}">
 									{% if rol == 'ROLE_STUDENT' %}
@@ -61,8 +61,8 @@
 						</select>
 					</div>
 					<div class="col form-group">
-						<label for="codi">Codi alumne <span class="badge" style="font-size: 12px; color: #B4B4B4">( opcional )</span></label>
-						<input type="number" name="codi" id="codi" class="form-control">
+						<label for="codi" id="codiLabel">Codi alumne <span class="badge" style="font-size: 12px; color: #B4B4B4">( opcional )</span></label>
+						<input type="number" name="codi" id="codi" class="form-control userField" pattern="[0-9]{16}">
 					</div>
 				</div>
 				<div class="alert alert-info col-8 text-center" style="font-size: 12px">
@@ -70,9 +70,93 @@
 				</div>
 				
 				<div class="col-8 text-center">
-					<button type="submit" class="btn customAddBtn mt-3"><i class="fas fa-plus mr-2"></i>Afegir usuari</button>
+					<button type="submit" class="btn customAddBtn mt-3" id="addBtn" disabled><i class="fas fa-plus mr-2"></i>Afegir usuari</button>
 				</div>
 			</form>
 		</div>
 	</div>
+{% endblock %}
+{% block javascriptsBottom %}
+	{{ parent() }}
+	<script>
+		$(document).ready(function() {
+			$('.userField').on('keyup change', function() {
+				validar();
+			});	
+		});
+
+		function validar() {
+			if ($('#nom').val() != '') var valNom = true;
+			if ($('#cognoms').val() != '') var valCogn = true;
+			var username = validarNomDusuari();
+			var email = validarEmail();
+			var codi = validarCodi();
+
+			if (valNom && valCogn && username && email && codi) {
+				$('#addBtn').prop('disabled', false);
+			} else {
+				$('#addBtn').prop('disabled', true);
+			}
+		}
+
+		function validarNomDusuari() {
+			if ($('#username').val() != '') {
+				var url = `{{ path('comprovarUsername') }}`;
+				$.post(url, { username : $('#username').val() })
+				.done(function(response) {
+					if (response) {
+						if ($('#usernameError').length == 0) {
+							$('#userNameLabel').append('<span style="font-size: 12px; color: red;" id="usernameError" class="pt-1 float-right">Usuari ja existent.</span>');		
+						}	
+						return false;
+					} else {
+						$('#usernameError').remove();
+						return true;
+					}
+				});
+			} else {
+				return false;
+			}
+		}
+
+		function validarEmail() {
+			if ($('#email').val() != '') {
+				var url = `{{ path('comprovarEmail') }}`;
+				$.post(url, { email : $('#email').val() })
+				.done(function(response) {
+					if (response) {
+						if ($('#emailError').length == 0) {
+							$('#emailLabel').append('<span style="font-size: 12px; color: red;" id="emailError" class="pt-1 float-right">Correu electrònic ja existent.</span>');		
+						}	
+						return false;
+					} else {
+						$('#emailError').remove();
+						return true;
+					}
+				});
+			} else {
+				return false;
+			}
+		}
+
+		function validarCodi() {
+			if ($('#codi').val() != '') {
+				var url = `{{ path('comprovarCodi') }}`
+				$.post(url, { codi : $('#codi').val() })
+				.done(function(response) {
+					if (response) {
+						if ($('#codiError').length == 0) {
+							$('#codiLabel').append('<span style="font-size: 12px; color: red;" id="codiError" class="pt-1 float-right">Codi d\'alumne ja existent.</span>');		
+						}	
+						return false;
+					} else {
+						$('#codiError').remove();
+						return true;
+					}
+				});
+			} else {
+				return false;
+			}
+		}
+	</script>
 {% endblock %}

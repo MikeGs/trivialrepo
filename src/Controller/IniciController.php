@@ -13,7 +13,18 @@ class IniciController extends AbstractController
      */
 	public function index()
     {
-    	
+    	$authChecker = $this->container->get('security.authorization_checker');
+
+    	if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
+
+    		return $this->redirectToRoute('fos_user_security_login');
+
+    	} else if ($authChecker->isGranted('ROLE_STUDENT')) {
+
+    		return $this->redirectToRoute('joc');
+
+    	}
+
     	return $this->render('inici/inici.html.twig', [
 
         ]);

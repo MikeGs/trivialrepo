@@ -21,6 +21,20 @@ class UsuariController extends Controller
      */
     public function index()
     {
+        $authChecker = $this->container->get('security.authorization_checker');
+
+        if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('fos_user_security_login');
+
+        } else if ($authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('joc');
+
+        } else if ($authChecker->isGranted('ROLE_TEACHER')) {
+
+            return $this->redirectToRoute('inici');
+        }
 
     	$em = $this->getDoctrine()->getManager();
     	$usuaris = $em->getRepository(Usuari::class)->findAll();
@@ -109,6 +123,19 @@ class UsuariController extends Controller
      */
     public function afegirUsuari(Request $request, UserPasswordEncoderInterface $encoder) {
 
+        if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('fos_user_security_login');
+
+        } else if ($authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('joc');
+
+        } else if ($authChecker->isGranted('ROLE_TEACHER')) {
+
+            return $this->redirectToRoute('inici');
+        }
+
         $em = $this->getDoctrine()->getManager();
 
         $rols = $this->getParameter('security.role_hierarchy.roles');
@@ -161,5 +188,58 @@ class UsuariController extends Controller
         return $this->render('usuari/afegirUsuari.html.twig', [
             'rols' => $rols
         ]);
+    }
+
+
+    /**
+     * @Route("/comprovar-username", name="comprovarUsername")
+     */
+    public function comprovarUsername(Request $request) : JsonResponse
+    {
+        $em = $this->getDoctrine()->getManager();
+        $usuari = $em->getRepository(Usuari::class)->findOneByUsername($request->request->get('username'));
+
+        if ($usuari != null) {
+            $response = true;
+        } else {
+            $response = false;
+        }
+
+        return new JsonResponse($response);
+    }
+
+
+    /**
+     * @Route("/comprovar-email", name="comprovarEmail")
+     */
+    public function comprovarEmail(Request $request) : JsonResponse
+    {
+        $em = $this->getDoctrine()->getManager();
+        $email = $em->getRepository(Usuari::class)->findOneByEmail($request->request->get('email'));
+
+        if ($email != null) {
+            $response = true;
+        } else {
+            $response = false;
+        }
+
+        return new JsonResponse($response);
+    }
+
+    /**
+     * @Route("/comprovar-codi", name="comprovarCodi")
+     */
+    public function comprovarCodi(Request $request) : JsonResponse
+    {
+        $em = $this->getDoctrine()->getManager();
+        $codi = $em->getRepository(Usuari::class)->findOneByCodiAlumne($request->request->get('codi'));
+
+        if ($codi != null) {
+            $response = true;
+        } else {
+            $response = false;
+        }
+
+        return new JsonResponse($response);
     }
 }
