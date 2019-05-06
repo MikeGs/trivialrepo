@@ -1,3 +1,9 @@
+/* FONTS */
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+/* FONTS END */
+
 /* normalitzacio d'estils */
 
 html, body {
@@ -28,7 +34,6 @@ html, body {
 #logo {
 	width: 120px;
 }
-
 
 .navegacio::after {
 	position: absolute;
@@ -315,6 +320,18 @@ table.aligncenter .col {
 	vertical-align: bottom;
 }
 
+#startMenuUl .active {
+	color: #005a9e!important;
+	transform: scale(1.05);
+	background-color: rgba(0,0,0,0.2)!important;
+	font-weight: bold;
+	filter: brightness(2);
+}
+
+#startMenuUl .active:hover {
+	filter: brightness(1)!important;
+}
+
 #startMenu h1, #startMenu ul li {
 	color: white;
 }
@@ -337,11 +354,13 @@ table.aligncenter .col {
 	border-radius: 0px;
 	background-color: transparent!important;
 	font-size: 20px;
+	box-sizing: border-box;
+	text-shadow: 1px 1px 10px rgba(0,0,0,0.3);
 }
 
 #startMenu #sortirElement {
 	color: red!important;
-	font-weight: bold;
+	filter: brightness(2);
 }
 
 #startMenu li a:hover {
@@ -353,6 +372,8 @@ table.aligncenter .col {
 #contingutStart {
 	width: calc(100% - 350px);
 	background-color: rgba(41,41,41,1);
+	overflow: auto;
+	height: 100%;
 }
 
 #contingutStart .container {
@@ -362,6 +383,8 @@ table.aligncenter .col {
 
 #contingutStart h2 {
 	color: white;
+	font-weight: bold;
+	text-transform: uppercase;
 }
 
 .list-group {
@@ -377,47 +400,370 @@ table.aligncenter .col {
 
 /* PREPARAR PARTIDA INTRO */
 
-#cardPartida {
-	background-color: rgba(255,255,255,0.1);
-	margin: 0 auto;
-	color: white;
-	border-radius: 5px;
+#multiplayerContainer {
+	margin: 0px!important;
 }
 
-#cardPartida #prepararPartida {
-	margin: 0 auto;
-	display: inline-block;
+#multiplayerContainer .container, #multiplayerContainer .row {
+	padding: 0px!important;
+	margin: 0px;
+}
+
+#multiplayerContainer h3, #multiplayerLobby h3 {
+	color: white;
+}
+
+#verticalCardsContainer, #topLobby {
+	margin-top: 15px!important;
+}
+
+#multiHighlight {
+	margin-top: 35px!important;
+}
+
+#playMultiplayerCard {
+	padding-left: 0px;
+}
+
+#playMultiplayerCard a {
+	width: 100%;
+	display: table;
+	height: 450px;
+	width: 100%;
+	background-color: rgba(255,255,255,0.1);
+
+	text-decoration: none;
+}
+
+#playMultiplayerCard img {
+	display: block;
+	margin: 0px!important;
+	width: calc(100% - 7.5px);
+	height: 100%;
+	box-sizing: border-box;
+	position: absolute;
+	z-index: 85;
+}
+
+#playMultiplayerCard p {
+	display: table-cell;
+	vertical-align: middle;
+	top: 0;
+	width: 100%;
 	text-align: center;
-	margin-top: 15px;
+	color: white;
+
+	text-transform: uppercase;
+	font-size: 25px;
+
+	z-index: 90;
+}
+
+#playMultiplayerCard a:hover p {
+	text-decoration: none!important;
+}
+
+#playMultiplayerCard, #cardRanking {
+	display: block;
+}
+
+#cardRanking {
+	background-color: rgba(255,255,255,0.1);
+	color: white;
+}
+
+#cardRanking {
+	padding: 20px!important;
 }
 
 #rankingJugadors {
 	width: 100%;
 	color: white;
+	box-sizing: border-box;
+
+	min-height: 250px;
 }
 
 #rankingJugadors th, #rankingJugadors td {
 	padding: 10px;
 }
 
+#rankingJugadors_wrapper .col-sm-12 {
+	padding-left: 0px!important;
+	padding-right: 0px!important;
+}
+
+#rankingJugadors thead {
+	background-color: rgba(41,41,41,0.4);
+}
+
 #rankingJugadors tr:nth-child(1) {
 	border-bottom: 1px solid white;
 }
 
-#rankingJugadors th:nth-child(2), #rankingJugadors td:nth-child(2) {
+input[type=text],
+input[type=password] {
+    box-sizing : border-box;
+}
+
+/* BACKGROUND ROTATE */
+
+.backgroundRotate {
+	position: absolute;
+	right: 0;
+	transform: translate(50%, 50%);
+	display: table;
+
+	min-height: 400px;
+}
+
+.backgroundRotate img {
+	transform-origin: center middle;
+	animation: rotate360 50s infinite;
+	animation-timing-function: linear;
+}
+
+/* BACKGROUND ROTATE END */
+
+/* TEMP */
+
+#rankingJugadors_filter, #rankingJugadors_info {
+	display: none;
+}
+
+
+/* TEMP END */
+
+div.dataTables_wrapper div.dataTables_filter label {
+	width: 100%;
+}
+
+div.dataTables_wrapper div.dataTables_filter input {
+	width: auto;
+	box-sizing: border-box;
+}
+
+#rankingJugadors th:nth-child(3), #rankingJugadors td:nth-child(3) {
 	text-align: center;
 	border-left: 1px dotted white;
+	width: 25%;
 }
 
 #rankingJugadors th:nth-child(1), #rankingJugadors th:nth-child(1) {
+	text-align: center;
+	border-right: 1px dotted white;
+	width: 10%;
+}
+
+#rankingJugadors th:nth-child(2), #rankingJugadors th:nth-child(2) {
 	width: 70%;
 }
 
-#rankingJugadors td:nth-child(2), #rankingJugadors td:nth-child(2) {
-	width: 30%;
+
+.verticalCard {
+	display: block;
+	box-sizing: border-box;
+	padding-left: 0px;
+	padding-right: 0px!important;
+}
+
+#vertical1 a {
+	background-image: url("../img/Vertical1.png");
+}
+
+#vertical2 a {
+	background-image: url("../img/stats.png");
+}
+
+#vertical3 a {
+	background-image: url("../img/compara.png");
+}
+
+#vertical4 a {
+	background-image: url("../img/train.png");
+}
+
+.verticalCardDesc {
+	background-color: rgba(0,0,0,0.5);
+}
+
+.verticalCard:hover .verticalCardDesc {
+	opacity: 0;
+}
+
+.verticalCard a {
+	position: relative;
+	display: table;
+	background-color: rgba(255,255,255,0.2);
+
+	height: 300px;
+	text-decoration: none;
+
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.verticalCard img {
+	width: 100%;
+	position: absolute;
+
+	z-index: 85;
+}
+
+.verticalCard p {
+	top: 0;
+	color: white;
+	font-size: 23px;
+	box-sizing: border-box;
+
+	padding: 10px;
+	text-transform: uppercase;
+
+	display: table-cell;
+	vertical-align: middle;
+
+	z-index: 90;
+	width: 100%;
+	text-align: center;
+
+	text-shadow: 1px 1px 10px rgba(0,0,0,0.8);
 }
 
 /* PREPARAR PARTIDA INTRO END */
+
+/* PARTIDA LOBBY */
+
+#tipusPartidaSlider, .carousel-inner, .carousel-inner * {
+	max-height: 350px;
+}
+
+.carousel-inner {
+	min-height: 300px;
+}
+
+#tipusPartidaSlider {
+	background-color: rgba(0,180,255,0.7);
+}
+
+.ontopCarousel {
+	position: relative;
+	width: 100%;
+	text-align: center;
+
+	color: white;
+}
+
+#playerList {
+	color: white;
+}
+
+#playerList ul {
+	list-style: none;
+	width: 100%;
+	padding: 0px;
+}
+
+#playerList ul li a {
+	width: 100%;
+	border-bottom: 1px solid white;
+	display: block;
+	color: inherit;
+	text-decoration: none;
+	text-transform: uppercase;
+	font-size: 22px;
+
+	text-shadow: 1px 1px 10px rgba(0,0,0,0.4);
+	padding: 5px;
+
+	overflow: hidden;
+	
+}
+
+#playerList ul li a:hover {
+	background-color: rgba(255,255,255,0.1);
+}
+
+#playerList ul li:nth-child(2) a {
+	border-top: 1px solid white;
+}
+
+#playerListHead {
+	padding-bottom: 10px;
+}
+
+#afegirJugador {
+	float: right;
+}
+
+.tableNormes, #llistatGrupsJoc {
+	color: white;
+	list-style: none;
+}
+
+#llistatGrupsJoc {
+	padding: 0px;
+}
+
+#llistatGrupsJoc a {
+	font-size: 15px!important;
+}
+
+#containerNormes {
+	margin-top: 40px;
+}
+
+.tableNormes li {
+	padding: 10px;
+}
+
+.tableNormes li p {
+	width: 50%;
+	float: left;
+}
+
+.tableNormes select {
+	width: 100%;
+	background-color: transparent;
+	border: 0px solid transparent;
+	border-radius: 5px;
+	color: white;
+
+	outline: none;
+}
+
+.tableNormes option {
+	color: black;
+}
+
+.tableHead {
+	text-align: center;
+
+	background-color: transparent!important;
+	border-bottom: 1px solid white;
+}
+
+.tableNormes li:nth-child(2) {
+	margin-top: 10px;
+}
+
+.tableHead p {
+	width: 100%!important;
+}
+
+.tableNormes p {
+	margin-bottom: 0px!important;
+}
+
+.tableNormes li:nth-child(odd) {
+	background-color: rgba(255,255,255,0.2);
+} 
+
+
+#topLobby {
+	margin-left: 0px!important;
+}
+
+/* PARTIDA LOBBY END */
 
 /* images */
 .language-icon {
@@ -461,3 +807,189 @@ table.aligncenter .col {
 }
 
 /* TRANSICIONS END */
+
+/*Eddy LOGIN y REGISTER*/
+.fondo-eddy{
+	
+	background-image: url("../img/estudio.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: right;
+	position: absolute;
+	z-index: 0;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	opacity: 0.05;
+}
+
+.askuser {
+	background-color: rgba(255,255,255,1); 
+	min-height: 100vh;
+	overflow: hidden;
+}
+
+.formulario-login, .formulario-register{
+	background-color:rgba(255,255,255,0.5);
+	width: 80%;
+	max-width: 500px;
+	margin-top: 200px;
+	box-shadow: 10px 10px 17px 0px rgba(0,0,0,0.25);
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	font-family: 'Montserrat', sans-serif;
+	z-index: 1;
+	background-color: white;
+}
+
+.askuser form {
+	padding: 15px;
+}
+
+.formheader {
+	width: 100%;
+	text-align: center;
+	background-color: #005a9e;
+	color: white;
+	display: table;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.formheader h2 {
+	display: table-cell;
+	vertical-align: middle;
+	padding: 10px;
+}
+
+.buttonLoginRegisterDiv {
+	margin-top: 30px;
+	text-align: center;
+}
+
+.buttonLoginRegister {
+	width: 50%!important;
+	display: inline-block;
+}
+
+.formulario-register{
+	margin-top: 50px!important;
+}
+
+.formulario-login input, .fos_user_registration_register input, .formulario-login label, .fos_user_registration_register label, .formulario-login textarea, .fos_user_registration_register textarea {
+	width: 100%;
+}
+
+.fos_user_registration_register input:not(.btn){
+	margin-bottom: 10px;
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.label_p{
+	padding-top:20px;
+}
+
+#rememberDiv {
+	margin-top: 10px;
+}
+
+.formulario-login input[type="checkbox"] {
+	margin-right: 10px;
+	height: 20px!important;
+}
+
+.formulario-login input[type="checkbox"], .formulario-login .remember {
+	width: auto!important;
+	float: left;
+}
+
+.submit-register{
+	margin-top: 20px;
+}
+
+/*FIN LOGIN y REGISTER*/
+
+/* CHANGE PASSWORD */
+.fos_user_change_password label, .fos_user_change_password input {
+	width: 100%;
+}
+
+.fos_user_change_password input:not(.btn){
+	margin-bottom: 10px;
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.buttonChangePasswordDiv {
+	margin-top: 30px;
+	text-align: center;
+}
+
+.buttonChangePassword {
+	width: 50%!important;
+	display: inline-block;
+}
+/* FIN CHANGE PASSWORD */
+
+
+.fos_user_profile_edit, .askuser div:first-child{
+	z-index: 99999;
+    position: relative;
+}
+
+.fos_user_profile_edit label, .fos_user_profile_edit input {
+	width: 100%;
+}
+
+.fos_user_profile_edit input:not(.btn){
+	margin-bottom: 10px;
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+/* ANIMATIONS */
+
+@keyframes rotate360 {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+/* ANIMATIONS END */

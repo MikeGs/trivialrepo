@@ -143,6 +143,16 @@ class GrupController extends Controller
 
     }
 
+    public function getUsuari($id) {
+        
+        $usuaris = $this->getDoctrine()
+            ->getRepository(Usuari::class)
+            ->find($id);
+
+        return $usuaris;
+
+    }
+
     public function getAdministradors() {
 
         $em = $this->getDoctrine()->getManager();

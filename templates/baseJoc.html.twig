@@ -22,8 +22,15 @@
 
         <h1 class="p-3">Trivial</h1>
 
-        <ul class="list-group alltransitionparent3">
-            <li><a id="partidaBtn" class="buttonStart list-group-item" href="#">Partida</a></li>
+        <ul id="startMenuUl" class="list-group alltransitionparent3">
+            <li>
+            <a id="partidaBtn" class="buttonStart list-group-item" href="#">Partida</a>
+            <ul id="llistatGrupsJoc">
+                {% for grup in usuari.grups %}
+                <li><a id='{{ grup.id }}' class="buttonStart partidaBtnGrup list-group-item" href='#'> - {{ grup.nom }}</a></li>
+                {% endfor %}
+            </ul>
+            </li>
             <li><a id="entrenamentBtn" class="buttonStart list-group-item" href="#">Entrenament</a></li>
             <li><a id="rankingBtn" class="buttonStart list-group-item" href="#">Rànquing</a></li>
             <li><a id="settingsBtn" class="buttonStart list-group-item" href="#">Configuració</a></li>
@@ -36,8 +43,11 @@
     </div>
 
     <div id="contingutStart" class="scroll">
-    <p>test</p>
         {% block body %}{% endblock %}
+    </div>
+
+    <div class="backgroundRotate">
+        <img src="img/bgrotate.png"/>
     </div>
 
     <script>
@@ -48,7 +58,6 @@
 
         $.each( arrayButtons, function( key, value ) {
             $("#"+value.id).removeClass("active");
-            console.log(value.id);
         });
 
         $(element).addClass("active");
@@ -57,17 +66,18 @@
 
     var contingut = $("#contingutStart");
 
-    $("#partidaBtn").click(function() {
-        
+    $(".partidaBtnGrup").click(function() {
+
+        var grup = this.id;
         var url = "{{ path('getPartidaPortait') }}"
         var codes;
 
-        $.post(url) 
+        $.post(url, { 'grup': grup}) 
 		    .done(function(response) {
                 $("#contingutStart").html(response);
 			});
         
-        asActive("#partidaBtn");
+        asActive(".partidaBtnGrup#" + grup);
 
     });
 
