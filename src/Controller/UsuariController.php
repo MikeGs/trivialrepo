@@ -150,9 +150,7 @@ class UsuariController extends Controller
             $username = $request->request->get('username');
             $email = $request->request->get('email');
             $rol = $request->request->get('rol');
-            if ($rol == 'ROLE_STUDENT') {
-                $codi = $request->request->get('codi');
-            }
+            $codi = $request->request->get('codi');
 
             $nouUsuari = new Usuari();
 
@@ -163,7 +161,7 @@ class UsuariController extends Controller
             $nouUsuari->setEmail($email);
             $nouUsuari->setEmailCanonical($email);
             $nouUsuari->addRole($rol);
-            if ($codi != '') {
+            if ($codi != '' && $rol == 'ROLE_STUDENT') {
                 $nouUsuari->setCodiAlumne($codi);
             }
 
