@@ -5,9 +5,8 @@ security:
             algorithm: bcrypt
     role_hierarchy:
         ROLE_STUDENT: ROLE_USER
-        ROLE_TEACHER: ROLE_STUDENT
-        ROLE_ADMIN:       ROLE_TEACHER
-        ROLE_SUPER_ADMIN: ROLE_ADMIN
+        ROLE_TEACHER: ROLE_USER
+        ROLE_ADMIN:   [ROLE_TEACHER, ROLE_ADMIN]
     providers:
         fos_userbundle:
             id: fos_user.user_provider.username

@@ -20,6 +20,8 @@ class PreguntaController extends AbstractController
      */
     public function index()
     {
+        $authChecker = $this->container->get('security.authorization_checker');
+
         if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
 
             return $this->redirectToRoute('fos_user_security_login');
@@ -82,6 +84,8 @@ class PreguntaController extends AbstractController
      */
     public function afegirPregunta(Request $request) {
 
+        $authChecker = $this->container->get('security.authorization_checker');
+        
         if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
 
             return $this->redirectToRoute('fos_user_security_login');
