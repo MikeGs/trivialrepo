@@ -35,6 +35,19 @@ class PartidaController extends Controller
     }
 
     /**
+     * @Route("/pw", name="pw")
+     */
+    public function pw(Request $request) {
+
+        $pw = "UABTESTING";
+        $pwenc = md5($pw);
+
+        return new Response(
+            $pwenc
+        );
+    }
+
+    /**
      * @Route("/getPartidaPortait", name="getPartidaPortait")
      */
     public function getPartidaPortait(Request $request) {
@@ -46,6 +59,12 @@ class PartidaController extends Controller
 
         <script>   
 
+            var pw = getPw();
+
+            /*var encrypted = encrypt('Im testing this', getPw();
+            var decrypted = decrypt(encrypted, getPw();
+
+            console.log(encrypted + ' ' + decrypted.toString(CryptoJS.enc.Utf8) );*/
         </script>
 
         <div id='multiplayerContainer' class='row p-4 col-9'>
@@ -192,7 +211,7 @@ class PartidaController extends Controller
             $llistat = $llistat . "<tr>
             <td class='elementLlistaJugadorTd'>
             
-                <a class='elementLlistaJugadors nodeco' name='". $jugador["nom"] . " " . $jugador["cognoms"] ."' id='" . $jugador['usuari_id'] . "' href='#'>
+                <a class='elementLlistaJugadors nodeco' name='". $jugador["nom"] . " " . $jugador["cognoms"] ."' id='" . md5($jugador['usuari_id']) . "' href='#'>
 
                     <span class='jugadorNom'>
                         " . $jugador["nom"] . " " . $jugador["cognoms"] . "
@@ -210,6 +229,10 @@ class PartidaController extends Controller
 
     $html = "
     
+    <script>
+
+    </script>
+
     <div id='multiplayerLobby' class='row p-4 col-9'>
 
     <div class='container'>
