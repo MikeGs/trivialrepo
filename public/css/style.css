@@ -534,11 +534,11 @@ input[type=password] {
 
 /* TEMP END */
 
-div.dataTables_wrapper div.dataTables_filter label {
+#rankingJugadors_wrapper div.dataTables_filter label {
 	width: 100%;
 }
 
-div.dataTables_wrapper div.dataTables_filter input {
+#rankingJugadors_wrapper div.dataTables_filter input {
 	width: auto;
 	box-sizing: border-box;
 }
