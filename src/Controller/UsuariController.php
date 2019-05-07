@@ -27,11 +27,11 @@ class UsuariController extends Controller
 
             return $this->redirectToRoute('fos_user_security_login');
 
-        } else if ($authChecker->isGranted('ROLE_STUDENT')) {
+        } else if (!$authChecker->isGranted('ROLE_TEACHER')) {
 
             return $this->redirectToRoute('joc');
 
-        } else if ($authChecker->isGranted('ROLE_TEACHER')) {
+        } else if (!$authChecker->isGranted('ROLE_ADMIN')) {
 
             return $this->redirectToRoute('inici');
         }
@@ -123,6 +123,8 @@ class UsuariController extends Controller
      */
     public function afegirUsuari(Request $request, UserPasswordEncoderInterface $encoder) {
 
+        $authChecker = $this->container->get('security.authorization_checker');
+
         if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
 
             return $this->redirectToRoute('fos_user_security_login');
@@ -131,7 +133,7 @@ class UsuariController extends Controller
 
             return $this->redirectToRoute('joc');
 
-        } else if ($authChecker->isGranted('ROLE_TEACHER')) {
+        } else if (!$authChecker->isGranted('ROLE_ADMIN')) {
 
             return $this->redirectToRoute('inici');
         }

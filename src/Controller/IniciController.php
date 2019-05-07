@@ -19,14 +19,14 @@ class IniciController extends AbstractController
 
     		return $this->redirectToRoute('fos_user_security_login');
 
-    	} else if ($authChecker->isGranted('ROLE_STUDENT')) {
+    	} else if (!$authChecker->isGranted('ROLE_TEACHER')) {
 
     		return $this->redirectToRoute('joc');
 
-    	}
+    	} 
 
+    	
     	return $this->render('inici/inici.html.twig', [
-
-        ]);
+    	]);
     }
 }
