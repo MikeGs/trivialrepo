@@ -156,22 +156,48 @@ class PreguntaController extends AbstractController
         } 
 
         $em = $this->getDoctrine()->getManager();
-    
+        
+        $pregunta = $em->getRepository(Pregunta::class)->findOneById($id);
+
         $nivells = $em->getRepository(Nivell::class)->findAll();
         $dificultats = $em->getRepository(Dificultat::class)->findAll();
         $tipus = $em->getRepository(TipusPregunta::class)->findAll();
-
-        $pregunta = $em->getRepository(Pregunta::class)->findOneById($id);
+        $temes = $em->getRepository(Tema::class)->findByIdNivell($pregunta->getidTema()->getIdNivell());   
 
         if($request->isMethod('post')) {
 
+            $pregunta->setIdTema($em->getRepository(Tema::class)->findOneById($request->request->get('tema')));
+            $pregunta->setIdDificultat($em->getRepository(Dificultat::class)->findOneById($request->request->get('dificultat')));
+            $pregunta->setTipus($em->getRepository(TipusPregunta::class)->findOneById($request->request->get('tipus')));
+            $pregunta->setActiva($request->request->get('estat'));
+            $pregunta->setPreguntaCat($request->request->get('preguntaCat'));
+            $pregunta->setPreguntaEs($request->request->get('preguntaEs'));
+            $pregunta->setPreguntaEN($request->request->get('preguntaEn'));
+            $pregunta->setRespostaCorrectaCat($request->request->get('correctaCat'));
+            $pregunta->setRespostaCorrectaEs($request->request->get('correctaEs'));
+            $pregunta->setRespostaCorrectaEn($request->request->get('correctaEn'));
+            $pregunta->setRespostaIncorrecta1Cat($request->request->get('incorrectaCat1'));
+            $pregunta->setRespostaIncorrecta2Cat($request->request->get('incorrectaCat2'));
+            $pregunta->setRespostaIncorrecta3Cat($request->request->get('incorrectaCat3'));
+            $pregunta->setRespostaIncorrecta1Es($request->request->get('incorrectaEs1'));
+            $pregunta->setRespostaIncorrecta2Es($request->request->get('incorrectaEs2'));
+            $pregunta->setRespostaIncorrecta3Es($request->request->get('incorrectaEs3'));
+            $pregunta->setRespostaIncorrecta1En($request->request->get('incorrectaEn1'));
+            $pregunta->setRespostaIncorrecta2En($request->request->get('incorrectaEn2'));
+            $pregunta->setRespostaIncorrecta3En($request->request->get('incorrectaEn3'));
+
+            $em->persist($pregunta);
+            $em->flush();
+
+            $this->addFlash('success', 'La pregunta s\'ha editat correctament!');
         }
 
         return $this->render('pregunta/afegirEditarPregunta.html.twig', [
             'nivells' => $nivells,
             'dificultats' => $dificultats,
             'tipus' => $tipus,
-            'pregunta' => $pregunta
+            'pregunta' => $pregunta,
+            'temes' => $temes
         ]);
     }
 

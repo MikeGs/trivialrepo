@@ -58,7 +58,7 @@
 							<td>{{ pregunta.idDificultat.nom }}</td>
 							<td>{{ pregunta.tipus.nom }}</td>
 							<td>
-								<button class="btn btn-link link-blue custom-btn-link detallsPregunta" data-id="{{ pregunta.id }}"><i class="far fa-eye"></i></button>
+								<a href="{{ path('editarPregunta', { id: pregunta.id }) }}" class="btn btn-link link-blue custom-btn-link detallsPregunta"><i class="far fa-eye"></i></a>
 								<button class="btn btn-link link-orange custom-btn-link canviarEstatPregunta" data-id="{{ pregunta.id }}">
 									{% if pregunta.activa == 1 %}
 										<i class="far fa-check-square"></i>		
