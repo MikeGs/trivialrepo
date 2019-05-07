@@ -85,7 +85,7 @@ class PreguntaController extends AbstractController
     public function afegirPregunta(Request $request) {
 
         $authChecker = $this->container->get('security.authorization_checker');
-        
+
         if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
 
             return $this->redirectToRoute('fos_user_security_login');
@@ -131,10 +131,47 @@ class PreguntaController extends AbstractController
             $this->addFlash('success', 'La pregunta s\'ha creat correctament!');
         }
 
-        return $this->render('pregunta/afegirPregunta.html.twig', [
+        return $this->render('pregunta/afegirEditarPregunta.html.twig', [
             'nivells' => $nivells,
             'dificultats' => $dificultats,
             'tipus' => $tipus,
+        ]);
+    }
+
+    /**
+     * @Route("/editar-pregunta/{id}", name="editarPregunta")
+     */
+    public function editarPregunta($id, Request $request) {
+
+        $authChecker = $this->container->get('security.authorization_checker');
+
+        if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('fos_user_security_login');
+
+        } else if ($authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('joc');
+
+        } 
+
+        $em = $this->getDoctrine()->getManager();
+    
+        $nivells = $em->getRepository(Nivell::class)->findAll();
+        $dificultats = $em->getRepository(Dificultat::class)->findAll();
+        $tipus = $em->getRepository(TipusPregunta::class)->findAll();
+
+        $pregunta = $em->getRepository(Pregunta::class)->findOneById($id);
+
+        if($request->isMethod('post')) {
+
+        }
+
+        return $this->render('pregunta/afegirEditarPregunta.html.twig', [
+            'nivells' => $nivells,
+            'dificultats' => $dificultats,
+            'tipus' => $tipus,
+            'pregunta' => $pregunta
         ]);
     }
 
