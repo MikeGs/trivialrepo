@@ -121,7 +121,7 @@ class UsuariController extends Controller
     /**
      * @Route("/afegir-usuari", name="afegirUsuari")
      */
-    public function afegirUsuari(Request $request, UserPasswordEncoderInterface $encoder) {
+    public function afegirUsuari(Request $request, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer) {
 
         $authChecker = $this->container->get('security.authorization_checker');
 
@@ -183,7 +183,25 @@ class UsuariController extends Controller
             $em->persist($nouUsuari);
             $em->flush();
 
-            $this->addFlash('success', 'Usuari creat correctament!' . $randomString);
+            $this->addFlash('success', 'Usuari creat correctament!');
+
+            $message = (new \Swift_Message('[TRIVIAL UB] Usuari generat'))
+                ->setFrom(getenv('MAIL_TRIVIAL'))
+                ->setTo($email)
+                ->setBody(
+                    $this->renderView(
+                        // templates/emails/usuarigenerat.html.twig
+                        'emails/usuarigenerat.html.twig',
+                        [
+                            'nom' => $nom,
+                            'username' => $username,
+                            'password' => $randomString,
+                            'creador' => $this->getUser()->getNom() . ' ' . $this->getUser()->getCognoms()
+                        ]),
+                    'text/html'
+                );
+
+            $resp = $mailer->send($message);
 
         }
 
