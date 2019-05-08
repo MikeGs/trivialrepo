@@ -981,6 +981,44 @@ input[type=password] {
     border-radius: .25rem;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
+
+/* MODAL INICIAR SESSIÓ PARTIDA */
+
+#jugadorSeleccionatLabelFill {
+	font-weight: bold;
+}
+
+#iniciarSessioTitle {
+	color: black;
+	text-transform: none!important;
+	font-size: 22px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px dotted rgba(41,41,41,0.2);
+}
+
+#iniciarSessioModal label, #iniciarSessioModal input {
+	width: 100%;
+}
+
+#iniciarSessioModal input[type="text"], #iniciarSessioModal input[type="password"] {
+	padding: .375rem .75rem;
+	border-radius: .25rem;
+	border: 1px solid #ced4da;
+}
+
+#iniciarSessioModal label, #iniciarSessioModal input[type="submit"] {
+	margin-top: 15px;
+}
+
+#iniciarSessioModal input[type="submit"] {
+	display: inline-block;
+	width: auto;
+	float: right;
+}
+
+/* MODAL INICIAR SESSIÓ PARTIDA END */
+
 /* ANIMATIONS */
 
 @keyframes rotate360 {

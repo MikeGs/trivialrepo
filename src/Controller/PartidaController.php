@@ -37,14 +37,12 @@ class PartidaController extends Controller
     /**
      * @Route("/pw", name="pw")
      */
-    public function pw(Request $request) {
+    public function pw() {
 
         $pw = "UABTESTING";
         $pwenc = md5($pw);
 
-        return new Response(
-            $pwenc
-        );
+        return $pwenc;
     }
 
     /**
@@ -59,12 +57,6 @@ class PartidaController extends Controller
 
         <script>   
 
-            var pw = getPw();
-
-            /*var encrypted = encrypt('Im testing this', getPw();
-            var decrypted = decrypt(encrypted, getPw();
-
-            console.log(encrypted + ' ' + decrypted.toString(CryptoJS.enc.Utf8) );*/
         </script>
 
         <div id='multiplayerContainer' class='row p-4 col-9'>
@@ -179,6 +171,16 @@ class PartidaController extends Controller
 
     }
 
+    public function getUsuari($id) {
+        
+        $usuaris = $this->getDoctrine()
+            ->getRepository(Usuari::class)
+            ->find($id);
+
+        return $usuaris;
+
+    }
+
     public function getAlumnesCurs($idCurs) {
         
         $em = $this->getDoctrine()->getManager();
@@ -202,22 +204,52 @@ class PartidaController extends Controller
     $user = $this->getUser();
     $jugadorsGrup = $this->getAlumnesCurs($grupid);
 
+    $password = $this->pw();
+
+    $nomdusuarilabel = "Nom d'usuari";
+
     $llistat = "";
 
     foreach($jugadorsGrup as $jugador) {
 
         if ($jugador["usuari_id"] != $user->getId()) {
 
+            $encrypt = "encrypt('" . $jugador["usuari_id"] . "' , '" . $password . "')";
+
             $llistat = $llistat . "<tr>
-            <td class='elementLlistaJugadorTd'>
+
+            <script>
             
-                <a class='elementLlistaJugadors nodeco' name='". $jugador["nom"] . " " . $jugador["cognoms"] ."' id='" . md5($jugador['usuari_id']) . "' href='#'>
+                function idencriptat() {
+
+                    var password = '" . $password . "';
+                    var id = " . $encrypt . ";
+
+                    var iddes = decrypt(id, password);
+                    var desencriptat = iddes.toString().substring(1, iddes.length);
+                    
+                    return id;
+
+                }
+
+            </script>
+
+            <td class='elementLlistaJugadorTd'  >
+            
+                <a class='elementLlistaJugadors nodeco' name='". $jugador["nom"] . " " . $jugador["cognoms"] ."' id='jug". $jugador["usuari_id"] . "' secid='" . $jugador["usuari_id"] . "' href='#'>
 
                     <span class='jugadorNom'>
                         " . $jugador["nom"] . " " . $jugador["cognoms"] . "
                     </span> 
 
                 </a>
+
+                <script>
+
+                    var idencriptat = idencriptat();
+                    document.getElementById('jug" . $jugador["usuari_id"] . "').id = idencriptat;
+
+                </script>
 
             </td>
             
@@ -230,6 +262,20 @@ class PartidaController extends Controller
     $html = "
     
     <script>
+
+    var latestalumne;
+    var latestalumneid;
+    var latestalumneidenc;
+
+    var userid;
+
+    //getPw();
+    var pw = '" . $password . "';
+
+    /*var encrypted = encrypt('Im testing this', 'a1e6239b392ad6a409609a02ff16cb66');
+    var decrypted = decrypt(encrypted, 'a1e6239b392ad6a409609a02ff16cb66');*/
+
+    console.log('" . $password . "')
 
     </script>
 
@@ -309,54 +355,71 @@ class PartidaController extends Controller
     </container>
         
     <div id='afegirJugadorModal' class='modal fade' tabindex='-1' role='dialog'>
-	<div class='modal-dialog' role='document'>
-		<div class='modal-content'>
-			<div class='modal-header'>
-				<h6 class='modal-title' id='afegirJugadorModal'></h6>
-				<button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-					<span aria-hidden='true'>&times;</span>
-				</button>
-			</div>
-			<div class='modal-body'>
-				<div id='afegirJugadorModalMsg'>
-					<div class='form-group'>
-						<table class='col-12'>
+        <div class='modal-dialog' role='document'>
+            <div class='modal-content'>
+                <div class='modal-header'>
+                    <h6 class='modal-title' id='afegirJugadorModal'></h6>
+                    <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                        <span aria-hidden='true'>&times;</span>
+                    </button>
+                </div>
+                <div class='modal-body'>
+                    <div id='afegirJugadorModalMsg'>
+                        <div class='form-group'>
+                            <table class='col-12'>
 
-                            <tr>
-                                <th scope='col'>Llistat de jugadors</th>
-                            </tr>
-                            " .
-
-                            $llistat
-
-                            /* {% set ids = 0 %}
-                            {% for jugador in totsjugadors %}
                                 <tr>
-                                    <td class='elementLlistaJugadorTd'>
-                                    
-                                        <a class='elementLlistaJugadors nodeco' id='{{ jugador.id }}' href='#'>
-
-                                            <span class='jugadorNom'>
-                                                {{jugador.nom}}
-                                            </span> 
-
-                                        </a>
-
-                                    </td>
+                                    <th scope='col'>Llistat de jugadors</th>
                                 </tr>
-                            {% set ids = ids + 1 %}
-                            {% endfor %} */
-                        . "
-                        </table>
-                        <input type='submit' name='Submit' value='Afegir' class='btn btn-primary disabled' id='afegirJugadorsBtn' data-grupid='{{ grup.id }}'>
-					</div>
-				</div>
-			</div>
-			<div class='modal-footer' id='afegirJugadorModalBtns'>
-			</div>
-		</div>
-	</div>
-</div>
+                                " .
+
+                                $llistat
+
+                                . "
+                            </table>
+                            <input type='submit' name='Submit' value='Afegir' class='btn btn-primary disabled' id='afegirJugadorsBtn' data-grupid='{{ grup.id }}'>
+                        </div>
+                    </div>
+                </div>
+                <div class='modal-footer' id='afegirJugadorModalBtns'>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id='iniciarSessioModal' class='modal fade' tabindex='-1' role='dialog'>
+        <div class='modal-dialog' role='document'>
+            <div class='modal-content'>
+                <div class='modal-header'>
+                    <h6 class='modal-title' id='iniciarSessioModal'></h6>
+                    <button id='iniciarSessioModalClose' type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                        <span aria-hidden='true'>&times;</span>
+                    </button>
+                </div>
+                <div class='modal-body'>
+                    <div id='iniciarSessioModalMsg'>
+                        <div class='form-group'>
+                            
+                            <h2 id='iniciarSessioTitle' style='color: black!important'>Comprovar identitat</h2>
+
+                            <label id='jugadorSeleccionatLabel'>Jugador sel.leccionat: <jugador id='jugadorSeleccionatLabelFill'></jugador></label>
+
+                            <label for='nom'>" . $nomdusuarilabel . "</label>
+                            <input id='usernameLogin' type='text' name='nom' placeholder='Usuari'/>
+
+                            <label for='contrasenya'>Contrasenya</label>
+                            <input id='passwordLogin' type='password' name='contrasenya'/>
+
+                            <input type='submit' name='Submit' value='Iniciar sessió' class='btn btn-primary disabled' id='iniciarSessioModalBtn'>
+                            <!-- data-usuariid='{{ usuari.id }}' -->
+                        </div>
+                    </div>
+                </div>
+                <div class='modal-footer' id='iniciarSessioModalBtns'>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         
@@ -369,15 +432,52 @@ class PartidaController extends Controller
         });
     });
 
+    $('#iniciarSessioModalClose').click(function() {
+
+        $('#afegirJugadorModal').modal('show');
+
+    });
+
     $('.elementLlistaJugadors').click(function() {
-        var alumneid = this.id;
-        
-        if (!$(this).hasClass('usuariSeleccionat')) {
+
+        latestalumneidenc = this.id;
+        alert(this.getAttribute('secid'));
+        latestalumneid = this.getAttribute('secid');
+        latestalumne = this.name;
+
+        $('#jugadorSeleccionatLabelFill').html(latestalumne);
+        $('#usernameLogin, #passwordLogin').val('');
+
+        $('#iniciarSessioModal').modal('show');
+        $('#afegirJugadorModal').modal('hide');
+
+        /*if (!$(this).hasClass('usuariSeleccionat')) {
             $(this).addClass('usuariSeleccionat');
         } else {
             $(this).removeClass('usuariSeleccionat');
-        }
+        }*/
     })
+
+    $('#iniciarSessioModalBtn').click(function() {
+
+        var url = '/checklogin';
+        var pass = pw;
+
+        userid = latestalumneid;
+        var useridenc = latestalumneidenc;
+        var username = $('#usernameLogin').val();
+        var pwd = $('#passwordLogin').val();
+
+        var match;
+
+        $.post(url, { 'userid': userid, 'user': username, 'password': pwd, 'useridenc': useridenc }) 
+		    .done(function(response) {
+                match = response['match'];
+			});
+
+        console.log(match);
+
+    });
 
     $('#afegirJugadorsBtn').click(function(e) {
 
@@ -406,4 +506,24 @@ class PartidaController extends Controller
     );
 
     }
+
+    /**
+     * @Route("/checklogin", name="checklogin")
+     */
+    public function checkLogin(Request $request) : JsonResponse {
+
+        $userid = $request->request->get('userid');
+        $idencrypted = $request->request->get('useridenc');
+        $password = $request->request->get('password');
+
+        $user = $this->getUsuari($userid);
+
+        $encoderService = $this->container->get('security.password_encoder');
+        $match = $encoderService->isPasswordValid($user, $password);
+
+        return new JsonResponse(['match' => $match]);
+        
+    }
+
 }
+

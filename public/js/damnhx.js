@@ -2,21 +2,6 @@ var keySize = 256;
 var ivSize = 128;
 var iterations = 100;
 
-function getPw() {
-    var url = '/pw';
-
-    var getme;
-
-        $.post(url) 
-		    .done(function(response) {
-                getme = response;
-            });
-            
-            console.log(getme);
-
-        return getme;
-}
-
 function encrypt (msg, pass) {
     var salt = CryptoJS.lib.WordArray.random(128/8);
     
@@ -41,6 +26,7 @@ function encrypt (msg, pass) {
     }
 
 function decrypt (transitmessage, pass) {
+
     var salt = CryptoJS.enc.Hex.parse(transitmessage.substr(0, 32));
     var iv = CryptoJS.enc.Hex.parse(transitmessage.substr(32, 32))
     var encrypted = transitmessage.substring(64);
