@@ -114,27 +114,27 @@
 										<div class="col form-group">
 											
 											<label for="nom">Text de la pregunta  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
-											<textarea name="pregunta{{ idioma }}" rows="3" id="pregunta{{ idioma }}" class="form-control campPregunta">{{ textPregunta }}</textarea>
+											<textarea name="pregunta{{ idioma }}" rows="3" id="pregunta{{ idioma }}" class="form-control campPregunta">{% if textPregunta is defined %}{{ textPregunta }}{% endif %}</textarea>
 										</div>
 									</div>
 									<div class="form-row col-8">
 										<div class="col form-group">
 											<label for="nom">Resposta correcta  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
-											<textarea name="correcta{{ idioma }}" id="correcta{{ idioma }}" class="form-control campPregunta">{{ correcta }}</textarea>
+											<textarea name="correcta{{ idioma }}" id="correcta{{ idioma }}" class="form-control campPregunta">{% if correcta is defined %}{{ correcta }}{% endif %}</textarea>
 										</div>
 										<div class="col form-group">
 											<label for="cognoms">Resposta incorrecta 1  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
-											<textarea name="incorrecta{{ idioma }}1" id="incorrecta{{ idioma }}1" class="form-control campPregunta">{{ incorrecta1 }}</textarea>
+											<textarea name="incorrecta{{ idioma }}1" id="incorrecta{{ idioma }}1" class="form-control campPregunta">{% if incorrecta1 is defined %}{{ incorrecta1 }}{% endif %}</textarea>
 										</div>
 									</div>
 									<div class="form-row col-8">
 										<div class="col form-group">
 											<label for="username">Resposta incorrecta 2  <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
-											<textarea name="incorrecta{{ idioma }}2" id="incorrecta{{ idioma }}2" class="form-control campPregunta">{{ incorrecta2 }}</textarea>
+											<textarea name="incorrecta{{ idioma }}2" id="incorrecta{{ idioma }}2" class="form-control campPregunta">{% if incorrecta2 is defined %}{{ incorrecta2 }}{% endif %}</textarea>
 										</div>
 										<div class="col form-group">
 											<label for="email">Resposta incorrecta 3 <span class="badge" style="font-size: 12px; color: #B4B4B4">( requerit )</span></label>
-											<textarea name="incorrecta{{ idioma }}3" id="incorrecta{{ idioma }}3" class="form-control campPregunta">{{ incorrecta3 }}</textarea>
+											<textarea name="incorrecta{{ idioma }}3" id="incorrecta{{ idioma }}3" class="form-control campPregunta">{% if incorrecta3 is defined %}{{ incorrecta3 }}{% endif %}</textarea>
 										</div>
 									</div>
 								</div>
@@ -153,19 +153,9 @@
 	{{ parent() }}
 	<script>
 		$(document).ready(function() {
+			validar();
 			$('.campPregunta').on('keyup change', function() {
-				var cat = validarIdioma('Cat');
-				var es = validarIdioma('Es');
-				var en = validarIdioma('En');
-				var tema = validarSelector('tema');
-				var dificultat = validarSelector('dificultat');
-				var tipus = validarSelector('tipus');
-
-				if ((cat || es || en) && (tema && dificultat && tipus)) {
-					$('#addBtn').prop('disabled', false);
-				} else {
-					$('#addBtn').prop('disabled', true);
-				}
+				validar();
 			});
 
 			$('#nivell').change(function() {
@@ -181,9 +171,23 @@
 			});
 		});
 
+		function validar() {
+			var cat = validarIdioma('Cat');
+			var es = validarIdioma('Es');
+			var en = validarIdioma('En');
+			var tema = validarSelector('tema');
+			var dificultat = validarSelector('dificultat');
+			var tipus = validarSelector('tipus');
+
+			if ((cat || es || en) && (tema && dificultat && tipus)) {
+				$('#addBtn').prop('disabled', false);
+			} else {
+				$('#addBtn').prop('disabled', true);
+			}
+		}
+
 		function validarSelector(nomSelect) {
 			if ($(`#${nomSelect}`).val() != '') {
-				console.log('es true');
 				return true;
 			} else {
 				return false;
