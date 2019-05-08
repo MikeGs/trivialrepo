@@ -6,7 +6,7 @@
 	<div class="card border-0 m-5">
 		
 		{% for message in app.flashes('success') %}
-            <div class="alert alert-success col-12">
+            <div class="alert fade show alert-success col-12">
                 {{ message }}
             </div>
         {% endfor %}
@@ -169,6 +169,7 @@
 					$('#tema').html(html);
 				});
 			});
+			setTimeout(function(){ $(".alert").alert('close') }, 5000);
 		});
 
 		function validar() {
