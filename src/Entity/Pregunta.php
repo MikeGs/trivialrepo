@@ -117,7 +117,7 @@ class Pregunta
      * @ORM\ManyToOne(targetEntity="App\Entity\TipusPregunta", inversedBy="Preguntes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $Tipus;
+    private $tipus;
 
     public function __construct()
     {
@@ -268,7 +268,7 @@ class Pregunta
 
     public function setRespostaIncorrecta2En(string $respostaIncorrecta2En): self
     {
-        $this->respostaIncorrecta2Es = $respostaIncorrecta2En;
+        $this->respostaIncorrecta2En = $respostaIncorrecta2En;
 
         return $this;
     }
@@ -383,12 +383,12 @@ class Pregunta
 
     public function getTipus(): ?TipusPregunta
     {
-        return $this->Tipus;
+        return $this->tipus;
     }
 
-    public function setTipus(?TipusPregunta $Tipus): self
+    public function setTipus(?TipusPregunta $tipus): self
     {
-        $this->Tipus = $Tipus;
+        $this->tipus = $tipus;
 
         return $this;
     }

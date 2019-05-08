@@ -6,7 +6,7 @@
 	<div class="card border-0 m-5">
 		
 		{% for message in app.flashes('success') %}
-            <div class="alert alert-success col-12">
+            <div class="alert fade show alert-success col-12">
                 {{ message }}
             </div>
         {% endfor %}
@@ -83,80 +83,89 @@
 			$('.userField').on('keyup change', function() {
 				validar();
 			});	
+			setTimeout(function(){ $(".alert").alert('close') }, 5000);
 		});
 
 		function validar() {
 			if ($('#nom').val() != '') var valNom = true;
 			if ($('#cognoms').val() != '') var valCogn = true;
-			var username = validarNomDusuari();
-			var email = validarEmail();
-			var codi = validarCodi();
-
-			if (valNom && valCogn && username && email && codi) {
-				$('#addBtn').prop('disabled', false);
-			} else {
-				$('#addBtn').prop('disabled', true);
-			}
-		}
-
-		function validarNomDusuari() {
-			if ($('#username').val() != '') {
-				var url = `{{ path('comprovarUsername') }}`;
-				$.post(url, { username : $('#username').val() })
-				.done(function(response) {
-					if (response) {
-						if ($('#usernameError').length == 0) {
-							$('#userNameLabel').append('<span style="font-size: 12px; color: red;" id="usernameError" class="pt-1 float-right">Usuari ja existent.</span>');		
-						}	
-						return false;
-					} else {
-						$('#usernameError').remove();
-						return true;
-					}
-				});
-			} else {
-				return false;
-			}
-		}
-
-		function validarEmail() {
-			if ($('#email').val() != '') {
-				var url = `{{ path('comprovarEmail') }}`;
-				$.post(url, { email : $('#email').val() })
-				.done(function(response) {
-					if (response) {
-						if ($('#emailError').length == 0) {
-							$('#emailLabel').append('<span style="font-size: 12px; color: red;" id="emailError" class="pt-1 float-right">Correu electrònic ja existent.</span>');		
-						}	
-						return false;
-					} else {
-						$('#emailError').remove();
-						return true;
-					}
-				});
-			} else {
-				return false;
-			}
-		}
-
-		function validarCodi() {
+			var usernameVal = false;
+			var emailVal = false;
+			var codiVal = false;
+			validarNomDusuari();
+			validarEmail();
 			if ($('#codi').val() != '') {
-				var url = `{{ path('comprovarCodi') }}`
-				$.post(url, { codi : $('#codi').val() })
-				.done(function(response) {
-					if (response) {
-						if ($('#codiError').length == 0) {
+				validarCodi();
+			}
+
+			function activarBoto() {
+				if (valNom && valCogn && usernameVal && emailVal && (codiVal || $('#codi').val() == '')) {
+				$('#addBtn').prop('disabled', false);
+				} else {
+					$('#addBtn').prop('disabled', true);
+				}
+			}
+		
+
+			function validarNomDusuari() {
+				if ($('#username').val() != '') {
+					var url = `{{ path('comprovarUsername') }}`;
+					$.post(url, { username : $('#username').val() })
+					.done(function(response) {
+						if (response) {
+							if ($('#usernameError').length == 0) {
+								$('#userNameLabel').append('<span style="font-size: 12px; color: red;" id="usernameError" class="pt-1 float-right">Usuari ja existent.</span>');		
+							}	
+						} else {
+							$('#usernameError').remove();
+							usernameVal = true;
+						}
+						activarBoto();
+					});
+				} 
+			}
+		
+			function validarEmail() {
+				if ($('#email').val() != '') {
+					var url = `{{ path('comprovarEmail') }}`;
+					$.post(url, { email : $('#email').val() })
+					.done(function(response) {
+						if (response) {
+							if ($('#emailError').length == 0) {
+								$('#emailLabel').append('<span style="font-size: 12px; color: red;" id="emailError" class="pt-1 float-right">Correu electrònic ja existent.</span>');		
+							}	
+						} else {
+							$('#emailError').remove();
+							emailVal = true;
+						}
+						activarBoto()
+					});
+				}
+			}
+
+			function validarCodi() {
+				if ($('#codi').val() != '') {
+					var url = `{{ path('comprovarCodi') }}`
+					$.post(url, { codi : $('#codi').val() })
+					.done(function(response) {
+						if (response) {
+							$('#codiError').remove();
 							$('#codiLabel').append('<span style="font-size: 12px; color: red;" id="codiError" class="pt-1 float-right">Codi d\'alumne ja existent.</span>');		
-						}	
-						return false;
-					} else {
-						$('#codiError').remove();
-						return true;
-					}
-				});
-			} else {
-				return false;
+								
+						} else {
+							if (($('#codi').val().length > 0 && $('#codi').val().length < 16) || $('#codi').val().length > 16) {
+								$('#codiError').remove();
+								$('#codiLabel').append('<span style="font-size: 12px; color: red;" id="codiError" class="pt-1 float-right">El codi d\'alumne ha de tenir 16 xifres.</span>');	
+							} else {
+								$('#codiError').remove();
+								codiVal = true;
+							}	
+						}
+						activarBoto();
+					});
+				} 
 			}
 		}
+		
 	</script>
 {% endblock %}
