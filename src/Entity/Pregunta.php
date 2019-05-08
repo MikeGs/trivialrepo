@@ -268,7 +268,7 @@ class Pregunta
 
     public function setRespostaIncorrecta2En(string $respostaIncorrecta2En): self
     {
-        $this->respostaIncorrecta2Es = $respostaIncorrecta2En;
+        $this->respostaIncorrecta2En = $respostaIncorrecta2En;
 
         return $this;
     }
