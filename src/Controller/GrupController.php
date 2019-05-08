@@ -67,7 +67,6 @@ class GrupController extends Controller
         $totsalumnes = $this->getTotsAlumnes();
 
         return $this->render('grup/llistatalumnes.html.twig',[
-            'user' => $user,
             'controller_name' => 'GrupController',
             'grup' =>  $grup,
             'administradors' => $administradors,
