@@ -1,12 +1,11 @@
-{# templates/emails/registration.html.twig #}
-<h3>You did it! You registered!</h3>
 
-Hi {{ name }}! You're successfully registered.
-
-{# example, assuming you have a route named "login" #}
-To login, go to: <a>...</a>.
-
-Thanks!
-
-{# Makes an absolute URL to the /images/logo.png file #}
-<img src="{{ absolute_url(asset('images/logo.png')) }}">
+<div class="col-12 col-md-8">
+	<h4>Benvingut/da a Trivial UB!</h4>
+	<p style="font-weight: 14px">El teu compte ha sigut creat per:<strong> {{ creador }}</strong></p>
+	<p>Aquestes són les credencials que necessites per accedir:</p>
+	<ul style="list-style: none;">
+		<li><strong>Usuari:</strong> {{ username }}</li>
+		<li><strong>Contrasenya: </strong> {{ password }}</li>
+	</ul>
+	Entra a l'aplicació: {{ path('fos_user_security_login') }}
+</div>
