@@ -263,11 +263,14 @@ class PartidaController extends Controller
     
     <script>
 
-    var latestalumne;
-    var latestalumneid;
-    var latestalumneidenc;
+    latestalumne = '';
+    latestalumneid = '';
+    latestalumneidenc = '';
 
-    var userid;
+    match = '';
+    matchid = '';
+
+    userid = '';
 
     //getPw();
     var pw = '" . $password . "';
@@ -468,16 +471,43 @@ class PartidaController extends Controller
         var username = $('#usernameLogin').val();
         var pwd = $('#passwordLogin').val();
 
-        var match;
-
         $.post(url, { 'userid': userid, 'user': username, 'password': pwd, 'useridenc': useridenc }) 
 		    .done(function(response) {
                 match = response['match'];
+                matchid = response['id'];
+
+                savemematch(match, matchid);
 			});
-
-        console.log(match);
-
     });
+
+    function savemematch(matchsent, matchidsent) {
+
+        while(match == '') {
+            match = matchsent;
+            matchid = matchidsent;
+        }
+
+        console.log('Matchid actual' + matchid + ' matchid enviat: ' + matchidsent);
+
+        if (readCookie('jugadors') != '') {
+
+            if (latestalumneid == matchid) {
+                writeCookie('jugadors', readCookie('jugadors') + ',' + matchid, 1);
+            } else {
+                $('#iniciarSessioModalMsg').html('" . `<div id='errorLogin'>
+                <h2>Les credencials introduïdes no són vàlides</h2>
+                <a href='#' class='btn btn-danger' id='errorLoginTornar'>Tornar</a>
+            </div>` . "')
+            }
+
+        } else {
+            writeCookie('jugadors', matchid, 1);
+        }
+
+        
+
+        console.log(readCookie('jugadors'));
+    }
 
     $('#afegirJugadorsBtn').click(function(e) {
 
@@ -521,7 +551,7 @@ class PartidaController extends Controller
         $encoderService = $this->container->get('security.password_encoder');
         $match = $encoderService->isPasswordValid($user, $password);
 
-        return new JsonResponse(['match' => $match]);
+        return new JsonResponse(['match' => $match, 'id' => $user->getId()]);
         
     }
 
