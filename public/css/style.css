@@ -981,6 +981,11 @@ input[type=password] {
     border-radius: .25rem;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
+
+.fos_user_profile_edit input:read-only {
+	background: #E5E5E5;
+}
+
 /* ANIMATIONS */
 
 @keyframes rotate360 {
