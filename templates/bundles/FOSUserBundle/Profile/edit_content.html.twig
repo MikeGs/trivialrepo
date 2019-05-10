@@ -7,7 +7,7 @@
     <h2>Editar informació</h2>
 </div>
 
-
+<div class="col-12 mt-3">
 {{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
 	{% if is_granted('ROLE_ADMIN') %}
 		{{ form_label(form.username) }}
@@ -33,11 +33,12 @@
 	    {{ form_label(form.current_password) }}
 	    {{ form_widget(form.current_password) }}
 	{% endif %}
-    <div>
+
     <div class="col col-lg-12 buttonLoginRegisterDiv">
-        <input class="btn btn-primary buttonLoginRegister" type="submit" value="{{ 'profile.edit.submit'|trans }}" />
+        <input class="btn buttonLoginRegister customAddBtn" type="submit" value="{{ 'profile.edit.submit'|trans }}" />
     </div>
-     </div>
+ 
+</div>
 {{ form_end(form) }}
 
 </div>
