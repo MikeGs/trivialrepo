@@ -211,6 +211,29 @@ table.aligncenter .col {
 	border-radius: 0;
 }
 
+.customOutlineBtn {
+	border: 2px solid #6aa84f;
+	color: #6aa84f;
+	border-radius: 0px;
+}
+
+.customOutlineBtn:hover {
+	border-color: #228B22;;
+	color: #228B22;
+}
+
+.customBlueBtn {
+	color: #fff;
+	background-color: #4ba5e5;
+	border-radius: 0;
+}
+
+.customBlueBtn:hover {
+	background-color: #005a9e;
+	color: #fff;
+
+}
+
 .customAddBtn:hover {
 	background-color: #228B22;
 	color: #fff;
@@ -856,6 +879,7 @@ input[type=password] {
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 	position: relative;
+	padding: 10px;
 }
 
 .formheader::after {
@@ -915,7 +939,8 @@ input[type=password] {
 }
 
 #rememberDiv {
-	margin-top: 10px;
+	margin-top: 30px;
+	text-align: center!important;
 }
 
 .formulario-login input[type="checkbox"] {
@@ -925,7 +950,7 @@ input[type=password] {
 
 .formulario-login input[type="checkbox"], .formulario-login .remember {
 	width: auto!important;
-	float: left;
+
 }
 
 .submit-register{
