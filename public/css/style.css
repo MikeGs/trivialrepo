@@ -1029,8 +1029,11 @@ input[type=password] {
 	float: right;
 }
 
-/* MODAL INICIAR SESSIÓ PARTIDA END */
+#iniciarSessioModalMsg h2 {
+	color: black;
+}
 
+/* MODAL INICIAR SESSIÓ PARTIDA END */
 
 .fos_user_profile_edit input:read-only {
 	background: #E5E5E5;
