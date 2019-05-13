@@ -18,10 +18,12 @@
                 <a href="{{ path('fos_user_security_logout') }}">
                     {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
                 </a>
-            {% else %}
-                <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
             {% endif %}
-            <div class="float-right"><a class="btn btn-link link-blue p-0" href="javascript:history.back()"><i class="fas fa-arrow-left"></i> TORNAR</a></div>
+            {% if app.request.get('_route') != 'fos_user_security_login' %}
+            <div class="float-right"><a class="btn btn-link link-blue p-0" href="javascript:history.back()">
+                <i class="fas fa-arrow-left"></i> TORNAR</a>
+            </div>
+            {% endif %}
         </div>
 
         

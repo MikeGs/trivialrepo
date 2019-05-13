@@ -14,7 +14,7 @@ security:
         username: 'Nom d''usuari'
         password: Contrasenya
         remember_me: 'Recorda''m'
-        submit: Entra
+        submit: Entrar
 profile:
     show:
         username: 'Nom d''usuari'
@@ -22,7 +22,7 @@ profile:
         nom: 'Nom'
         codiAlumne: 'Codi Alumne'
     edit:
-        submit: Actualitza
+        submit: Actualitzar
     flash:
         updated: 'S''ha actualitzat el perfil.'
 change_password:
@@ -33,7 +33,7 @@ registration:
     check_email: 'S''ha enviat un correu electrònic a %email%. Conté un enllaç d''activació que heu de clicar per activar el compte.'
     confirmed: 'Enhorabona %username%, el vostre compte s''ha activat.'
     back: 'Torna a la pàgina original.'
-    submit: Registra
+    submit: Registrar-se
     flash:
         user_created: 'S''ha creat l''usuari correctament.'
     email:
@@ -61,7 +61,7 @@ resetting:
             L'equip.
 layout:
     logout: 'Tanca la sessió'
-    login: Entra
+    login: Entrar
     register: Registrar-se
     logged_in_as: 'Heu iniciat sessió com a %username%'
 form:
@@ -70,6 +70,6 @@ form:
     email: 'Correu electrònic'
     current_password: 'Contrasenya actual'
     password: Contrasenya
-    password_confirmation: Verificació
+    password_confirmation: Repetir la contrasenya
     new_password: 'Nova contrasenya'
-    new_password_confirmation: Verificació
+    new_password_confirmation: Repetir la contrasenya
