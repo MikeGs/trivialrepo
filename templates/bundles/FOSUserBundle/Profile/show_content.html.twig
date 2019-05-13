@@ -1,8 +1,10 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-<div class="fos_user_user_show">
-    <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
-    <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
-    <p>{{ 'profile.show.nom'|trans }}: {{ user.nom }} {{ user.cognoms }}</p>
-    <p>{{ 'profile.show.codiAlumne'|trans }}: {{ user.codiAlumne }}</p>
+<div class="fos_user_user_show p-4">
+    <p><strong>{{ 'profile.show.username'|trans }}:</strong> {{ user.username }}</p>
+    <p><strong>{{ 'profile.show.email'|trans }}:</strong> {{ user.email }}</p>
+    <p><strong>{{ 'profile.show.nom'|trans }}:</strong> {{ user.nom }} {{ user.cognoms }}</p>
+    <p><strong>{{ 'profile.show.codiAlumne'|trans }}:</strong> {{ user.codiAlumne }}</p>
+    <a class="btn customBlueBtn mr-1" href={% if is_granted('ROLE_TEACHER') == false %}"{{ path('joc') }}"{% else %}"{{ path('inici') }}"{% endif %}>Tornar a l'inici</a><a class="btn customAddBtn" href="{{ path('fos_user_profile_edit') }}">Editar</a>
 </div>
+
