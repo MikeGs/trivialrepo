@@ -103,11 +103,11 @@ class PartidaController extends Controller
 
             <div id='multiHighlight' class='container row'>
 
-                <div id='playMultiplayerCard' class='col col-md-5'>
+                <div id='playMultiplayerCard' class='col col-md-5 alltransition3'>
 
-                    <a href='#' id='playButton'>
+                    <a href='#' id='playButton' class='alltransition3'>
                         
-                        <p>Jugar</p>
+                        <p class='alltransition3'>Jugar</p>
                     </a>
                     
                 </div>
@@ -191,9 +191,13 @@ class PartidaController extends Controller
             ->getQuery()
             ->getResult();
 
-        $user = $usuari = $this->getDoctrine()
-        ->getRepository(Usuari::class)
-        ->find($usuari[0]->getId());
+        $user = null;
+
+        if ($usuari != null) {
+            $user = $usuari = $this->getDoctrine()
+            ->getRepository(Usuari::class)
+            ->find($usuari[0]->getId());
+        }
 
         return $user;
 
@@ -516,23 +520,28 @@ class PartidaController extends Controller
 
     $('.elementLlistaJugadors').click(function() {
 
-        latestelementllista = this;
+        if (!$(this).hasClass('usuariSeleccionat')) {
 
-        latestalumneidenc = this.id;
-        latestalumneid = this.getAttribute('secid');
+            latestelementllista = this;
 
-        //console.log('Alumne id seleccionat: ' + latestalumneid);
+            latestalumneidenc = this.id;
+            latestalumneid = this.getAttribute('secid');
 
-        latestalumne = this.name;
+            //console.log('Alumne id seleccionat: ' + latestalumneid);
 
-        $('#jugadorSeleccionatLabelFill').html(latestalumne);
-        $('#usernameLogin, #passwordLogin').val('');
+            latestalumne = this.name;
 
-        $('#iniciarSessioModalMsg .form-group').css('display','block');
-        $('#iniciarSessioModalMsg #errorLogin').remove();
-        $('#iniciarSessioModal').modal('show');
+            $('#jugadorSeleccionatLabelFill').html(latestalumne);
+            $('#usernameLogin, #passwordLogin').val('');
 
-        $('#afegirJugadorModal').modal('hide');
+            $('#iniciarSessioModalMsg .form-group').css('display','block');
+            $('#iniciarSessioModalMsg #errorLogin').remove();
+            $('#iniciarSessioModal').modal('show');
+
+            $('#afegirJugadorModal').modal('hide');
+
+        }
+
     })
 
     $('#iniciarSessioModalBtn').click(function() {
@@ -552,9 +561,22 @@ class PartidaController extends Controller
 
                 //console.log('responseid' + response['id']);
 
-                savemematch(match, matchnom, matchidsent, latestalumneid);
+                if (match == true) {
+                    savemematch(match, matchnom, matchidsent, latestalumneid);
+                } else {
+                    errormatch();
+                }
 			});
     });
+
+    function errormatch() {
+        $('#iniciarSessioModalMsg .form-group').css('display','none');
+        
+        $('#iniciarSessioModalMsg').append(`<div id='errorLogin'>
+                <h2>Les credencials introduïdes no són vàlides</h2>
+                <a href='#' class='btn btn-danger' id='errorLoginTornar' onclick='onClickTornarLogin()'>Tornar</a>
+            </div>`);
+    }
 
     function savemematch(matchsent, matchnom, matchidsent, latestalumneid) {
 
@@ -565,7 +587,7 @@ class PartidaController extends Controller
         //console.log('Matchid actual ' + latestalumneid + ' matchid enviat: ' + matchidsent);
         $('#iniciarSessioModalMsg .form-group').css('display','none');
 
-        if (latestalumneid == matchidsent) {
+        if (latestalumneid == matchidsent && matchidsent != '' && matchidsent != null) {
 
             $('#iniciarSessioModalMsg').append(`<div id='errorLogin'>
                 <h2>Credencials vàlides</h2>
@@ -579,7 +601,7 @@ class PartidaController extends Controller
                 $(latestelementllista).removeClass('usuariSeleccionat');
             }*/
 
-            $('#playerList ul').append(`<li><a href='#' id='jug` + matchidsent + `'><i class='fas fa-user mr-2'></i>` + matchnom + `</a></li>`);
+            $('#playerList ul').append(`<li><a href='#' secid='` + matchidsent+ `' id='jug` + matchidsent + `'><i class='fas fa-user mr-2'></i>` + matchnom + `</a></li>`);
 
             var color = getRandomColor(colors);
             var matchnomid = '#jug' + matchidsent;
@@ -587,19 +609,18 @@ class PartidaController extends Controller
             
             var jugador = [matchidsent, color[0]];
 
+            var arrayJugadors = [eval(readCookie('jugadors'))];
+
+            console.log(arrayJugadors);
+
             if (readCookie('jugadors') == '') {
                 writeCookie('jugadors', JSON.stringify(jugador) , 1);
             } else {
                 writeCookie('jugadors', readCookie('jugadors') + ',' + JSON.stringify(jugador) , 1);
             }
 
-            console.log(readCookie('jugadors'));
-
         } else {
-                $('#iniciarSessioModalMsg').append(`<div id='errorLogin'>
-                <h2>Les credencials introduïdes no són vàlides</h2>
-                <a href='#' class='btn btn-danger' id='errorLoginTornar' onclick='onClickTornarLogin()'>Tornar</a>
-            </div>`);
+            errormatch();
         }
 
         console.log(readCookie('jugadors'));
@@ -642,7 +663,16 @@ class PartidaController extends Controller
         $user = $this->getUsuariByUsername($username);
 
         $encoderService = $this->container->get('security.password_encoder');
-        $match = $encoderService->isPasswordValid($user, $password);
+        
+        $match;
+
+        if ($user != null) {
+            $match = $encoderService->isPasswordValid($user, $password);
+            return new JsonResponse(['match' => $match, 'id' => $user->getId(), 'nom' => $user->getNom() . ' ' . $user->getCognoms()]);
+        } else {
+            $match = false;
+            return new JsonResponse(['match' => $match]);
+        }
 
         return new JsonResponse(['match' => $match, 'id' => $user->getId(), 'nom' => $user->getNom() . ' ' . $user->getCognoms()]);
         
