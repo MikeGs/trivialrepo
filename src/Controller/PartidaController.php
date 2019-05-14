@@ -45,15 +45,16 @@ class PartidaController extends Controller
         return $pwenc;
     }
 
+
     /**
      * @Route("/jugar", name="jugar")
      */
     public function jugar(Request $request) {
 
         $em = $this->getDoctrine()->getManager();
-
-        $nivell = $em->getRepository(Nivell::class)->findOneById(/*id nivell cookie*/);
-        $temes = $em->getRepository(Tema::class)->findByNivell(/*nivell*/);
+/*
+        $nivell = $em->getRepository(Nivell::class)->findOneById();
+        $temes = $em->getRepository(Tema::class)->findByNivell();
         $maxRand = count($temes);
 
         $temesPartida = array();
@@ -71,11 +72,13 @@ class PartidaController extends Controller
                 $temesSel = true;
             }
         } while (!$temesSel);
+
+        $pteguntes = $em->getRepository(Pregunta::class)->find(['idTema' => $temesSel]);*/
         
 
         return $this->render('partida/joc.html.twig', [
-            'temes' => ,
-            'preguntes' => ,
+            /*'temes' => ,
+            'preguntes' => ,*/
         ]);
     }
 
