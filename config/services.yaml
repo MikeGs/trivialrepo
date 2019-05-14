@@ -28,6 +28,6 @@ services:
     # please note that last definitions always *replace* previous ones
     app.form.registration:
         class: App\Form\RegistrationFormType
-
+    
     grupcontroller: 
         class: App\Controller\GrupController

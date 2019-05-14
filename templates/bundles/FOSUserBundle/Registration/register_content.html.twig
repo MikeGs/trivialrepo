@@ -3,18 +3,19 @@
 <div class="container-fluid d-flex justify-content-center">
 <div class="formulario-register">
 
-<div class="formheader">
+<div class="formheader mb-2">
     <h2>Registrar-se</h2>
 </div>
-
+<div class="p-4">
 {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
     {{ form_widget(form) }}
     <div>
-    <div class="col col-lg-12 buttonLoginRegisterDiv">
-        <input class="btn btn-primary buttonLoginRegister" type="submit" value="{{ 'registration.submit'|trans }}" />
-    </div>
+	    <div class="col buttonLoginRegisterDiv">
+	        <input class="btn customBlueBtn buttonLoginRegister" type="submit" value="{{ 'registration.submit'|trans }}" />
+	    </div>
     </div>
 
 {{ form_end(form) }}
+</div>
 </div>
 </div>

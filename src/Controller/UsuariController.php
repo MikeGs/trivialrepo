@@ -27,11 +27,11 @@ class UsuariController extends Controller
 
             return $this->redirectToRoute('fos_user_security_login');
 
-        } else if ($authChecker->isGranted('ROLE_STUDENT')) {
+        } else if (!$authChecker->isGranted('ROLE_TEACHER')) {
 
             return $this->redirectToRoute('joc');
 
-        } else if ($authChecker->isGranted('ROLE_TEACHER')) {
+        } else if (!$authChecker->isGranted('ROLE_ADMIN')) {
 
             return $this->redirectToRoute('inici');
         }
@@ -121,7 +121,9 @@ class UsuariController extends Controller
     /**
      * @Route("/afegir-usuari", name="afegirUsuari")
      */
-    public function afegirUsuari(Request $request, UserPasswordEncoderInterface $encoder) {
+    public function afegirUsuari(Request $request, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer) {
+
+        $authChecker = $this->container->get('security.authorization_checker');
 
         if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
 
@@ -131,7 +133,7 @@ class UsuariController extends Controller
 
             return $this->redirectToRoute('joc');
 
-        } else if ($authChecker->isGranted('ROLE_TEACHER')) {
+        } else if (!$authChecker->isGranted('ROLE_ADMIN')) {
 
             return $this->redirectToRoute('inici');
         }
@@ -159,7 +161,7 @@ class UsuariController extends Controller
             $nouUsuari->setEmail($email);
             $nouUsuari->setEmailCanonical($email);
             $nouUsuari->addRole($rol);
-            if ($codi != '') {
+            if ($codi != '' && $rol == 'ROLE_STUDENT') {
                 $nouUsuari->setCodiAlumne($codi);
             }
 
@@ -181,7 +183,25 @@ class UsuariController extends Controller
             $em->persist($nouUsuari);
             $em->flush();
 
-            $this->addFlash('success', 'Usuari creat correctament!' . $randomString);
+            $this->addFlash('success', 'Usuari creat correctament!');
+
+            $message = (new \Swift_Message('[TRIVIAL UB] Usuari generat'))
+                ->setFrom(getenv('MAIL_TRIVIAL'))
+                ->setTo($email)
+                ->setBody(
+                    $this->renderView(
+                        // templates/emails/usuarigenerat.html.twig
+                        'emails/usuarigenerat.html.twig',
+                        [
+                            'nom' => $nom,
+                            'username' => $username,
+                            'password' => $randomString,
+                            'creador' => $this->getUser()->getNom() . ' ' . $this->getUser()->getCognoms()
+                        ]),
+                    'text/html'
+                );
+
+            $resp = $mailer->send($message);
 
         }
 

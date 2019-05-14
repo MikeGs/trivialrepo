@@ -7,14 +7,38 @@
     <h2>Editar informació</h2>
 </div>
 
-
+<div class="col-12 mt-3">
 {{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
-    {{ form_widget(form) }}
-    <div>
-    <div class="col col-lg-12 buttonLoginRegisterDiv">
-        <input class="btn btn-primary buttonLoginRegister" type="submit" value="{{ 'profile.edit.submit'|trans }}" />
+	{% if is_granted('ROLE_ADMIN') %}
+		{{ form_label(form.username) }}
+	{% else %}
+    	{{ form_widget(form.username, {'attr': { 'readonly': true }}) }}
+    {% endif %}
+    {{ form_widget(form.username) }}
+	{{ form_label(form.email) }}
+    {{ form_widget(form.email) }}
+    {{ form_label(form.nom) }}
+    {{ form_widget(form.nom) }}
+    {{ form_label(form.cognoms) }}
+    {{ form_widget(form.cognoms) }}
+    {{ form_label(form.codiAlumne) }}
+    {% if is_granted('ROLE_ADMIN') %}
+    	{{ form_widget(form.codiAlumne) }}
+    {% else %}
+    	{{ form_widget(form.codiAlumne, {'attr': { 'readonly': true }}) }}
+    {% endif %}
+    
+    {% if is_granted('ROLE_ADMIN') == false %}
+    	<div class="mt-4 alert col-12 alert-info">Indica la teva contrasenya per guardar els canvis.</div>
+	    {{ form_label(form.current_password) }}
+	    {{ form_widget(form.current_password) }}
+	{% endif %}
+
+    <div class="col col-lg-12 mb-3 buttonLoginRegisterDiv">
+        <input class="btn buttonLoginRegister customAddBtn" type="submit" value="{{ 'profile.edit.submit'|trans }}" />
     </div>
-     </div>
+ 
+</div>
 {{ form_end(form) }}
 
 </div>

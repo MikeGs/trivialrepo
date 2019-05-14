@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <link rel="stylesheet" href="{{ asset('bootstrap4/css/bootstrap.min.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('fontAwesome/css/all.css') }}">
         <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
         <script src="{{ asset('js/jquery.js') }}"></script>    
         <script src="{{ asset('js/popper.js') }}"></script> 
@@ -10,22 +11,27 @@
     </head>
     <body>
     <div class='fondo-eddy'></div>
-    <div class="askuser">
+    <div class="askuser py-4 px-5">
         <div>
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                 {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
                 <a href="{{ path('fos_user_security_logout') }}">
                     {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
                 </a>
-            {% else %}
-                <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+            {% endif %}
+            {% if app.request.get('_route') != 'fos_user_security_login' %}
+            <div class="float-right"><a class="btn btn-link link-blue p-0" href="javascript:history.back()">
+                <i class="fas fa-arrow-left"></i> TORNAR</a>
+            </div>
             {% endif %}
         </div>
+
+        
 
         {% if app.request.hasPreviousSession %}
             {% for type, messages in app.session.flashbag.all() %}
                 {% for message in messages %}
-                    <div class="flash-{{ type }}">
+                    <div class="p-3 mt-2 alert-{{ type }} rounded">
                         {{ message }}
                     </div>
                 {% endfor %}
@@ -36,7 +42,7 @@
                 {% block fos_user_content %}
                 {% endblock fos_user_content %}
             </div>
-
-        </div>
+        
+    </div>
     </body>
 </html>

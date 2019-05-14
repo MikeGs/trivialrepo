@@ -211,6 +211,29 @@ table.aligncenter .col {
 	border-radius: 0;
 }
 
+.customOutlineBtn {
+	border: 2px solid #6aa84f;
+	color: #6aa84f;
+	border-radius: 0px;
+}
+
+.customOutlineBtn:hover {
+	border-color: #228B22;;
+	color: #228B22;
+}
+
+.customBlueBtn {
+	color: #fff;
+	background-color: #4ba5e5;
+	border-radius: 0;
+}
+
+.customBlueBtn:hover {
+	background-color: #005a9e;
+	color: #fff;
+
+}
+
 .customAddBtn:hover {
 	background-color: #228B22;
 	color: #fff;
@@ -534,11 +557,11 @@ input[type=password] {
 
 /* TEMP END */
 
-div.dataTables_wrapper div.dataTables_filter label {
+#rankingJugadors_wrapper div.dataTables_filter label {
 	width: 100%;
 }
 
-div.dataTables_wrapper div.dataTables_filter input {
+#rankingJugadors_wrapper div.dataTables_filter input {
 	width: auto;
 	box-sizing: border-box;
 }
@@ -855,6 +878,19 @@ div.dataTables_wrapper div.dataTables_filter input {
 	display: table;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
+	position: relative;
+	padding: 10px;
+}
+
+.formheader::after {
+	position: absolute;
+	width: 100%;
+	height: 5px;
+	content: '';
+	left: 0;
+	bottom: -5px;
+	background-color: #4ba5e5;
+	z-index: 2;
 }
 
 .formheader h2 {
@@ -903,7 +939,8 @@ div.dataTables_wrapper div.dataTables_filter input {
 }
 
 #rememberDiv {
-	margin-top: 10px;
+	margin-top: 30px;
+	text-align: center!important;
 }
 
 .formulario-login input[type="checkbox"] {
@@ -913,7 +950,7 @@ div.dataTables_wrapper div.dataTables_filter input {
 
 .formulario-login input[type="checkbox"], .formulario-login .remember {
 	width: auto!important;
-	float: left;
+
 }
 
 .submit-register{
@@ -981,6 +1018,52 @@ div.dataTables_wrapper div.dataTables_filter input {
     border-radius: .25rem;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
+
+/* MODAL INICIAR SESSIÓ PARTIDA */
+
+#jugadorSeleccionatLabelFill {
+	font-weight: bold;
+}
+
+#iniciarSessioTitle {
+	color: black;
+	text-transform: none!important;
+	font-size: 22px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px dotted rgba(41,41,41,0.2);
+}
+
+#iniciarSessioModal label, #iniciarSessioModal input {
+	width: 100%;
+}
+
+#iniciarSessioModal input[type="text"], #iniciarSessioModal input[type="password"] {
+	padding: .375rem .75rem;
+	border-radius: .25rem;
+	border: 1px solid #ced4da;
+}
+
+#iniciarSessioModal label, #iniciarSessioModal input[type="submit"] {
+	margin-top: 15px;
+}
+
+#iniciarSessioModal input[type="submit"] {
+	display: inline-block;
+	width: auto;
+	float: right;
+}
+
+#iniciarSessioModalMsg h2 {
+	color: black;
+}
+
+/* MODAL INICIAR SESSIÓ PARTIDA END */
+
+.fos_user_profile_edit input:read-only {
+	background: #E5E5E5;
+}
+
 /* ANIMATIONS */
 
 @keyframes rotate360 {

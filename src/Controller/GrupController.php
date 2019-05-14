@@ -24,11 +24,13 @@ class GrupController extends Controller
      */
     public function index()
     {
+        $authChecker = $this->container->get('security.authorization_checker');
+
         if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
 
             return $this->redirectToRoute('fos_user_security_login');
 
-        } else if ($authChecker->isGranted('ROLE_STUDENT')) {
+        } else if (!$authChecker->isGranted('ROLE_TEACHER')) {
 
             return $this->redirectToRoute('joc');
 
@@ -65,7 +67,6 @@ class GrupController extends Controller
         $totsalumnes = $this->getTotsAlumnes();
 
         return $this->render('grup/llistatalumnes.html.twig',[
-            'user' => $user,
             'controller_name' => 'GrupController',
             'grup' =>  $grup,
             'administradors' => $administradors,
@@ -81,11 +82,13 @@ class GrupController extends Controller
      */
     public function new(Request $request)
     {
+        $authChecker = $this->container->get('security.authorization_checker');
+        
         if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
 
             return $this->redirectToRoute('fos_user_security_login');
 
-        } else if ($authChecker->isGranted('ROLE_STUDENT')) {
+        } else if (!$authChecker->isGranted('ROLE_TEACHER')) {
 
             return $this->redirectToRoute('joc');
 
