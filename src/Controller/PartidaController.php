@@ -310,6 +310,19 @@ class PartidaController extends Controller
         var random = getRandomNumberColor();
         var colorvalid = false;
 
+        while(colorvalid == false) {
+
+            if (colorsn.includes(random)) {
+                random = getRandomNumberColor();
+                colorvalid = false;
+            } else {
+                colorvalid = true;
+            }
+
+        } 
+
+        colorsn.push(random);
+
         return colors[random];
     }
 
@@ -328,7 +341,14 @@ class PartidaController extends Controller
     var decrypted = decrypt(encrypted, 'a1e6239b392ad6a409609a02ff16cb66');*/
 
     delete_cookie('jugadors');
-    writeCookie('jugadors', '" . $user->getId() . "', 1);
+
+    color = getRandomColor(colors);
+    var jugadoractual = [" . $user->getId() . ", color[0]];
+
+    writeCookie('jugadors', JSON.stringify(jugadoractual), 1);
+
+    delete_cookie('grup');
+    writeCookie('grup', '" . $grupid . ", 1');
 
     </script>
 
@@ -372,7 +392,6 @@ class PartidaController extends Controller
                 <li id='playerListHead'>Jugadors:</li>
                 <li><a href='#' id='currentPlayer'><i class='fas fa-user mr-2'></i>" . $user->getUsername() . "</a></li>
                 <script>
-                    var color = getRandomColor(colors);
                     $('#currentPlayer').css('background-color',color[1]);
                 </script>
             </ul>
@@ -548,12 +567,6 @@ class PartidaController extends Controller
 
         if (latestalumneid == matchidsent) {
 
-            if (readCookie('jugadors') == '') {
-                writeCookie('jugadors', matchidsent, 1);
-            } else {
-                writeCookie('jugadors', readCookie('jugadors') + ',' + matchidsent, 1);
-            }
-
             $('#iniciarSessioModalMsg').append(`<div id='errorLogin'>
                 <h2>Credencials vàlides</h2>
                 <a href='#' class='btn btn-success' id='errorLoginTornar' onclick='onClickTornarLogin()'>Tornar</a>
@@ -572,6 +585,16 @@ class PartidaController extends Controller
             var matchnomid = '#jug' + matchidsent;
             $(matchnomid).css('background-color',color[1]);
             
+            var jugador = [matchidsent, color[0]];
+
+            if (readCookie('jugadors') == '') {
+                writeCookie('jugadors', JSON.stringify(jugador) , 1);
+            } else {
+                writeCookie('jugadors', readCookie('jugadors') + ',' + JSON.stringify(jugador) , 1);
+            }
+
+            console.log(readCookie('jugadors'));
+
         } else {
                 $('#iniciarSessioModalMsg').append(`<div id='errorLogin'>
                 <h2>Les credencials introduïdes no són vàlides</h2>
@@ -593,8 +616,6 @@ class PartidaController extends Controller
             var jugador = [value.id, value.name];
             jugadors.push(jugador);
         });
-
-        console.log(jugadors);
 
         $('#afegirJugadorModal').modal('hide');
 
