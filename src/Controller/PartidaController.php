@@ -46,6 +46,40 @@ class PartidaController extends Controller
     }
 
     /**
+     * @Route("/jugar", name="jugar")
+     */
+    public function jugar(Request $request) {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $nivell = $em->getRepository(Nivell::class)->findOneById(/*id nivell cookie*/);
+        $temes = $em->getRepository(Tema::class)->findByNivell(/*nivell*/);
+        $maxRand = count($temes);
+
+        $temesPartida = array();
+
+        $temesSel = false;
+        $count = 0;
+        do {
+            $num = rand(1, $maxRand);
+            $tema = $temes[$num];
+            if (!in_array($tema, $temesPartida)) {
+                array_push($temesPartida, $tema);
+                $count++;
+            } 
+            if ($count == 5) {
+                $temesSel = true;
+            }
+        } while (!$temesSel);
+        
+
+        return $this->render('partida/joc.html.twig', [
+            'temes' => ,
+            'preguntes' => ,
+        ]);
+    }
+
+    /**
      * @Route("/getPartidaPortait", name="getPartidaPortait")
      */
     public function getPartidaPortait(Request $request) {
