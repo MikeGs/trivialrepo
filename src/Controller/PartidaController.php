@@ -404,36 +404,54 @@ class PartidaController extends Controller
 
     </div>
 
-    <div class='container' id='containerNormes'>
-        
-        <ul class='tableNormes col col-6'>
-            <li class='row tableHead'>
-                <p>Normes</p>
-            </li>
-            <li class='row'>
-                <p class='col col-md-6'>Temps de resposta</p>
-                <p class='col col-md-6'>10 segons</p>
-            </li>
-            <li class='row'>
-                <p class='col col-md-6'>Nivell</p>
-                <p class='col col-md-6'><select id='selectNivell'>
-                    <option value='q3'>Q3</option>
-                    <option value='q4'>Q4</option>
-                    <option value='e5'>E5</option>
-            </select></p>
-            </li>
-            <li class='row'>
-                <p class='col col-md-6'>Duració aproximada</p>
-                <p class='col col-md-6'>60 minuts</p>
-            </li>
-            <li class='row'>
-                <p class='col col-md-6'>Formatgets</p>
-                <p class='col col-md-6'>5</p>
-            </li>
-        </ul>
+    <div class='container row' id='containerNormesStart'>
 
-    </container>
-        
+        <div class='container' id='containerNormes'>
+            
+            <ul class='tableNormes col col-6'>
+                <li class='row tableHead'>
+                    <p>Normes</p>
+                </li>
+                <li class='row'>
+                    <p class='col col-md-6'>Temps de resposta</p>
+                    <p class='col col-md-6'>10 segons</p>
+                </li>
+                <li class='row'>
+                    <p class='col col-md-6'>Nivell</p>
+                    <p class='col col-md-6'><select id='selectNivell'>
+                        <option value='q3'>Q3</option>
+                        <option value='q4'>Q4</option>
+                        <option value='e5'>E5</option>
+                </select></p>
+                </li>
+                <li class='row'>
+                    <p class='col col-md-6'>Duració aproximada</p>
+                    <p class='col col-md-6'>60 minuts</p>
+                </li>
+                <li class='row'>
+                    <p class='col col-md-6'>Formatgets</p>
+                    <p class='col col-md-6'>5</p>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class='container' id='containerComençarPartida'>
+
+            <div class='playPartidaCard'>
+
+                <a href='#' class='alltransition3 playPartidaButton'>
+
+                    <p class='alltransition3'>Començar partida</p>
+
+                </a>
+
+            </div>
+
+        </div>    
+
+    </div>
+
     <div id='afegirJugadorModal' class='modal fade' tabindex='-1' role='dialog'>
         <div class='modal-dialog' role='document'>
             <div class='modal-content'>
@@ -457,7 +475,7 @@ class PartidaController extends Controller
 
                                 . "
                             </table>
-                            <input type='submit' name='Submit' value='Afegir' class='btn btn-primary disabled' id='afegirJugadorsBtn' data-grupid='{{ grup.id }}'>
+                            <input type='submit' name='Submit' value='Tancar' class='btn btn-success disabled' id='afegirJugadorsBtn' data-grupid='{{ grup.id }}'>
                         </div>
                     </div>
                 </div>
@@ -627,16 +645,6 @@ class PartidaController extends Controller
     }
 
     $('#afegirJugadorsBtn').click(function(e) {
-
-        var usuarisSeleccionats = $('.usuariSeleccionat');
-        var ids = [];
-        var jugadors = [];
-
-        $.each( usuarisSeleccionats, function( key, value ) {
-            ids.push(value.id);
-            var jugador = [value.id, value.name];
-            jugadors.push(jugador);
-        });
 
         $('#afegirJugadorModal').modal('hide');
 

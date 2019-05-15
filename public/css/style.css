@@ -327,6 +327,10 @@ table.aligncenter .col {
 	background-color: rgba(0,255,0,0.1);
 }
 
+#afegirJugadorsBtn {
+	margin-top: 15px;
+}
+
 /* MODAL FIX PADDING RIGHT */
 
 .modal-open {
@@ -430,6 +434,10 @@ table.aligncenter .col {
 #multiplayerContainer .container, #multiplayerContainer .row {
 	padding: 0px!important;
 	margin: 0px;
+}
+
+#multiplayerLobby {
+	z-index: 2;
 }
 
 #multiplayerContainer h3, #multiplayerLobby h3 {
@@ -547,6 +555,8 @@ input[type=password] {
 	display: table;
 
 	min-height: 400px;
+
+	z-index: 1;
 }
 
 .backgroundRotate img {
@@ -687,6 +697,10 @@ input[type=password] {
 
 #playerList {
 	color: white;
+	flex: none!important;
+
+	width: 50%!important;
+	max-width: none!important;
 }
 
 #playerList ul {
@@ -740,8 +754,61 @@ input[type=password] {
 	font-size: 15px!important;
 }
 
-#containerNormes {
+#containerNormesStart {
 	margin-top: 40px;
+}
+
+.playPartidaCard {
+	height: 280px;
+	display: block;
+
+	background-color: rgba(255,255,255,0.2);
+}
+
+.playPartidaCard a {
+	height: 100%;
+	width: 100%;
+	display: table;
+
+	text-decoration: none;
+}
+
+.playPartidaCard:hover a {
+	box-shadow: inset 1px 1px 20px rgba(255,255,255,0.7);
+}
+
+.playPartidaCard:hover p {
+	transform: scale(1.3);
+}
+
+.playPartidaCard a p {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+
+	color: white!important;	
+	text-transform: uppercase;
+	font-size: 25px;
+
+	padding: 0px 15px;
+}
+
+#containerNormes {
+	width: 55%!important;
+}
+
+#containerComençarPartida {
+	width: 45%!important;
+	padding: 0px 0px!important;
+}
+
+.playPartidaButton {
+	overflow: hidden;
+}
+
+.tableNormes {
+	width: 100%!important;
+	max-width: 524px!important
 }
 
 .tableNormes li {
@@ -1085,3 +1152,24 @@ input[type=password] {
 }
 
 /* ANIMATIONS END */
+
+/* RESPONSIVE MEDIA QUERIES */
+
+@media screen and (max-width: 1270px) {
+
+	#multiplayerLobby, #multiplayerContainer {
+		width: 100%!important;
+		max-width: none!important;
+		flex: none;
+	}
+
+
+}
+
+@media screen and (max-width: 1070px) {
+
+	
+
+}
+
+/* RESPONSIVE MEDIA QUERIES END */
