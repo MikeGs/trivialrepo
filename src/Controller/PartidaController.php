@@ -217,6 +217,13 @@ class PartidaController extends Controller
             return $alumnes;
     }
 
+    function getNivellGrup($grup) {
+
+        $nivell = $grup->getIdNivell();
+        return $nivell;
+
+    }
+
     /**
      * @Route("/partidaLobby/{grupid}", name="partidaLobby")
      */
@@ -228,9 +235,11 @@ class PartidaController extends Controller
 
     $password = $this->pw();
 
-    $colors = "[['red', 'rgba(255,0,0,0.3)'], ['blue','rgba(0,0,255,0.3)'], ['green', 'rgba(0,255,0,0.3)'], ['pink', 'rgba(255,192,203,0.3)'], ['orange', 'rgba(249,191,59,0.3)']]";
+    $colors = "[['red', 'rgba(255,0,0,0.3)'], ['blue','rgba(0,0,255,0.3)'], ['green', 'rgba(0,255,0,0.3)'], ['pink', 'rgba(255,192,203,0.6)'], ['orange', 'rgba(249,191,59,0.3)']]";
 
     $nomdusuarilabel = "Nom d'usuari";
+
+    $nivellGrup = $this->getNivellGrup($grup);
 
     $llistat = "";
 
@@ -358,11 +367,11 @@ class PartidaController extends Controller
 
     <div id='multiplayerLobby' class='row p-4 col-9'>
 
-    <div class='container'>
+    <div class='container' id='titleMultijugador'>
         <h2>Sala d'espera | Partida multijugador</h2>
     </div>
 
-    <div class='container'>
+    <div class='container' id='grupMultijugador'>
         <h3>Grup: " . $grup->getNom() . "</h3>
     </div>
 
@@ -371,20 +380,28 @@ class PartidaController extends Controller
         <div id='tipusPartidaSlider' class='col col-md-6 carousel slide' data-ride='carousel'>
 
             <div class='carousel-inner'>
-                <div class='carousel-item active'>
-                    <p class='ontopCarousel'>Partida multijugador</p>
+                <div class='carousel-item active' id='carouselMultijugador'>
+
+                    <div class='carouselVertical'>
+                        <p class='ontopCarousel'>Partida multijugador</p>
+                    </div>
+
                 </div>
-                <div class='carousel-item'>
-                    <p class='ontopCarousel'>Entrenament</p>
+                <div class='carousel-item' id='carouselEntrenament'>
+
+                    <div class='carouselVertical'>
+                        <p class='ontopCarousel'>Entrenament</p>
+                    </div>
+
                 </div>
             </div>
 
-            <a class='carousel-control-prev' href='#tipusPartidaSlider' role='button' data-slide='prev'>
+            <a class='carousel-control-prev' id='carouselMultiPrev' href='#tipusPartidaSlider' role='button' data-slide='prev'>
                 <span class='carousel-control-prev-icon' aria-hidden='true'></span>
                 <span class='sr-only'>Previous</span>
             </a>
 
-            <a class='carousel-control-next' href='#tipusPartidaSlider' role='button' data-slide='next'>
+            <a class='carousel-control-next' id='carouselMultiNext' href='#tipusPartidaSlider' role='button' data-slide='next'>
                 <span class='carousel-control-next-icon' aria-hidden='true'></span>
                 <span class='sr-only'>Next</span>
             </a>
@@ -393,8 +410,8 @@ class PartidaController extends Controller
 
         <div id='playerList' class='col col-md-4'>
             <ul>
-                <li id='playerListHead'>Jugadors:</li>
-                <li><a href='#' id='currentPlayer'><i class='fas fa-user mr-2'></i>" . $user->getUsername() . "</a></li>
+                <p id='playerListHead' style='margin-bottom: 0px!important'>Jugadors:</p>
+                <li class='alltransition3'><a href='#' id='currentPlayer'><i class='alltransition3 fas fa-user mr-2'></i>" . $user->getUsername() . "</a></li>
                 <script>
                     $('#currentPlayer').css('background-color',color[1]);
                 </script>
@@ -418,11 +435,7 @@ class PartidaController extends Controller
                 </li>
                 <li class='row'>
                     <p class='col col-md-6'>Nivell</p>
-                    <p class='col col-md-6'><select id='selectNivell'>
-                        <option value='q3'>Q3</option>
-                        <option value='q4'>Q4</option>
-                        <option value='e5'>E5</option>
-                </select></p>
+                    <p class='col col-md-6'>" . $nivellGrup->getNom() . "</p>
                 </li>
                 <li class='row'>
                     <p class='col col-md-6'>Duració aproximada</p>
@@ -456,7 +469,7 @@ class PartidaController extends Controller
         <div class='modal-dialog' role='document'>
             <div class='modal-content'>
                 <div class='modal-header'>
-                    <h6 class='modal-title' id='afegirJugadorModal'></h6>
+                    <h6 class='modal-title' id='afegirJugadorModal'>Llistat de jugadors</h6>
                     <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
                         <span aria-hidden='true'>&times;</span>
                     </button>
@@ -467,7 +480,7 @@ class PartidaController extends Controller
                             <table class='col-12'>
 
                                 <tr>
-                                    <th scope='col'>Llistat de jugadors</th>
+                                    <th scope='col'>Grup: " . $grup->getNom() . "</th>
                                 </tr>
                                 " .
 
@@ -475,11 +488,11 @@ class PartidaController extends Controller
 
                                 . "
                             </table>
-                            <input type='submit' name='Submit' value='Tancar' class='btn btn-success disabled' id='afegirJugadorsBtn' data-grupid='{{ grup.id }}'>
                         </div>
                     </div>
                 </div>
                 <div class='modal-footer' id='afegirJugadorModalBtns'>
+                    <input type='submit' name='Submit' value='Tancar' class='btn btn-success' id='afegirJugadorsBtn' data-grupid='{{ grup.id }}'>
                 </div>
             </div>
         </div>
@@ -489,7 +502,7 @@ class PartidaController extends Controller
         <div class='modal-dialog' role='document'>
             <div class='modal-content'>
                 <div class='modal-header'>
-                    <h6 class='modal-title' id='iniciarSessioModal'></h6>
+                    <h6 class='modal-title' id='iniciarSessioModal'>Iniciar sessió</h6>
                     <button id='iniciarSessioModalClose' type='button' class='close' data-dismiss='modal' aria-label='Close'>
                         <span aria-hidden='true'>&times;</span>
                     </button>
@@ -510,6 +523,7 @@ class PartidaController extends Controller
 
                             <input type='submit' name='Submit' value='Iniciar sessió' class='btn btn-primary disabled' id='iniciarSessioModalBtn'>
                             <!-- data-usuariid='{{ usuari.id }}' -->
+
                         </div>
                     </div>
                 </div>
@@ -519,8 +533,57 @@ class PartidaController extends Controller
         </div>
     </div>
 
+    <div id='canviModeModal' class='modal fade' tabindex='-1' role='dialog'>
+        <div class='modal-dialog' role='document'>
+            <div class='modal-content'>
+                <div class='modal-header'>
+                    <h6 class='modal-title' id='canviModeModal'>Canvi de mode</h6>
+                    <button id='canviModeModalClose' type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                        <span aria-hidden='true'>&times;</span>
+                    </button>
+                </div>
+                <div class='modal-body'>
+                    <div id='canviModeModalMsg'>
+
+                        <h3 id='canviModeTitle'>S'està a punt de canviar el mode de joc, desitjes continuar?</h3>
+                        <div id='acceptdenyModel' class='col col-md-12'>
+
+                            <a href='#' class='btn btn-success' id='canviModeAccept'>Si</a>
+                            <a href='#' class='btn btn-danger' id='canviModeDeny'>No</a>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class='modal-footer' id='CanviModeModalBtns'>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         
+    $('#tipusPartidaSlider').carousel({
+        interval: false
+    });
+
+    $('body').on( 'click', '#carouselMultiPrev, #carouselMultiNext', function() {
+        $('#canviModeModal').modal('show');
+    });
+
+    $('body').on( 'click', '#canviModeAccept', function() {
+        $('#canviModeModal').modal('hide');
+        $('#entrenamentBtn').click();
+    });
+
+    $('body').on( 'click', '#canviModeDeny', function() {
+
+        $('#carouselEntrenament').removeClass('active');
+        $('#carouselMultijugador').addClass('active');
+
+        $('#canviModeModal').modal('hide');
+    });
+
     $('body').on( 'click', '#afegirJugador', function() {
 
         $('#afegirJugadorModal').modal('show');
@@ -619,7 +682,7 @@ class PartidaController extends Controller
                 $(latestelementllista).removeClass('usuariSeleccionat');
             }*/
 
-            $('#playerList ul').append(`<li><a href='#' secid='` + matchidsent+ `' id='jug` + matchidsent + `'><i class='fas fa-user mr-2'></i>` + matchnom + `</a></li>`);
+            $('#playerList ul').append(`<li class='alltransition3'><a href='#' secid='` + matchidsent+ `' id='jug` + matchidsent + `'><i class='alltransition3 fas fa-user mr-2'></i>` + matchnom + `</a></li>`);
 
             var color = getRandomColor(colors);
             var matchnomid = '#jug' + matchidsent;
