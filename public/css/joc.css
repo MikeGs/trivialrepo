@@ -9,6 +9,32 @@ html, body {
     overflow: hidden;
 }
 
+.opcions {  
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 30px;
+    color: #fff;
+    font-size: 2em;
+}
+
+button {
+    padding: 0;
+    border: none;
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
+}
+
+.options > button {
+    background-color: transparent;
+    border: none;
+}
+
+.options > button {
+    transform: scale(1.5);
+}
+
 .right-side {
     position: absolute;
     top: 0;
@@ -158,8 +184,7 @@ html, body {
     font-family: 'Baloo Bhai', cursive;
 }
 
-.points {
-    
+.points {   
     background: linear-gradient(to bottom, #AFD0E8, #005a9e 70%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -206,6 +231,7 @@ html, body {
     bottom: 8%;
     transition: opacity .4s;
     text-align: center;
+    z-index: 2;
 }
 #ui_dado #platform.playing > #dice {
   animation-duration: 1s;
@@ -396,7 +422,7 @@ button:focus {
   background-color: #a3d175;
   border: 1px solid #8ab82e;
   border-bottom: 2px inset #669900;
-  z-index: 1;
+  z-index: 2;
   box-shadow: 0px 2px 10px #191919;
   font-family: 'Baloo Bhai', cursive;
 }
@@ -553,7 +579,7 @@ button:focus {
 }
 
 .board-wrapper {
-    z-index: -1;
+    z-index: 1;
     position: absolute;
     width: auto;
     margin: 0 auto;
@@ -565,6 +591,7 @@ button:focus {
 .board-img {
     width: 80%;
     height: auto;
+    z-index: -1;
 }
 
 
@@ -572,38 +599,23 @@ button:focus {
     0%{
         opacity: 1;
     }
-    10%{
+    25%{
         opacity: 0;
     }
-    20%{
+    50% {
         opacity: 1;
     }
-    30%{
-
+    75% {
         opacity: 0;
     }
-    40%{
-        opacity: 1;
-    }
-    50%{
-        opacity: 0;
-    }
-    60%{
-        opacity: 1;
-    }
-    70%{
-        opacity: 0;
-    } 
-    80%{
-        opacity: 1;
-    }
-    90%{
-        opacity: 0;
-    }
-
     100%{
         opacity: 1;
     }
+}
+
+.casilla {
+  z-index: 3;
+  background: blue;
 }
 
 .box-start {
@@ -612,8 +624,18 @@ button:focus {
     border-radius: 20%;
     position: absolute;
     top: 51%;
-    left: 49.5%;
+    left: 49%;
     transform: translate(-180%, -50%);
+}
+
+.box-start::after {
+    content: 'START';
+    font-family: 'Baloo Bhai', cursive;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    color: #fff;
 }
 
 .box-start:hover {
@@ -621,7 +643,8 @@ button:focus {
 }
 
 .parpadeo-active {
-    animation: parpadeo 10s infinite;
+    animation: parpadeo 3s ease-out infinite;
+    cursor: pointer;
 }
 
 .box-start-parpadeo {
@@ -637,17 +660,17 @@ button:focus {
 }
 
 .box1 {
-    width: 5.8%;
-    height: 5.5%;
+    width: 6%;
+    height: 6%;
     transform: rotate(37deg);
     position: absolute;
-    top: 40.9%;
-    left: 40.7%;
+    top: 41%;
+    left: 40.2%;
 }
 
 
 .box1:hover {
-    background: blue;
+    background-color: red!important;
 }
 
 .box1-parpadeo {
@@ -659,6 +682,7 @@ button:focus {
     top: 41.2%;
     left: 41%;
     background: white;
+    box-shadow: 0px 0px 5px #fff;
     opacity:0;
 }
 
@@ -666,12 +690,12 @@ button:focus {
 
 
 .box2 {
-    width: 5.8%;
-    height: 5.5%;
+    width: 6%;
+    height: 5.8%;
     transform: rotate(37deg);
     position: absolute;
     top: 36%;
-    left: 43.7%;
+    left: 43%;
 }
 
 
@@ -692,12 +716,12 @@ button:focus {
 }
 
 .box3 {
-    width: 5.8%;
-    height: 5.5%;
+    width: 6%;
+    height: 6%;
     transform: rotate(37deg);
     position: absolute;
-    top: 30.9%;
-    left: 46.5%;
+    top: 31%;
+    left: 46%;
 }
 
 
@@ -718,12 +742,12 @@ button:focus {
 }
 
 .box4 {
-    width: 5.8%;
-    height: 5.5%;
+    width: 6%;
+    height: 6%;
     transform: rotate(37deg);
     position: absolute;
-    top: 26%;
-    left: 49.5%;
+    top: 26.1%;
+    left: 48.9%;
 }
 
 
@@ -744,12 +768,12 @@ button:focus {
 }
 
 .box5 {
-    width: 5.8%;
-    height: 7%;
+    width: 6%;
+    height: 7.8%;
     transform: rotate(37deg);
     position: absolute;
     top: 19.5%;
-    left: 52.8%;
+    left: 52.2%;
 }
 
 
@@ -803,6 +827,15 @@ button:focus {
     left: 57.1%;
     color: #F8D356;
     font-size: 30px;
+}
+
+.box7 {
+    width: 4.2%;
+    height: 9%;
+    transform: rotate(42deg);
+    position: absolute;
+    top: 16.2%;
+    left: 62.5%;
 }
 
 .box7:hover {
@@ -1689,6 +1722,16 @@ button:focus {
     opacity:0;
 }
 
+.box40{
+    width: 5%;
+    height: 9.6%;
+    transform: rotate(390deg);
+    position: absolute;
+    top: 6.8%;
+    left: 52%;
+}
+
+
 .box40:hover {
     background: greenyellow;
 }
@@ -1706,12 +1749,12 @@ button:focus {
 }
 
 .box41 {
-    width: 5.8%;
-    height: 5.2%;
+    width: 6%;
+    height: 6%;
     transform: rotate(146deg);
     position: absolute;
-    top: 41%;
-    left: 32.5%;
+    top: 40.8%;
+    left: 31.9%;
 }
 
 
@@ -1732,12 +1775,12 @@ button:focus {
 }
 
 .box42 {
-    width: 5.8%;
-    height: 5.2%;
+    width: 6%;
+    height: 6%;
     transform: rotate(146deg);
     position: absolute;
-    top: 35.8%;
-    left: 29.8%;
+    top: 35.6%;
+    left: 29.2%;
 }
 
 
