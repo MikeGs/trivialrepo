@@ -1,3 +1,20 @@
+function Casella(element, ) {
+  this.element = document.getElementById(element);
+  this.tipus = tipus;
+  var fitxes = 
+}
+
+function crearDivFitxes() {
+  var div = document.createElement('div');
+  div.setAttribute("id", "fitxes");
+  html = '';
+  for (var i = 0; i < 5; i++) {
+    html += '<span id="fitxa' + i + '"><i class="fas fa-brain"></i></span>'; 
+  }
+  div.innerHTML = html;
+}
+
+
 $(document).ready(function() {
 	$('.tirarDau').click(function() { dado() });
 });

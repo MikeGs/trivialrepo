@@ -42,7 +42,7 @@ button {
 }
 
 .progress {
-    background-color: transparent!important;
+    background-color: #4C4C4C!important;
     margin-bottom: 10px;
 }
 
@@ -615,7 +615,7 @@ button:focus {
 
 .casilla {
   z-index: 3;
-  background: blue;
+  
 }
 
 .box-start {
