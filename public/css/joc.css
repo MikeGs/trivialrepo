@@ -795,12 +795,12 @@ button:focus {
 }
 
 .box6 {
-    width: 5.8%;
-    height: 9%;
+    width: 6%;
+    height: 9.2%;
     transform: rotate(37deg);
     position: absolute;
-    top: 11.2%;
-    left: 57.2%;
+    top: 11%;
+    left: 56.6%;
 }
 
 
@@ -830,12 +830,12 @@ button:focus {
 }
 
 .box7 {
-    width: 4.2%;
-    height: 9%;
-    transform: rotate(42deg);
+    width: 4.6%;
+    height: 9.3%;
+    transform: rotate(44deg);
     position: absolute;
-    top: 16.2%;
-    left: 62.5%;
+    top: 16.4%;
+    left: 61.8%;
 }
 
 .box7:hover {
@@ -859,8 +859,8 @@ button:focus {
     height: 9%;
     transform: rotate(54deg);
     position: absolute;
-    top: 22%;
-    left: 65.6%;
+    top: 22.2%;
+    left: 65.2%;
 }
 
 
@@ -886,7 +886,7 @@ button:focus {
     transform: rotate(64deg);
     position: absolute;
     top: 29%;
-    left: 68.6%;
+    left: 68%;
 }
 
 
@@ -911,8 +911,8 @@ button:focus {
     height: 9%;
     transform: rotate(78deg);
     position: absolute;
-    top: 35.8%;
-    left: 70.2%;
+    top: 35.9%;
+    left: 69.8%;
 }
 
 
@@ -937,8 +937,8 @@ button:focus {
     height: 9%;
     transform: rotate(89deg);
     position: absolute;
-    top: 43.2%;
-    left: 71.7%;
+    top: 43.5%;
+    left: 70.8%;
 }
 
 
@@ -964,7 +964,7 @@ button:focus {
     transform: rotate(98deg);
     position: absolute;
     top: 51.1%;
-    left: 71%;
+    left: 70.3%;
 }
 
 
@@ -985,12 +985,12 @@ button:focus {
 }
 
 .box13{
-    width: 5.5%;
-    height: 9%;
-    transform: rotate(106deg);
+    width: 6.2%;
+    height: 9.3%;
+    transform: rotate(107deg);
     position: absolute;
-    top: 59.1%;
-    left: 69.4%;
+    top: 59%;
+    left: 68.5%;
 }
 
 
@@ -1024,8 +1024,8 @@ button:focus {
     height: 9%;
     transform: rotate(114deg);
     position: absolute;
-    top: 66.5%;
-    left: 67.2%;
+    top: 66.8%;
+    left: 66.3%;
 }
 
 
@@ -1051,7 +1051,7 @@ button:focus {
     transform: rotate(125deg);
     position: absolute;
     top: 73.2%;
-    left: 64%;
+    left: 63.2%;
 }
 
 
@@ -1076,8 +1076,8 @@ button:focus {
     height: 9%;
     transform: rotate(138deg);
     position: absolute;
-    top: 78.8%;
-    left: 59.8%;
+    top: 78.6%;
+    left: 59%;
 }
 
 
@@ -1098,12 +1098,12 @@ button:focus {
 }
 
 .box17{
-    width: 4.3%;
+    width: 5%;
     height: 9%;
     transform: rotate(150deg);
     position: absolute;
-    top: 82.8%;
-    left: 55.2%;
+    top: 83%;
+    left: 54.2%;
 }
 
 
@@ -1124,12 +1124,12 @@ button:focus {
 }
 
 .box18{
-    width: 4.7%;
-    height: 8.5%;
+    width: 5.4%;
+    height: 8.9%;
     transform: rotate(159deg);
     position: absolute;
-    top: 86.5%;
-    left: 49.6%;
+    top: 86.2%;
+    left: 48.8%;
 }
 
 
@@ -1152,10 +1152,10 @@ button:focus {
 .box19{
     width: 4.5%;
     height: 8.5%;
-    transform: rotate(174deg);
+    transform: rotate(173deg);
     position: absolute;
-    top: 88.4%;
-    left: 43.5%;
+    top: 88.5%;
+    left: 43.1%;
 }
 
 
@@ -1176,12 +1176,12 @@ button:focus {
 }
 
 .box20{
-    width: 5.6%;
+    width: 5.8%;
     height: 8.5%;
     transform: rotate(180deg);
     position: absolute;
     top: 88.8%;
-    left: 36.7%;
+    left: 36.4%;
 }
 
 
@@ -1211,12 +1211,12 @@ button:focus {
 }
 
 .box21{
-    width: 4.6%;
+    width: 5%;
     height: 8.8%;
-    transform: rotate(184deg);
+    transform: rotate(189deg);
     position: absolute;
     top: 88.2%;
-    left: 31.2%;
+    left: 30.4%;
 }
 
 
@@ -1237,12 +1237,12 @@ button:focus {
 }
 
 .box22{
-    width: 4.6%;
+    width: 4.8%;
     height: 8.8%;
-    transform: rotate(198deg);
+    transform: rotate(200deg);
     position: absolute;
     top: 85.8%;
-    left: 25.2%;
+    left: 24.8%;
 }
 
 .box22-parpadeo {
@@ -1263,12 +1263,12 @@ button:focus {
 
 
 .box23{
-    width: 4.4%;
+    width: 4.8%;
     height: 8.8%;
     transform: rotate(211deg);
     position: absolute;
     top: 82.6%;
-    left: 20.2%;
+    left: 19.2%;
 }
 
 
@@ -1291,10 +1291,10 @@ button:focus {
 .box24{
     width: 4.4%;
     height: 8.8%;
-    transform: rotate(220deg);
+    transform: rotate(222deg);
     position: absolute;
-    top: 78.2%;
-    left: 15.2%;
+    top: 78.4%;
+    left: 15%;
 }
 
 
@@ -1315,12 +1315,12 @@ button:focus {
 }
 
 .box25{
-    width: 4.7%;
-    height: 9.2%;
+    width: 5%;
+    height: 9%;
     transform: rotate(232deg);
     position: absolute;
-    top: 72.2%;
-    left: 11.2%;
+    top: 72.8%;
+    left: 10.8%;
 }
 
 
@@ -1341,12 +1341,12 @@ button:focus {
 }
 
 .box26{
-    width: 4.5%;
-    height: 9.2%;
+    width: 5%;
+    height: 9%;
     transform: rotate(245deg);
     position: absolute;
-    top: 65.8%;
-    left: 7.8%;
+    top: 66%;
+    left: 7.2%;
 }
 
 
@@ -1367,12 +1367,12 @@ button:focus {
 }
 
 .box27{
-    width: 5.4%;
+    width: 5.8%;
     height: 8.8%;
-    transform: rotate(255deg);
+    transform: rotate(253deg);
     position: absolute;
-    top: 58.8%;
-    left: 5.1%;
+    top: 59%;
+    left: 4.7%;
 }
 
 
@@ -1402,12 +1402,12 @@ button:focus {
 }
 
 .box28{
-    width: 5%;
+    width: 5.2%;
     height: 9%;
     transform: rotate(260deg);
     position: absolute;
     top: 50.8%;
-    left: 4%;
+    left: 3.4%;
 }
 
 
@@ -1428,12 +1428,12 @@ button:focus {
 }
 
 .box29{
-    width: 4.6%;
+    width: 4.8%;
     height: 9%;
     transform: rotate(274deg);
     position: absolute;
-    top: 43%;
-    left: 4%;
+    top: 43.4%;
+    left: 3.4%;
 }
 
 
@@ -1511,7 +1511,7 @@ button:focus {
     transform: rotate(306deg);
     position: absolute;
     top: 22.4%;
-    left: 9.3%;
+    left: 9%;
 }
 
 
@@ -1533,11 +1533,11 @@ button:focus {
 
 .box33{
     width: 4.4%;
-    height: 8.7%;
+    height: 8.8%;
     transform: rotate(316deg);
     position: absolute;
     top: 16.4%;
-    left: 13%;
+    left: 12.7%;
 }
 
 
@@ -1560,10 +1560,10 @@ button:focus {
 .box34{
     width: 5.6%;
     height: 8.7%;
-    transform: rotate(324deg);
+    transform: rotate(325deg);
     position: absolute;
     top: 11.2%;
-    left: 17.2%;
+    left: 16.5%;
 }
 
 
@@ -1598,7 +1598,7 @@ button:focus {
     transform: rotate(332deg);
     position: absolute;
     top: 7%;
-    left: 22.8%;
+    left: 22.5%;
 }
 
 
@@ -1621,9 +1621,9 @@ button:focus {
 .box36{
     width: 4.8%;
     height: 9%;
-    transform: rotate(342deg);
+    transform: rotate(345deg);
     position: absolute;
-    top: 4%;
+    top: 4.1%;
     left: 28.4%;
 }
 
@@ -1649,7 +1649,7 @@ button:focus {
     height: 9%;
     transform: rotate(354deg);
     position: absolute;
-    top: 3%;
+    top: 2.8%;
     left: 34.4%;
 }
 
@@ -1673,10 +1673,10 @@ button:focus {
 .box38{
     width: 4.7%;
     height: 9.6%;
-    transform: rotate(368deg);
+    transform: rotate(365deg);
     position: absolute;
-    top: 2.6%;
-    left: 40.5%;
+    top: 2.5%;
+    left: 40.1%;
 }
 
 
@@ -1699,10 +1699,10 @@ button:focus {
 .box39{
     width: 4.4%;
     height: 9.6%;
-    transform: rotate(375deg);
+    transform: rotate(377deg);
     position: absolute;
-    top: 3.8%;
-    left: 46.5%;
+    top: 3.9%;
+    left: 46%;
 }
 
 
@@ -1728,7 +1728,7 @@ button:focus {
     transform: rotate(390deg);
     position: absolute;
     top: 6.8%;
-    left: 52%;
+    left: 51.5%;
 }
 
 
@@ -1801,12 +1801,12 @@ button:focus {
 }
 
 .box43 {
-    width: 5.7%;
-    height: 5.2%;
+    width: 6.4%;
+    height: 6%;
     transform: rotate(146deg);
     position: absolute;
-    top: 30.9%;
-    left: 26.9%;
+    top: 30.7%;
+    left: 26.2%;
 }
 
 
@@ -1827,12 +1827,12 @@ button:focus {
 }
 
 .box44 {
-    width: 5.7%;
-    height: 5.2%;
+    width: 6.1%;
+    height: 6%;
     transform: rotate(146deg);
     position: absolute;
-    top: 25.8%;
-    left: 24.2%;
+    top: 25.5%;
+    left: 23.6%;
 }
 
 
@@ -1853,12 +1853,12 @@ button:focus {
 }
 
 .box45 {
-    width: 6%;
-    height: 6%;
+    width: 6.2%;
+    height: 7.3%;
     transform: rotate(146deg);
     position: absolute;
-    top: 19.8%;
-    left: 20.9%;
+    top: 19%;
+    left: 20.4%;
 }
 
 
@@ -1879,12 +1879,12 @@ button:focus {
 }
 
 .box46 {
-    width: 5.8%;
-    height: 5.2%;
+    width: 6%;
+    height:6%;
     transform: rotate(252deg);
     position: absolute;
-    top: 51%;
-    left: 30.2%;
+    top: 50.6%;
+    left: 29.4%;
 }
 
 
@@ -1905,12 +1905,12 @@ button:focus {
 }
 
 .box47 {
-    width: 5.8%;
-    height: 5.2%;
+    width: 6%;
+    height: 6%;
     transform: rotate(252deg);
     position: absolute;
-    top: 52.8%;
-    left: 25.2%;
+    top: 52.4%;
+    left: 24.7%;
 }
 
 
@@ -1931,12 +1931,12 @@ button:focus {
 }
 
 .box48 {
-    width: 5.8%;
-    height: 5.2%;
+    width: 6.3%;
+    height: 5.8%;
     transform: rotate(252deg);
     position: absolute;
-    top: 54.6%;
-    left: 20.3%;
+    top: 54.4%;
+    left: 19.8%;
 }
 
 
@@ -1957,12 +1957,12 @@ button:focus {
 }
 
 .box49 {
-    width: 5.8%;
-    height: 5.2%;
+    width: 6.2%;
+    height: 6%;
     transform: rotate(252deg);
     position: absolute;
-    top: 56.4%;
-    left: 15.8%;
+    top: 56.2%;
+    left: 15.3%;
 }
 
 
@@ -1983,12 +1983,12 @@ button:focus {
 }
 
 .box50 {
-    width: 5.8%;
-    height: 5.2%;
+    width: 6.2%;
+    height: 6%;
     transform: rotate(252deg);
     position: absolute;
-    top: 58.4%;
-    left: 11%;
+    top: 58%;
+    left: 10.4%;
 }
 
 
@@ -2009,12 +2009,12 @@ button:focus {
 }
 
 .box51 {
-    width: 5.8%;
-    height: 5.2%;
+    width: 6.2%;
+    height: 5.7%;
     transform: rotate(108deg);
     position: absolute;
     top: 50.8%;
-    left: 43.6%;
+    left: 42.8%;
 }
 
 
@@ -2035,12 +2035,12 @@ button:focus {
 }
 
 .box52 {
-    width: 5.8%;
-    height: 5.2%;
+    width: 6%;
+    height: 5.8%;
     transform: rotate(108deg);
     position: absolute;
-    top: 52.6%;
-    left: 48.2%;
+    top: 52.7%;
+    left: 47.6%;
 }
 
 
@@ -2062,12 +2062,12 @@ button:focus {
 }
 
 .box53 {
-    width: 5.8%;
-    height: 5.2%;
+    width: 6%;
+    height: 5.8%;
     transform: rotate(108deg);
     position: absolute;
-    top: 54.6%;
-    left: 52.9%;
+    top: 54.5%;
+    left: 52.3%;
 }
 
 
@@ -2089,12 +2089,12 @@ button:focus {
 }
 
 .box54 {
-    width: 5.8%;
-    height: 5.6%;
+    width: 6%;
+    height: 5.8%;
     transform: rotate(108deg);
     position: absolute;
-    top: 56.2%;
-    left: 57.6%;
+    top: 56.3%;
+    left: 57%;
 }
 
 
@@ -2117,12 +2117,12 @@ button:focus {
 }
 
 .box55 {
-    width: 6.4%;
-    height: 5.6%;
+    width: 6.1%;
+    height: 6.6%;
     transform: rotate(108deg);
     position: absolute;
-    top: 58.2%;
-    left: 62.4%;
+    top: 57.9%;
+    left: 61.8%;
 }
 
 
@@ -2145,11 +2145,11 @@ button:focus {
 
 /* SEGUIR POR AQUI!!! CONTINUAR!! */
 .box56 {
-    width: 6%;
-    height: 5.3%;
+    width: 6.1%;
+    height: 5.8%;
     position: absolute;
     top: 59.7%;
-    left: 47.4%;
+    left: 47%;
     transform: translate(-180%, -50%);
 }
 
@@ -2172,10 +2172,10 @@ button:focus {
 
 .box57 {
     width: 6%;
-    height: 5.3%;
+    height: 5.8%;
     position: absolute;
-    top: 65.8%;
-    left: 47.4%;
+    top: 65.9%;
+    left: 46.9%;
     transform: translate(-180%, -50%);
 }
 
@@ -2197,10 +2197,10 @@ button:focus {
 
 .box58 {
     width: 6%;
-    height: 5.3%;
+    height: 5.8%;
     position: absolute;
-    top: 72%;
-    left: 47.4%;
+    top: 72.2%;
+    left: 47%;
     transform: translate(-180%, -50%);
 }
 
@@ -2221,11 +2221,11 @@ button:focus {
 }
 
 .box59 {
-    width: 6%;
-    height: 5.3%;
+    width: 6.1%;
+    height: 5.7%;
     position: absolute;
-    top: 78.2%;
-    left: 47.4%;
+    top: 78.4%;
+    left: 47%;
     transform: translate(-180%, -50%);
 }
 
@@ -2247,10 +2247,10 @@ button:focus {
 
 .box60 {
     width: 6%;
-    height: 6%;
+    height: 6.7%;
     position: absolute;
     top: 85%;
-    left: 47.4%;
+    left: 47%;
     transform: translate(-180%, -50%);
 }
 
