@@ -327,6 +327,10 @@ table.aligncenter .col {
 	background-color: rgba(0,255,0,0.1);
 }
 
+#afegirJugadorsBtn {
+	margin-top: 15px;
+}
+
 /* MODAL FIX PADDING RIGHT */
 
 .modal-open {
@@ -345,7 +349,7 @@ table.aligncenter .col {
 
 #startMenuUl .active {
 	color: #005a9e!important;
-	transform: scale(1.05);
+	transform: scaleX(1.05);
 	background-color: rgba(0,0,0,0.2)!important;
 	font-weight: bold;
 	filter: brightness(2);
@@ -389,7 +393,7 @@ table.aligncenter .col {
 #startMenu li a:hover {
 	color: orange!important;
 	background-color: rgba(0,0,0,0.3)!important;
-	transform: scale(1.05);
+	transform: scaleX(1.05);
 }
 
 #contingutStart {
@@ -432,6 +436,10 @@ table.aligncenter .col {
 	margin: 0px;
 }
 
+#multiplayerLobby {
+	
+}
+
 #multiplayerContainer h3, #multiplayerLobby h3 {
 	color: white;
 }
@@ -446,6 +454,7 @@ table.aligncenter .col {
 
 #playMultiplayerCard {
 	padding-left: 0px;
+	overflow: hidden;
 }
 
 #playMultiplayerCard a {
@@ -456,6 +465,14 @@ table.aligncenter .col {
 	background-color: rgba(255,255,255,0.1);
 
 	text-decoration: none;
+}
+
+#playMultiplayerCard:hover p {
+	transform: scale(1.3);
+}
+
+#playMultiplayerCard:hover a {
+	box-shadow: inset 1px 1px 20px rgba(255,255,255,0.7);
 }
 
 #playMultiplayerCard img {
@@ -662,10 +679,21 @@ input[type=password] {
 
 .carousel-inner {
 	min-height: 300px;
+	position: relative;
 }
 
 #tipusPartidaSlider {
 	background-color: rgba(0,180,255,0.7);
+}
+
+.carousel-item, .carouselVertical {
+	height: 100%;
+}
+
+.carouselVertical {
+	width: 100%;
+	height: 100%;
+	display: table;
 }
 
 .ontopCarousel {
@@ -674,10 +702,21 @@ input[type=password] {
 	text-align: center;
 
 	color: white;
+
+	display: table-cell;
+	vertical-align: middle;
+
+	font-size: 25px;
+	text-transform: uppercase;
+	padding: 0px 30px;
 }
 
 #playerList {
 	color: white;
+	flex: none!important;
+
+	width: 50%!important;
+	max-width: none!important;
 }
 
 #playerList ul {
@@ -702,8 +741,9 @@ input[type=password] {
 	
 }
 
-#playerList ul li a:hover {
-	background-color: rgba(255,255,255,0.1);
+#playerList ul li:hover {
+	color: orange!important;
+	filter: brightness(1.1);
 }
 
 #playerList ul li:nth-child(2) a {
@@ -731,8 +771,62 @@ input[type=password] {
 	font-size: 15px!important;
 }
 
-#containerNormes {
+#containerNormesStart {
 	margin-top: 40px;
+}
+
+.playPartidaCard {
+	height: 280px;
+	display: block;
+
+	background-color: rgba(255,255,255,0.2);
+}
+
+.playPartidaCard a {
+	height: 100%;
+	width: 100%;
+	display: table;
+
+	text-decoration: none;
+}
+
+.playPartidaCard:hover a {
+	box-shadow: inset 1px 1px 20px rgba(255,255,255,0.7);
+}
+
+.playPartidaCard:hover p {
+	transform: scale(1.3);
+	padding: 0px 40px;
+}
+
+.playPartidaCard a p {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+
+	color: white!important;	
+	text-transform: uppercase;
+	font-size: 25px;
+
+	padding: 0px 15px;
+}
+
+#containerNormes {
+	width: 55%!important;
+}
+
+#containerComençarPartida {
+	width: 45%!important;
+	padding: 0px 0px!important;
+}
+
+.playPartidaButton {
+	overflow: hidden;
+}
+
+.tableNormes {
+	width: 100%!important;
+	max-width: 524px!important
 }
 
 .tableNormes li {
@@ -1021,6 +1115,10 @@ input[type=password] {
 
 /* MODAL INICIAR SESSIÓ PARTIDA */
 
+.modal-backdrop {
+	
+}
+
 #jugadorSeleccionatLabelFill {
 	font-weight: bold;
 }
@@ -1060,6 +1158,23 @@ input[type=password] {
 
 /* MODAL INICIAR SESSIÓ PARTIDA END */
 
+/* CANVI MODE MODAL */
+
+#canviModeTitle {
+	color: black!important;
+	text-align: center;
+}
+
+#canviModeAccept, #canviModeDeny {
+	width: 75px;
+}
+
+#acceptdenyModel {
+	text-align: center;
+}
+
+/* CANVI MODE MODAL END */
+
 .fos_user_profile_edit input:read-only {
 	background: #E5E5E5;
 }
@@ -1076,3 +1191,60 @@ input[type=password] {
 }
 
 /* ANIMATIONS END */
+
+/* RESPONSIVE MEDIA QUERIES */
+
+@media screen and (max-width: 1280px) {
+
+	#multiplayerLobby {
+		margin-right: 0px!important;
+		padding-right: 0px!important;
+	}
+
+	#multiplayerLobby, #multiplayerContainer {
+		width: 100%!important;
+		max-width: none!important;
+		flex: none;
+	}
+
+	.backgroundRotate {
+		top: 0;
+		right: 0;
+		display: none;
+	}
+
+	#multiplayerLobby > .container {
+		padding: 0px!important;
+	}
+
+}
+
+@media screen and (max-width: 1030px) {
+
+	#tipusPartidaSlider, #playerList, #containerNormes, #containerComençarPartida {
+		flex: none!important;
+		width: 100%!important;
+		max-width: none!important;
+		padding-left: 0px!important;
+		padding-right: 0px!important;
+	}
+
+	.tableNormes {
+		max-width: none!important;
+	}
+
+	#containerNormesStart {
+		margin: 0px!important;
+	}
+
+	#tipusPartidaSlider {
+		height: 220px;
+	}
+
+	#titleMultijugador, #grupMultijugador {
+		text-align: center;
+	}
+
+}
+
+/* RESPONSIVE MEDIA QUERIES END */
