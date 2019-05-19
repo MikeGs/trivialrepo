@@ -282,13 +282,53 @@ table.aligncenter .col {
 	text-decoration: none!important;
 }
 
-.afegirgrup input, .afegirgrup label {
-    width: 35%;
+.disabledBtn {
+	filter: brightness(0.5);
+}
+
+.afegirForm {
+	max-width: 680px;
+}
+
+.afegirForm input, .afegirForm label {
+    width: 100%;
     display: block;
 }
 
-.afegirgrup input {
-    margin-bottom: 15px;
+.afegirForm > div {
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+
+.afegirForm select {
+	border: 1px solid #ced4da;
+	padding: .375rem .75rem;
+	line-height: 1.5;
+	height: calc(1.5em + .75rem + 2px);
+	border-radius: .25rem;
+}
+
+.afegirForm input[type='submit'] {
+	max-width: 120px;
+	float: left;
+}
+
+#grup_datainici, #grup_datafinal, #grup_idNivell {
+	margin-bottom: 10px;
+}
+
+#grup_datainici_time, #grup_datafinal_time {
+	margin-top: 8px;
+	position: relative;
+	overflow: hidden;
+}
+
+#grup_datainici_time select:first-child, #grup_datafinal_time select:first-child {
+	margin-right: 5px;
+}
+
+#grup_datainici_time select:last-child, #grup_datafinal_time select:last-child {
+	margin-left: 5px;
 }
 
 /* LLEGENDA TAULA */
@@ -303,6 +343,10 @@ table.aligncenter .col {
 
 .afegirbtn {
 	margin-top: 15px;
+}
+
+#afegirNivellb {
+	margin-right: 10px;
 }
 
 /* LLISTAT ALUMNES ETC */

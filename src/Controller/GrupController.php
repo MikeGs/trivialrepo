@@ -14,6 +14,7 @@ use App\Entity\Usuari;
 use App\Entity\Nivell;
 
 use App\Form\GrupType;
+use App\Form\NivellType;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -75,6 +76,55 @@ class GrupController extends Controller
             'title' => $title
         ]);
 
+    }
+
+    /**
+     * @Route("/afegirnivell", name="afegirnivell")
+     */
+    public function newNivell(Request $request)
+    {
+        $authChecker = $this->container->get('security.authorization_checker');
+        
+        if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('fos_user_security_login');
+
+        } else if (!$authChecker->isGranted('ROLE_TEACHER')) {
+
+            return $this->redirectToRoute('joc');
+
+        } 
+        
+        $administradors = $this->getAdministradors();
+
+        $nivell = new nIVELL();
+        $form = $this->createForm(NivellType::class, $nivell);
+        $form->handleRequest($request);
+
+         if ($form->isSubmitted()) {
+            echo "submitted";
+
+            // id	nom	
+
+            $nivell->setNom($form->get('nom')->getData());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($nivell);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('grups'));
+        }
+
+        $title = "Afegir nivell | Trivial UB";
+
+        return $this->render('grup/afegirnivell.html.twig', [
+            'controller_name' => 'GrupController',
+            'nivell' => $nivell,
+            'form' => $form->CreateView(),
+            'title' => $title,
+            'administradors' => $administradors,
+            
+        ]);
     }
 
     /**
