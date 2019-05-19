@@ -97,7 +97,7 @@ class GrupController extends Controller
         
         $administradors = $this->getAdministradors();
 
-        $nivell = new nIVELL();
+        $nivell = new Nivell();
         $form = $this->createForm(NivellType::class, $nivell);
         $form->handleRequest($request);
 
