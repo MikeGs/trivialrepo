@@ -313,6 +313,16 @@ table.aligncenter .col {
 	float: left;
 }
 
+#tornarAGrupsBtn {
+	margin-bottom: 10px;
+	display: block;
+}
+
+#tornarAGrupsBtn.llistatalumnes {
+	float: left;
+	margin-top: 10px;
+}
+
 #grup_datainici, #grup_datafinal, #grup_idNivell {
 	margin-bottom: 10px;
 }

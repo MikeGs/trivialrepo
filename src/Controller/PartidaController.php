@@ -23,7 +23,7 @@ class PartidaController extends Controller
 
         $title = "Trivial | UB";
 
-        return $this->render('partida/index.html.twig', [
+        return $this->render('partida/inici.html.twig', [
             'controller_name' => 'PartidaController',
             'title' => $title,
         ]);
@@ -380,7 +380,7 @@ class PartidaController extends Controller
         var random = Math.random() * (+max - +min) + +min; 
         random = Math.round(random);
         return random;
-    } 
+    }
 
     //getPw();
     var pw = '" . $password . "';
@@ -488,7 +488,7 @@ class PartidaController extends Controller
 
             <div class='playPartidaCard'>
 
-                <a href='#' class='alltransition3 playPartidaButton'>
+                <a href='/jugar' class='alltransition3 playPartidaButton'>
 
                     <p class='alltransition3'>Començar partida</p>
 
@@ -796,6 +796,19 @@ class PartidaController extends Controller
         }
 
         return new JsonResponse(['match' => $match, 'id' => $user->getId(), 'nom' => $user->getNom() . ' ' . $user->getCognoms()]);
+        
+    }
+
+    /**
+     * @Route("/getJugadorNom", name="getJugadorNom")
+     */
+    public function getJugadorNom(Request $request) : JsonResponse {
+
+        $id = $request->request->get('id');
+
+        $user = $this->getUsuari($id);
+
+        return new JsonResponse(['nomcognoms' => $user->getNom() . " " . $user -> getCognoms()]);
         
     }
 
