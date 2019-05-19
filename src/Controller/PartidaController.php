@@ -385,9 +385,6 @@ class PartidaController extends Controller
     //getPw();
     var pw = '" . $password . "';
 
-    /*var encrypted = encrypt('Im testing this', 'a1e6239b392ad6a409609a02ff16cb66');
-    var decrypted = decrypt(encrypted, 'a1e6239b392ad6a409609a02ff16cb66');*/
-
     delete_cookie('jugadors');
 
     color = getRandomColor(colors);
@@ -810,6 +807,19 @@ class PartidaController extends Controller
 
         return new JsonResponse(['nomcognoms' => $user->getNom() . " " . $user -> getCognoms()]);
         
+    }
+
+    /**
+     * @Route("/getEntrenamentPortait", name="getEntrenamentPortait")
+     */
+    function getEntrenamentPortait(Request $request) {
+
+        $html = "";
+
+        return new Response(
+            $html
+        );
+
     }
 
 }
