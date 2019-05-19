@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+
+<div class="padding">
+<h1 class="afegirTitle">Afegir nivell</h1>
+
+<form id="afegirnivell" class="afegirForm" action="" method="POST">
+
+<!-- id	nom	-->
+
+    {{ form_start(form) }}
+        
+        {{ form_row(form.nom) }}
+
+        <input class="btn btn-info" type="submit" name="Submit" value="Afegir nivell" />
+
+    {{ form_end(form, {'render_rest': false}) }}
+</div>
+
+
+<script>
+
+    $("document").ready(function() {
+        $("input[type='text']").addClass("form-control");
+    })
+
+</script>
+{% endblock %}
