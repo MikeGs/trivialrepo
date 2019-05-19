@@ -760,6 +760,8 @@ class PartidaController extends Controller
 
     });
 
+    $(window).trigger('resize');
+
     </script>
 
     </div>";
