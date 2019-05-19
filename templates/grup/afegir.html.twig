@@ -5,9 +5,9 @@
 {% block body %}
 
 <div class="padding">
-<h1 class="">Afegir grup</h1>
+<h1 class="afegirTitle">Afegir grup</h1>
 
-<form class="afegirgrup" action="" method="POST">
+<form id="afegirgrup" class="afegirForm" action="" method="POST">
 
 <!-- id	id_nivell_id	nom	codi	datainici	datafinal	//finalitzat	tempsresposta	//id_administrador -->
 
@@ -21,8 +21,21 @@
         {{ form_row(form.tempsresposta) }}
         {{ form_row(form.puntuacio_facil) }}
         {{ form_row(form.puntuacio_dificil) }}
-        <input type="submit" name="Submit" value="Afegir" />
+        <input class="btn btn-info" type="submit" name="Submit" value="Afegir" />
 
     {{ form_end(form, {'render_rest': false}) }}
 </div>
+
+<script>
+
+    $("document").ready(function() {
+        $("input[type='text']").addClass("form-control");
+        $("#afegirgrup div:nth-child(4)").css({
+            "width": "50%",
+            "float": "left",
+        })
+    })
+
+</script>
+
 {% endblock %}
