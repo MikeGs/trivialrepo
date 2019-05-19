@@ -463,7 +463,7 @@ class PartidaController extends Controller
                 </li>
                 <li class='row'>
                     <p class='col col-md-6'>Temps de resposta</p>
-                    <p class='col col-md-6'>10 segons</p>
+                    <p class='col col-md-6'>" . $grup->getTempsresposta() . " segons</p>
                 </li>
                 <li class='row'>
                     <p class='col col-md-6'>Nivell</p>
