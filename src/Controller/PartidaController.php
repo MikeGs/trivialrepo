@@ -140,11 +140,11 @@ class PartidaController extends Controller
 
             <div id='multiHighlight' class='container row'>
 
-                <div id='playMultiplayerCard' class='col col-md-5'>
+                <div id='playMultiplayerCard' class='col col-md-5 alltransition3'>
 
-                    <a href='#' id='playButton'>
+                    <a href='#' id='playButton' class='alltransition3'>
                         
-                        <p>Jugar</p>
+                        <p class='alltransition3'>Jugar</p>
                     </a>
                     
                 </div>
@@ -228,9 +228,13 @@ class PartidaController extends Controller
             ->getQuery()
             ->getResult();
 
-        $user = $usuari = $this->getDoctrine()
-        ->getRepository(Usuari::class)
-        ->find($usuari[0]->getId());
+        $user = null;
+
+        if ($usuari != null) {
+            $user = $usuari = $this->getDoctrine()
+            ->getRepository(Usuari::class)
+            ->find($usuari[0]->getId());
+        }
 
         return $user;
 
@@ -250,6 +254,13 @@ class PartidaController extends Controller
             return $alumnes;
     }
 
+    function getNivellGrup($grup) {
+
+        $nivell = $grup->getIdNivell();
+        return $nivell;
+
+    }
+
     /**
      * @Route("/partidaLobby/{grupid}", name="partidaLobby")
      */
@@ -261,9 +272,11 @@ class PartidaController extends Controller
 
     $password = $this->pw();
 
-    $colors = "[['red', 'rgba(255,0,0,0.3)'], ['blue','rgba(0,0,255,0.3)'], ['green', 'rgba(0,255,0,0.3)'], ['pink', 'rgba(255,192,203,0.3)'], ['orange', 'rgba(249,191,59,0.3)']]";
+    $colors = "[['red', 'rgba(255,0,0,0.3)'], ['blue','rgba(0,0,255,0.3)'], ['green', 'rgba(0,255,0,0.3)'], ['pink', 'rgba(255,192,203,0.6)'], ['orange', 'rgba(249,191,59,0.3)']]";
 
     $nomdusuarilabel = "Nom d'usuari";
+
+    $nivellGrup = $this->getNivellGrup($grup);
 
     $llistat = "";
 
@@ -347,6 +360,19 @@ class PartidaController extends Controller
         var random = getRandomNumberColor();
         var colorvalid = false;
 
+        while(colorvalid == false) {
+
+            if (colorsn.includes(random)) {
+                random = getRandomNumberColor();
+                colorvalid = false;
+            } else {
+                colorvalid = true;
+            }
+
+        } 
+
+        colorsn.push(random);
+
         return colors[random];
     }
 
@@ -365,17 +391,24 @@ class PartidaController extends Controller
     var decrypted = decrypt(encrypted, 'a1e6239b392ad6a409609a02ff16cb66');*/
 
     delete_cookie('jugadors');
-    writeCookie('jugadors', '" . $user->getId() . "', 1);
+
+    color = getRandomColor(colors);
+    var jugadoractual = [" . $user->getId() . ", color[0]];
+
+    writeCookie('jugadors', JSON.stringify(jugadoractual), 1);
+
+    delete_cookie('grup');
+    writeCookie('grup', '" . $grupid . ", 1');
 
     </script>
 
     <div id='multiplayerLobby' class='row p-4 col-9'>
 
-    <div class='container'>
+    <div class='container' id='titleMultijugador'>
         <h2>Sala d'espera | Partida multijugador</h2>
     </div>
 
-    <div class='container'>
+    <div class='container' id='grupMultijugador'>
         <h3>Grup: " . $grup->getNom() . "</h3>
     </div>
 
@@ -384,20 +417,28 @@ class PartidaController extends Controller
         <div id='tipusPartidaSlider' class='col col-md-6 carousel slide' data-ride='carousel'>
 
             <div class='carousel-inner'>
-                <div class='carousel-item active'>
-                    <p class='ontopCarousel'>Partida multijugador</p>
+                <div class='carousel-item active' id='carouselMultijugador'>
+
+                    <div class='carouselVertical'>
+                        <p class='ontopCarousel'>Partida multijugador</p>
+                    </div>
+
                 </div>
-                <div class='carousel-item'>
-                    <p class='ontopCarousel'>Entrenament</p>
+                <div class='carousel-item' id='carouselEntrenament'>
+
+                    <div class='carouselVertical'>
+                        <p class='ontopCarousel'>Entrenament</p>
+                    </div>
+
                 </div>
             </div>
 
-            <a class='carousel-control-prev' href='#tipusPartidaSlider' role='button' data-slide='prev'>
+            <a class='carousel-control-prev' id='carouselMultiPrev' href='#tipusPartidaSlider' role='button' data-slide='prev'>
                 <span class='carousel-control-prev-icon' aria-hidden='true'></span>
                 <span class='sr-only'>Previous</span>
             </a>
 
-            <a class='carousel-control-next' href='#tipusPartidaSlider' role='button' data-slide='next'>
+            <a class='carousel-control-next' id='carouselMultiNext' href='#tipusPartidaSlider' role='button' data-slide='next'>
                 <span class='carousel-control-next-icon' aria-hidden='true'></span>
                 <span class='sr-only'>Next</span>
             </a>
@@ -406,10 +447,9 @@ class PartidaController extends Controller
 
         <div id='playerList' class='col col-md-4'>
             <ul>
-                <li id='playerListHead'>Jugadors:</li>
-                <li><a href='#' id='currentPlayer'><i class='fas fa-user mr-2'></i>" . $user->getUsername() . "</a></li>
+                <p id='playerListHead' style='margin-bottom: 0px!important'>Jugadors:</p>
+                <li class='alltransition3'><a href='#' id='currentPlayer'><i class='alltransition3 fas fa-user mr-2'></i>" . $user->getUsername() . "</a></li>
                 <script>
-                    var color = getRandomColor(colors);
                     $('#currentPlayer').css('background-color',color[1]);
                 </script>
             </ul>
@@ -418,41 +458,55 @@ class PartidaController extends Controller
 
     </div>
 
-    <div class='container' id='containerNormes'>
-        
-        <ul class='tableNormes col col-6'>
-            <li class='row tableHead'>
-                <p>Normes</p>
-            </li>
-            <li class='row'>
-                <p class='col col-md-6'>Temps de resposta</p>
-                <p class='col col-md-6'>10 segons</p>
-            </li>
-            <li class='row'>
-                <p class='col col-md-6'>Nivell</p>
-                <p class='col col-md-6'><select id='selectNivell'>
-                    <option value='q3'>Q3</option>
-                    <option value='q4'>Q4</option>
-                    <option value='e5'>E5</option>
-            </select></p>
-            </li>
-            <li class='row'>
-                <p class='col col-md-6'>Duració aproximada</p>
-                <p class='col col-md-6'>60 minuts</p>
-            </li>
-            <li class='row'>
-                <p class='col col-md-6'>Formatgets</p>
-                <p class='col col-md-6'>5</p>
-            </li>
-        </ul>
+    <div class='container row' id='containerNormesStart'>
 
-    </container>
-        
+        <div class='container' id='containerNormes'>
+            
+            <ul class='tableNormes col col-6'>
+                <li class='row tableHead'>
+                    <p>Normes</p>
+                </li>
+                <li class='row'>
+                    <p class='col col-md-6'>Temps de resposta</p>
+                    <p class='col col-md-6'>10 segons</p>
+                </li>
+                <li class='row'>
+                    <p class='col col-md-6'>Nivell</p>
+                    <p class='col col-md-6'>" . $nivellGrup->getNom() . "</p>
+                </li>
+                <li class='row'>
+                    <p class='col col-md-6'>Duració aproximada</p>
+                    <p class='col col-md-6'>60 minuts</p>
+                </li>
+                <li class='row'>
+                    <p class='col col-md-6'>Formatgets</p>
+                    <p class='col col-md-6'>5</p>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class='container' id='containerComençarPartida'>
+
+            <div class='playPartidaCard'>
+
+                <a href='#' class='alltransition3 playPartidaButton'>
+
+                    <p class='alltransition3'>Començar partida</p>
+
+                </a>
+
+            </div>
+
+        </div>    
+
+    </div>
+
     <div id='afegirJugadorModal' class='modal fade' tabindex='-1' role='dialog'>
         <div class='modal-dialog' role='document'>
             <div class='modal-content'>
                 <div class='modal-header'>
-                    <h6 class='modal-title' id='afegirJugadorModal'></h6>
+                    <h6 class='modal-title' id='afegirJugadorModal'>Llistat de jugadors</h6>
                     <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
                         <span aria-hidden='true'>&times;</span>
                     </button>
@@ -463,7 +517,7 @@ class PartidaController extends Controller
                             <table class='col-12'>
 
                                 <tr>
-                                    <th scope='col'>Llistat de jugadors</th>
+                                    <th scope='col'>Grup: " . $grup->getNom() . "</th>
                                 </tr>
                                 " .
 
@@ -471,11 +525,11 @@ class PartidaController extends Controller
 
                                 . "
                             </table>
-                            <input type='submit' name='Submit' value='Afegir' class='btn btn-primary disabled' id='afegirJugadorsBtn' data-grupid='{{ grup.id }}'>
                         </div>
                     </div>
                 </div>
                 <div class='modal-footer' id='afegirJugadorModalBtns'>
+                    <input type='submit' name='Submit' value='Tancar' class='btn btn-success' id='afegirJugadorsBtn' data-grupid='{{ grup.id }}'>
                 </div>
             </div>
         </div>
@@ -485,7 +539,7 @@ class PartidaController extends Controller
         <div class='modal-dialog' role='document'>
             <div class='modal-content'>
                 <div class='modal-header'>
-                    <h6 class='modal-title' id='iniciarSessioModal'></h6>
+                    <h6 class='modal-title' id='iniciarSessioModal'>Iniciar sessió</h6>
                     <button id='iniciarSessioModalClose' type='button' class='close' data-dismiss='modal' aria-label='Close'>
                         <span aria-hidden='true'>&times;</span>
                     </button>
@@ -506,6 +560,7 @@ class PartidaController extends Controller
 
                             <input type='submit' name='Submit' value='Iniciar sessió' class='btn btn-primary disabled' id='iniciarSessioModalBtn'>
                             <!-- data-usuariid='{{ usuari.id }}' -->
+
                         </div>
                     </div>
                 </div>
@@ -515,8 +570,57 @@ class PartidaController extends Controller
         </div>
     </div>
 
+    <div id='canviModeModal' class='modal fade' tabindex='-1' role='dialog'>
+        <div class='modal-dialog' role='document'>
+            <div class='modal-content'>
+                <div class='modal-header'>
+                    <h6 class='modal-title' id='canviModeModal'>Canvi de mode</h6>
+                    <button id='canviModeModalClose' type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                        <span aria-hidden='true'>&times;</span>
+                    </button>
+                </div>
+                <div class='modal-body'>
+                    <div id='canviModeModalMsg'>
+
+                        <h3 id='canviModeTitle'>S'està a punt de canviar el mode de joc, desitjes continuar?</h3>
+                        <div id='acceptdenyModel' class='col col-md-12'>
+
+                            <a href='#' class='btn btn-success' id='canviModeAccept'>Si</a>
+                            <a href='#' class='btn btn-danger' id='canviModeDeny'>No</a>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class='modal-footer' id='CanviModeModalBtns'>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         
+    $('#tipusPartidaSlider').carousel({
+        interval: false
+    });
+
+    $('body').on( 'click', '#carouselMultiPrev, #carouselMultiNext', function() {
+        $('#canviModeModal').modal('show');
+    });
+
+    $('body').on( 'click', '#canviModeAccept', function() {
+        $('#canviModeModal').modal('hide');
+        $('#entrenamentBtn').click();
+    });
+
+    $('body').on( 'click', '#canviModeDeny', function() {
+
+        $('#carouselEntrenament').removeClass('active');
+        $('#carouselMultijugador').addClass('active');
+
+        $('#canviModeModal').modal('hide');
+    });
+
     $('body').on( 'click', '#afegirJugador', function() {
 
         $('#afegirJugadorModal').modal('show');
@@ -534,23 +638,28 @@ class PartidaController extends Controller
 
     $('.elementLlistaJugadors').click(function() {
 
-        latestelementllista = this;
+        if (!$(this).hasClass('usuariSeleccionat')) {
 
-        latestalumneidenc = this.id;
-        latestalumneid = this.getAttribute('secid');
+            latestelementllista = this;
 
-        //console.log('Alumne id seleccionat: ' + latestalumneid);
+            latestalumneidenc = this.id;
+            latestalumneid = this.getAttribute('secid');
 
-        latestalumne = this.name;
+            //console.log('Alumne id seleccionat: ' + latestalumneid);
 
-        $('#jugadorSeleccionatLabelFill').html(latestalumne);
-        $('#usernameLogin, #passwordLogin').val('');
+            latestalumne = this.name;
 
-        $('#iniciarSessioModalMsg .form-group').css('display','block');
-        $('#iniciarSessioModalMsg #errorLogin').remove();
-        $('#iniciarSessioModal').modal('show');
+            $('#jugadorSeleccionatLabelFill').html(latestalumne);
+            $('#usernameLogin, #passwordLogin').val('');
 
-        $('#afegirJugadorModal').modal('hide');
+            $('#iniciarSessioModalMsg .form-group').css('display','block');
+            $('#iniciarSessioModalMsg #errorLogin').remove();
+            $('#iniciarSessioModal').modal('show');
+
+            $('#afegirJugadorModal').modal('hide');
+
+        }
+
     })
 
     $('#iniciarSessioModalBtn').click(function() {
@@ -570,9 +679,22 @@ class PartidaController extends Controller
 
                 //console.log('responseid' + response['id']);
 
-                savemematch(match, matchnom, matchidsent, latestalumneid);
+                if (match == true) {
+                    savemematch(match, matchnom, matchidsent, latestalumneid);
+                } else {
+                    errormatch();
+                }
 			});
     });
+
+    function errormatch() {
+        $('#iniciarSessioModalMsg .form-group').css('display','none');
+        
+        $('#iniciarSessioModalMsg').append(`<div id='errorLogin'>
+                <h2>Les credencials introduïdes no són vàlides</h2>
+                <a href='#' class='btn btn-danger' id='errorLoginTornar' onclick='onClickTornarLogin()'>Tornar</a>
+            </div>`);
+    }
 
     function savemematch(matchsent, matchnom, matchidsent, latestalumneid) {
 
@@ -583,13 +705,7 @@ class PartidaController extends Controller
         //console.log('Matchid actual ' + latestalumneid + ' matchid enviat: ' + matchidsent);
         $('#iniciarSessioModalMsg .form-group').css('display','none');
 
-        if (latestalumneid == matchidsent) {
-
-            if (readCookie('jugadors') == '') {
-                writeCookie('jugadors', matchidsent, 1);
-            } else {
-                writeCookie('jugadors', readCookie('jugadors') + ',' + matchidsent, 1);
-            }
+        if (latestalumneid == matchidsent && matchidsent != '' && matchidsent != null) {
 
             $('#iniciarSessioModalMsg').append(`<div id='errorLogin'>
                 <h2>Credencials vàlides</h2>
@@ -603,35 +719,32 @@ class PartidaController extends Controller
                 $(latestelementllista).removeClass('usuariSeleccionat');
             }*/
 
-            $('#playerList ul').append(`<li><a href='#' id='jug` + matchidsent + `'><i class='fas fa-user mr-2'></i>` + matchnom + `</a></li>`);
+            $('#playerList ul').append(`<li class='alltransition3'><a href='#' secid='` + matchidsent+ `' id='jug` + matchidsent + `'><i class='alltransition3 fas fa-user mr-2'></i>` + matchnom + `</a></li>`);
 
             var color = getRandomColor(colors);
             var matchnomid = '#jug' + matchidsent;
             $(matchnomid).css('background-color',color[1]);
             
+            var jugador = [matchidsent, color[0]];
+
+            var arrayJugadors = [eval(readCookie('jugadors'))];
+
+            console.log(arrayJugadors);
+
+            if (readCookie('jugadors') == '') {
+                writeCookie('jugadors', JSON.stringify(jugador) , 1);
+            } else {
+                writeCookie('jugadors', readCookie('jugadors') + ',' + JSON.stringify(jugador) , 1);
+            }
+
         } else {
-                $('#iniciarSessioModalMsg').append(`<div id='errorLogin'>
-                <h2>Les credencials introduïdes no són vàlides</h2>
-                <a href='#' class='btn btn-danger' id='errorLoginTornar' onclick='onClickTornarLogin()'>Tornar</a>
-            </div>`);
+            errormatch();
         }
 
         console.log(readCookie('jugadors'));
     }
 
     $('#afegirJugadorsBtn').click(function(e) {
-
-        var usuarisSeleccionats = $('.usuariSeleccionat');
-        var ids = [];
-        var jugadors = [];
-
-        $.each( usuarisSeleccionats, function( key, value ) {
-            ids.push(value.id);
-            var jugador = [value.id, value.name];
-            jugadors.push(jugador);
-        });
-
-        console.log(jugadors);
 
         $('#afegirJugadorModal').modal('hide');
 
@@ -658,7 +771,16 @@ class PartidaController extends Controller
         $user = $this->getUsuariByUsername($username);
 
         $encoderService = $this->container->get('security.password_encoder');
-        $match = $encoderService->isPasswordValid($user, $password);
+        
+        $match;
+
+        if ($user != null) {
+            $match = $encoderService->isPasswordValid($user, $password);
+            return new JsonResponse(['match' => $match, 'id' => $user->getId(), 'nom' => $user->getNom() . ' ' . $user->getCognoms()]);
+        } else {
+            $match = false;
+            return new JsonResponse(['match' => $match]);
+        }
 
         return new JsonResponse(['match' => $match, 'id' => $user->getId(), 'nom' => $user->getNom() . ' ' . $user->getCognoms()]);
         
