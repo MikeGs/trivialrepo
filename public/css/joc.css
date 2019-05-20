@@ -615,10 +615,11 @@ button:focus {
 
 .casilla {
   z-index: 3;
-  background: blue;
+  background: transparent;
+  pointer-events: none;
 }
 
-.box-start {
+#box-start {
     width: 7.6%;
     height: 8%;
     border-radius: 20%;
@@ -628,7 +629,7 @@ button:focus {
     transform: translate(-180%, -50%);
 }
 
-.box-start::after {
+#box-start::after {
     content: 'START';
     font-family: 'Baloo Bhai', cursive;
     position: absolute;
@@ -642,9 +643,11 @@ button:focus {
     background: red;
 }
 
-.parpadeo-active {
+.parpadeo {
     animation: parpadeo 3s ease-out infinite;
     cursor: pointer;
+    background-color: white;
+    pointer-events: auto!important;
 }
 
 .box-start-parpadeo {
@@ -659,7 +662,7 @@ button:focus {
     opacity:0;
 }
 
-.box1 {
+#box1 {
     width: 6%;
     height: 6%;
     transform: rotate(37deg);

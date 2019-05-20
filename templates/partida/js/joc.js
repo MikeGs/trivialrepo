@@ -1,6 +1,113 @@
+getJugadorNomUrl = '{{getJugadorNomUrl}}';
+jugadors = [];
+jugadornom = "";
+tipuspartida = 1;
+temas = []; 
+
+
 $(document).ready(function() {
 	$('.tirarDau').click(function() { dado() });
+    var tema1 = '';
+    var tema2 = '';
+    var tema3 = '';
+    var tema4 = '';
+    var tema5 = '';
+    loadJugadors();
+    primerTorn();
+    {% include 'partida/js/caselles.js' %}
+    
+    
+
+    //box_start.activarCaselles(1);
 });
+
+function Partida(data, nivell, tipuspartida, usuaris, temas) {
+
+    //private $id ;private $data; private $idNivell; private $idTipusPartida; ARRAY private $usuaris; ARRAY private $idTemaPartida;
+
+}
+
+function loadJugadors() {
+    
+    jugadors = eval("[" + readCookie("jugadors") + "]");
+    shuffle(jugadors);
+
+    jugadors.forEach(jugador => {
+        getJugador(jugador);
+    });
+
+}
+
+function getJugador(jugador) {
+
+    var url = getJugadorNomUrl
+    var jnom = "";
+
+    $.post(url, {'id': jugador[0] }) 
+        .done(function(response) {
+            jugadornom = response['nomcognoms'];
+            trygetJugador(jugador, jugadornom);
+        });
+}
+
+function primerTorn() {
+
+    if ($("#mostrarJugadors > div").length != jugadors.length) {
+        setTimeout(function(){primerTorn()}, 500);
+    } else {
+        console.log(jugadors);
+        $("#mostrarJugadors div:first-child").addClass("actual");
+        // LLEGIR ARRAY JUGADORS PER BUSCAR TORNS
+    }
+
+}
+
+function trygetJugador(jugador, jugadorsent) {
+
+    while(jugadornom == "") {
+        jugadornom = jugadorsent;
+    }
+
+    $("#mostrarJugadors").append("<div class='row m-0' id='" + jugador[0] + "'><div class='ranking'></div><div class='col jugador'>" + jugadornom + "</div></div>");
+    jugador.push(jugadornom);
+
+}
+
+function shuffle(array) {
+    array.sort(() => Math.random() - 0.5);
+  }
+
+
+function Casella(elementId, tipus, tema) {
+    this.id = elementId;
+    this.element = document.getElementById(elementId);
+    this.tipus = tipus;
+    this.tema = tema;
+    var casellesAdjacents = [];
+
+    this.afegirCasella = function(tirada, casella) {
+        if (!casellesAdjacents[tirada]){
+            casellesAdjacents[tirada] = [];
+        }
+        casellesAdjacents[tirada][casella.id] = casella; 
+    }
+
+    this.activarCaselles = function(tirada) {
+        for (let casella in casellesAdjacents[tirada]) {
+            casellesAdjacents[tirada][casella].element.classList.add('parpadeo');
+        }
+    }
+
+    this.desactivarCaselles = function() {
+        for (let casella in casellesAdjacents) {
+            casella.element.classList.remove('parpadeo');
+        }
+    }
+
+    this.getCasellesAdjacents = function() {
+        return casellesAdjacents;
+    }
+}
 
 
 function dado(){
