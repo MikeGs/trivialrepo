@@ -12,12 +12,14 @@ $(document).ready(function() {
     var tema3 = '';
     var tema4 = '';
     var tema5 = '';
+
     loadJugadors();
     primerTorn();
+
     {% include 'partida/js/caselles.js' %}
     
     
-
+    console.log(box_start.getCasellesAdjacents());
     //box_start.activarCaselles(1);
 });
 
@@ -55,7 +57,6 @@ function primerTorn() {
     if ($("#mostrarJugadors > div").length != jugadors.length) {
         setTimeout(function(){primerTorn()}, 500);
     } else {
-        console.log(jugadors);
         $("#mostrarJugadors div:first-child").addClass("actual");
         // LLEGIR ARRAY JUGADORS PER BUSCAR TORNS
     }

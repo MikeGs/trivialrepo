@@ -76,3 +76,56 @@ box_start.afegirCasella(1,box51);
 box_start.afegirCasella(1,box56);
 box_start.afegirCasella(1,box46);
 box_start.afegirCasella(1,box41);
+
+//tirada 2 casella start
+box_start.afegirCasella(2,box2);
+box_start.afegirCasella(2,box52);
+box_start.afegirCasella(2,box57);
+box_start.afegirCasella(2,box47);
+box_start.afegirCasella(2,box42);
+
+//tirada 3 casella start
+box_start.afegirCasella(3,box3);
+box_start.afegirCasella(3,box53);
+box_start.afegirCasella(3,box58);
+box_start.afegirCasella(3,box48);
+box_start.afegirCasella(3,box43);
+
+//tirada 4 casella start
+box_start.afegirCasella(4,box4);
+box_start.afegirCasella(4,box54);
+box_start.afegirCasella(4,box59);
+box_start.afegirCasella(4,box49);
+box_start.afegirCasella(4,box44);
+
+//tirada 5 casella start
+box_start.afegirCasella(5,box5);
+box_start.afegirCasella(5,box55);
+box_start.afegirCasella(5,box60);
+box_start.afegirCasella(5,box50);
+box_start.afegirCasella(5,box45);
+
+//tirada 6 casella start
+box_start.afegirCasella(6,box6);
+box_start.afegirCasella(6,box13);
+box_start.afegirCasella(6,box20);
+box_start.afegirCasella(6,box27);
+box_start.afegirCasella(6,box34);
+
+//tirada 1 casella 1
+box1.afegirCasella(1,box_start);
+box1.afegirCasella(1,box2);
+
+//tirada 2 casella 1
+box1.afegirCasella(2,box3);
+box1.afegirCasella(2,box41);
+box1.afegirCasella(2,box51);
+box1.afegirCasella(2,box46);
+box1.afegirCasella(2,box56);
+
+//tirada 3 casella 1
+box1.afegirCasella(3,box4);
+box1.afegirCasella(3,box42);
+box1.afegirCasella(3,box52);
+box1.afegirCasella(3,box47);
+box1.afegirCasella(3,box57);
