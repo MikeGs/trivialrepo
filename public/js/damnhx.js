@@ -94,3 +94,21 @@ function decrypt (transitmessage, pass) {
     })
     return decrypted;
 }
+
+/* MEDIA QUERIES */
+
+$(document).ready(function() {
+
+    $(window).trigger('resize');
+
+});
+
+$(window).on('resize', function () {
+
+    $("#tipusPartidaSlider .carousel-item").css({
+        "height": $("#tipusPartidaSlider .carousel-inner").height(),
+    });
+
+});
+
+/* MEDIA QUERIES END */
