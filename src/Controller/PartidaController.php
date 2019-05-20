@@ -602,6 +602,7 @@ class PartidaController extends Controller
                 </div>
             </div>
         </div>
+
     </div>
 
     <script>
@@ -616,16 +617,29 @@ class PartidaController extends Controller
 
     $('body').on( 'click', '#canviModeAccept', function() {
         $('#canviModeModal').modal('hide');
-        $('#entrenamentBtn').click();
+        clearHTML();
+        setTimeout(function(){ $('#entrenamentBtn').click(); }, 1000);
     });
 
     $('body').on( 'click', '#canviModeDeny', function() {
 
-        $('#carouselEntrenament').removeClass('active');
-        $('#carouselMultijugador').addClass('active');
+        swap();
 
         $('#canviModeModal').modal('hide');
     });
+
+    $('body').on( 'click', '#canviModeModal', function() {
+                
+        swap();
+
+    });
+
+    function swap() {
+
+        $('#carouselEntrenament').removeClass('active');
+        $('#carouselMultijugador').addClass('active');
+
+    }
 
     $('body').on( 'click', '#afegirJugador', function() {
 
@@ -827,7 +841,168 @@ class PartidaController extends Controller
      */
     function getEntrenamentPortait(Request $request) {
 
-        $html = "";
+        $user = $this->getUser();
+        $grups = $this->getUser()->getGrups();
+
+        $llistatGrups = "";
+        
+        foreach($grups as $grup) {
+            $llistatGrups = $llistatGrups . "
+            <li class='entrenamentCurs row' id='" . $grup->getId() . "'>
+                <p class='col col-md-12'>" . $grup->getNom() . "</p>
+            </li>
+            ";
+        }
+
+        $html = "
+
+        <script>
+
+        delete_cookie('cursos');
+        writeCookie('cursos', '', 1);
+
+        </script>
+
+        <div id='multiplayerLobby' class='row p-4 col-9'>
+
+            <div class='container' id='titleEntrenament'>
+                <h2>Sala d'espera | Entrenament</h2>
+            </div>
+
+            <div class='container row' id='topLobby'>
+    
+            <div id='tipusPartidaSlider' class='col col-md-6 carousel slide' data-ride='carousel'>
+
+                <div class='carousel-inner'>
+                    <div class='carousel-item' id='carouselMultijugador'>
+
+                        <div class='carouselVertical'>
+                            <p class='ontopCarousel'>Partida multijugador</p>
+                        </div>
+
+                    </div>
+                    <div class='carousel-item active' id='carouselEntrenament'>
+
+                        <div class='carouselVertical'>
+                            <p class='ontopCarousel'>Entrenament</p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <a class='carousel-control-prev' id='carouselMultiPrev' href='#tipusPartidaSlider' role='button' data-slide='prev'>
+                    <span class='carousel-control-prev-icon' aria-hidden='true'></span>
+                    <span class='sr-only'>Previous</span>
+                </a>
+
+                <a class='carousel-control-next' id='carouselMultiNext' href='#tipusPartidaSlider' role='button' data-slide='next'>
+                    <span class='carousel-control-next-icon' aria-hidden='true'></span>
+                    <span class='sr-only'>Next</span>
+                </a>
+
+            </div>
+
+            <div id='playerList' class='col col-md-4'>
+                <ul>
+                    <p id='playerListHead' style='margin-bottom: 0px!important'>Jugador:</p>
+                    <li class='alltransition3'><a href='#' id='currentPlayer'><i class='alltransition3 fas fa-user mr-2'></i>" . $user->getUsername() . "</a></li>
+                </ul>
+            </div>
+
+            <div class='container row' id='containerCursosEntrenament'>
+        
+                <div class='container' id='containerCursos'>
+                    
+                    <ul class='tableNormes col col-6'>
+                        <li class='row tableHead'>
+                            <p>Cursos</p>
+                        </li>
+                        " . $llistatGrups . "
+                    </ul>
+
+                </div>
+            
+            </div>
+
+        </div>
+
+        </div>
+
+        <div id='canviModeModal' class='modal fade' tabindex='-1' role='dialog'>
+            <div class='modal-dialog' role='document'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <h6 class='modal-title' id='canviModeModal'>Canvi de mode</h6>
+                        <button id='canviModeModalClose' type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                            <span aria-hidden='true'>&times;</span>
+                        </button>
+                    </div>
+                    <div class='modal-body'>
+                        <div id='canviModeModalMsg'>
+
+                            <h3 id='canviModeTitle'>S'està a punt de canviar el mode de joc, desitjes continuar?</h3>
+                            <div id='acceptdenyModel' class='col col-md-12'>
+
+                                <a href='#' class='btn btn-success' id='canviModeAccept'>Si</a>
+                                <a href='#' class='btn btn-danger' id='canviModeDeny'>No</a>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class='modal-footer' id='CanviModeModalBtns'>
+                    </div>
+                </div>
+            </div>
+
+        <script>
+        
+            $('#tipusPartidaSlider').carousel({
+                interval: false
+            });
+
+            $('body').on( 'click', '.entrenamentCurs', function() {
+                if (readCookie('cursos') == '') {
+                    writeCookie('cursos', $(this).attr('id'), 1);
+                } else {
+                    writeCookie('cursos', readCookie('cursos') + ',' + $(this).attr('id'), 1);
+                }
+                console.log(readCookie('cursos'));
+            });
+
+            $('body').on( 'click', '#carouselMultiPrev, #carouselMultiNext', function() {
+                $('#canviModeModal').modal('show');
+            });
+        
+            $('body').on( 'click', '#canviModeAccept', function() {
+                $('#canviModeModal').modal('hide');
+                clearHTML();
+                setTimeout(function(){ $('#llistatGrupsJoc li:first-child a').click(); }, 1000);
+            });
+        
+            $('body').on( 'click', '#canviModeDeny', function() {
+                
+                swap();
+        
+                $('#canviModeModal').modal('hide');
+            });
+
+            $('body').on( 'click', '#canviModeModal', function() {
+                
+                swap();
+
+            });
+
+            function swap() {
+
+                $('#carouselMultijugador').removeClass('active');
+                $('#carouselEntrenament').addClass('active');
+
+            }
+
+        </script>
+
+        </div>";
 
         return new Response(
             $html

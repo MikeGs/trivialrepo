@@ -865,8 +865,13 @@ input[type=password] {
 	padding: 0px 15px;
 }
 
-#containerNormes {
+#containerNormes, #containerCursos {
 	width: 55%!important;
+}
+
+#containerCursos {
+	margin: 0px!important;
+	padding-left: 0px!important;
 }
 
 #containerComençarPartida {
@@ -960,6 +965,14 @@ input[type=password] {
 .card-blue:hover {
 	background-color: #4ba5e5;
 }
+
+/* ENTRENAMENT */
+
+.entrenamentCurs {
+	cursor: pointer;
+}
+
+/* ENTRENAMENT END */
 
 /* TRANSICIONS */
 
@@ -1275,7 +1288,7 @@ input[type=password] {
 
 @media screen and (max-width: 1030px) {
 
-	#tipusPartidaSlider, #playerList, #containerNormes, #containerComençarPartida {
+	#tipusPartidaSlider, #playerList, #containerNormes, #containerComençarPartida, #containerCursos {
 		flex: none!important;
 		width: 100%!important;
 		max-width: none!important;

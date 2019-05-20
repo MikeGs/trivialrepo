@@ -21,6 +21,15 @@ function getCurrentDay() {
 
 }
 
+function clearHTML() {
+
+    while($("#contingutStart").html() != "") {
+        $('.modal-backdrop').removeClass('show').addClass('hide').remove();
+        $("#contingutStart").html("");
+    }
+
+}
+
 function writeCookie(name,value,days) {
     var date, expires;
     if (days) {
