@@ -27,7 +27,7 @@ function loadJugadors() {
 
 function getJugador(jugador) {
 
-    var url = "/getJugadorNom"
+    var url = getJugadorNomUrl;
     var jnom = "";
 
     $.post(url, {'id': jugador[0] }) 

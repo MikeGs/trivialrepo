@@ -52,6 +52,9 @@ class PartidaController extends Controller
     public function jugar(Request $request) {
 
         $em = $this->getDoctrine()->getManager();
+
+        $getJugadorNomUrl = $this->generateUrl('getJugadorNom');
+
 /*
         $nivell = $em->getRepository(Nivell::class)->findOneById();
         $temes = $em->getRepository(Tema::class)->findByNivell();
@@ -77,6 +80,7 @@ class PartidaController extends Controller
         
 
         return $this->render('partida/joc.html.twig', [
+            "getJugadorNomUrl" => $getJugadorNomUrl,
             /*'temes' => ,
             'preguntes' => ,*/
         ]);
@@ -89,6 +93,10 @@ class PartidaController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $grup = $em->getRepository(Grup::class)->findOneById($request->request->get('grup'));
+
+        $partidaLobbyUrl = $this->generateUrl('partidaLobby',array(
+            'grupid' => $grup->getId(),
+        ));
 
         $html = "
 
@@ -178,7 +186,7 @@ class PartidaController extends Controller
 
         $('#playButton').click(function() {
 
-            var url = '/partidaLobby/" . $grup->getId() . "'
+            var url = '" . $partidaLobbyUrl . "'
             var codes;
     
             $.post(url) 
@@ -273,6 +281,9 @@ class PartidaController extends Controller
     $password = $this->pw();
 
     $colors = "[['red', 'rgba(255,0,0,0.3)'], ['blue','rgba(0,0,255,0.3)'], ['green', 'rgba(0,255,0,0.3)'], ['pink', 'rgba(255,192,203,0.6)'], ['orange', 'rgba(249,191,59,0.3)']]";
+
+    $checkLoginUrl = $this->generateUrl('checklogin');
+    $jugarUrl = $this->generateUrl('jugar');
 
     $nivellGrup = $this->getNivellGrup($grup);
 
@@ -485,7 +496,7 @@ class PartidaController extends Controller
 
             <div class='playPartidaCard'>
 
-                <a href='/jugar' class='alltransition3 playPartidaButton'>
+                <a href='" . $jugarUrl . "' class='alltransition3 playPartidaButton'>
 
                     <p class='alltransition3'>Començar partida</p>
 
@@ -666,7 +677,7 @@ class PartidaController extends Controller
 
     $('#iniciarSessioModalBtn').click(function() {
 
-        var url = '/checklogin';
+        var url = '" . $checkLoginUrl . "';
         var pass = pw;
 
         var username = $('#usernameLogin').val();
