@@ -225,3 +225,180 @@ box3.afegirCasella(6,box58);
 box3.afegirCasella(6,box53);
 box3.afegirCasella(6,box38);
 box3.afegirCasella(6,box9);
+
+//tirada 1 casella 4
+box4.afegirCasella(1,box3);
+box4.afegirCasella(1,box5);
+
+//tirada 2 casella 4
+box4.afegirCasella(2,box2);
+box4.afegirCasella(2,box6);
+
+//tirada 3 casella 4
+box4.afegirCasella(3,box1);
+box4.afegirCasella(3,box40);
+box4.afegirCasella(3,box7);
+
+//tirada 4 casella 4
+box4.afegirCasella(4,box_start);
+box4.afegirCasella(4,box39);
+box4.afegirCasella(4,box8);
+
+//tirada 5 casella 4
+box4.afegirCasella(5,box41);
+box4.afegirCasella(5,box46);
+box4.afegirCasella(5,box56);
+box4.afegirCasella(5,box51);
+box4.afegirCasella(5,box38);
+box4.afegirCasella(5,box9);
+
+//tirada 6 casella 4
+box4.afegirCasella(6,box42);
+box4.afegirCasella(6,box47);
+box4.afegirCasella(6,box57);
+box4.afegirCasella(6,box52);
+box4.afegirCasella(6,box37);
+box4.afegirCasella(6,box10);
+
+//tirada 1 casella 5
+box5.afegirCasella(1,box4);
+box5.afegirCasella(1,box6);
+
+//tirada 2 casella 5
+box5.afegirCasella(2,box3);
+box5.afegirCasella(2,box40);
+box5.afegirCasella(2,box7);
+
+//tirada 3 casella 5
+box5.afegirCasella(3,box2);
+box5.afegirCasella(3,box39);
+box5.afegirCasella(3,box8);
+
+//tirada 4 casella 5
+box5.afegirCasella(4,box1);
+box5.afegirCasella(4,box38);
+box5.afegirCasella(4,box9);
+
+//tirada 5 casella 5
+box5.afegirCasella(5,box_start);
+box5.afegirCasella(5,box37);
+box5.afegirCasella(5,box10);
+
+//tirada 6 casella 5
+box5.afegirCasella(6,box41);
+box5.afegirCasella(6,box46);
+box5.afegirCasella(6,box56);
+box5.afegirCasella(6,box51);
+box5.afegirCasella(6,box36);
+box5.afegirCasella(6,box11);
+
+//tirada 1 casella 6
+box6.afegirCasella(1,box40);
+box6.afegirCasella(1,box7);
+
+//tirada 2 casella 6
+box6.afegirCasella(2,box39);
+box6.afegirCasella(2,box8);
+
+//tirada 3 casella 6
+box6.afegirCasella(3,box38);
+box6.afegirCasella(3,box9);
+
+//tirada 4 casella 6
+box6.afegirCasella(4,box37);
+box6.afegirCasella(4,box10);
+
+//tirada 5 casella 6
+box6.afegirCasella(5,box36);
+box6.afegirCasella(5,box11);
+
+//tirada 6 casella 6
+box6.afegirCasella(6,box35);
+box6.afegirCasella(6,box12);
+
+//tirada 1 casella 7
+box7.afegirCasella(1,box6);
+box7.afegirCasella(1,box8);
+
+//tirada 2 casella 7
+box7.afegirCasella(2,box40);
+box7.afegirCasella(2,box5);
+box7.afegirCasella(2,box9);
+
+//tirada 3 casella 7
+box7.afegirCasella(3,box4);
+box7.afegirCasella(3,box39);
+box7.afegirCasella(3,box10);
+
+//tirada 4 casella 7
+box7.afegirCasella(4,box38);
+box7.afegirCasella(4,box3);
+box7.afegirCasella(4,box11);
+
+//tirada 5 casella 7
+box7.afegirCasella(5,box37);
+box7.afegirCasella(5,box12);
+box7.afegirCasella(5,box2);
+
+//tirada 6 casella 7
+box7.afegirCasella(6,box36);
+box7.afegirCasella(6,box1);
+box7.afegirCasella(6,box13);
+
+//tirada 1 casella 8
+box8.afegirCasella(1,box7);
+box8.afegirCasella(1,box9);
+
+//tirada 2 casella 8
+box8.afegirCasella(2,box6);
+box8.afegirCasella(2,box10);
+
+//tirada 3 casella 8
+box8.afegirCasella(3,box40);
+box8.afegirCasella(3,box5);
+box8.afegirCasella(3,box11);
+
+//tirada 4 casella 8
+box8.afegirCasella(4,box39);
+box8.afegirCasella(4,box4);
+box8.afegirCasella(4,box12);
+
+//tirada 5 casella 8
+box8.afegirCasella(5,box3);
+box8.afegirCasella(5,box38);
+box8.afegirCasella(5,box13);
+
+//tirada 6 casella 8
+box8.afegirCasella(6,box2);
+box8.afegirCasella(6,box37);
+box8.afegirCasella(6,box55);
+box8.afegirCasella(6,box14);
+
+//tirada 1 casella 9
+box9.afegirCasella(1,box8);
+box9.afegirCasella(1,box10);
+
+//tirada 2 casella 9
+box9.afegirCasella(2,box7);
+box9.afegirCasella(2,box11);
+
+//tirada 3 casella 9
+box9.afegirCasella(3,box6);
+box9.afegirCasella(3,box12);
+
+//tirada 4 casella 9
+box9.afegirCasella(4,box5);
+box9.afegirCasella(4,box40);
+box9.afegirCasella(4,box13);
+
+//tirada 5 casella 9
+box9.afegirCasella(5,box4);
+box9.afegirCasella(5,box39);
+box9.afegirCasella(5,box55);
+box9.afegirCasella(5,box14);
+
+//tirada 6 casella 9
+box9.afegirCasella(6,box38);
+box9.afegirCasella(6,box3);
+box9.afegirCasella(6,box54);
+box9.afegirCasella(6,box15);
