@@ -1,3 +1,10 @@
+getJugadorNomUrl = '{{getJugadorNomUrl}}';
+jugadors = [];
+jugadornom = "";
+tipuspartida = 1;
+temas = []; 
+
+
 $(document).ready(function() {
 	$('.tirarDau').click(function() { dado() });
     var tema1 = '';
@@ -11,14 +18,8 @@ $(document).ready(function() {
     
     
 
-    box_start.activarCaselles(1);
+    //box_start.activarCaselles(1);
 });
-
-jugadors = [];
-jugadornom = "";
-tipuspartida = 1;
-temas = [];
-
 
 function Partida(data, nivell, tipuspartida, usuaris, temas) {
 
@@ -39,7 +40,7 @@ function loadJugadors() {
 
 function getJugador(jugador) {
 
-    var url = "/getJugadorNom"
+    var url = getJugadorNomUrl
     var jnom = "";
 
     $.post(url, {'id': jugador[0] }) 
