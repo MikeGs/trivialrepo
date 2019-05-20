@@ -26,14 +26,14 @@ class GrupType extends AbstractType
             ))
             ->add('finalitzat')
             ->add('tempsresposta', null, array(
-                'label' => 'Temps de resposta',
+                'label' => 'Temps de resposta (segons)',
             ))
             ->add('idAdministrador')
             ->add('puntuacio_facil', null, array(
-                'label' => 'Puntuació preguntes fàcils',
+                'label' => 'Puntuació de les preguntes fàcils',
             ))
             ->add('puntuacio_dificil', null, array(
-                'label' => 'Puntuació preguntes difícils',
+                'label' => 'Puntuació de les preguntes difícils',
             ))
             ->add('idNivell', null, array(
                 'label' => 'Nivell',

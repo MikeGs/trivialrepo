@@ -1295,6 +1295,11 @@ input[type=password] {
 		height: 220px;
 	}
 
+	.carousel-inner  {
+		min-height: 0px!important;
+		height: 100%;
+	}
+
 	#titleMultijugador, #grupMultijugador {
 		text-align: center;
 	}

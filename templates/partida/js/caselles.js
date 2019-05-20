@@ -43,7 +43,7 @@ var box35 = new Casella('box35', 'normal', tema5);
 var box36 = new Casella('box36', 'normal', tema2);
 var box37 = new Casella('box37', 'doble', '');
 var box38 = new Casella('box38', 'normal', tema4);
-var box39 = new Casella('box39', 'normal' tema1);
+var box39 = new Casella('box39', 'normal', tema1);
 var box40 = new Casella('box40', 'normal', tema3);
 
 var box41 = new Casella('box41', 'normal', tema4);
