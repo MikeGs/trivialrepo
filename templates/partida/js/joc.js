@@ -20,7 +20,7 @@ $(document).ready(function() {
     
     
     console.log(box_start.getCasellesAdjacents());
-    box_start.activarCaselles(6);
+    box3.activarCaselles(6);
 });
 
 function Partida(data, nivell, tipuspartida, usuaris, temas) {
