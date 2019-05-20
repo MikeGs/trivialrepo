@@ -34,7 +34,7 @@ class UsuariController extends Controller
         } else if (!$authChecker->isGranted('ROLE_ADMIN')) {
 
             return $this->redirectToRoute('inici');
-        }
+        } 
 
     	$em = $this->getDoctrine()->getManager();
     	$usuaris = $em->getRepository(Usuari::class)->findAll();

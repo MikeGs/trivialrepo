@@ -23,7 +23,7 @@ class PartidaController extends Controller
 
         $title = "Trivial | UB";
 
-        return $this->render('partida/index.html.twig', [
+        return $this->render('partida/inici.html.twig', [
             'controller_name' => 'PartidaController',
             'title' => $title,
         ]);
@@ -274,8 +274,6 @@ class PartidaController extends Controller
 
     $colors = "[['red', 'rgba(255,0,0,0.3)'], ['blue','rgba(0,0,255,0.3)'], ['green', 'rgba(0,255,0,0.3)'], ['pink', 'rgba(255,192,203,0.6)'], ['orange', 'rgba(249,191,59,0.3)']]";
 
-    $nomdusuarilabel = "Nom d'usuari";
-
     $nivellGrup = $this->getNivellGrup($grup);
 
     $llistat = "";
@@ -382,7 +380,7 @@ class PartidaController extends Controller
         var random = Math.random() * (+max - +min) + +min; 
         random = Math.round(random);
         return random;
-    } 
+    }
 
     //getPw();
     var pw = '" . $password . "';
@@ -490,7 +488,7 @@ class PartidaController extends Controller
 
             <div class='playPartidaCard'>
 
-                <a href='#' class='alltransition3 playPartidaButton'>
+                <a href='/jugar' class='alltransition3 playPartidaButton'>
 
                     <p class='alltransition3'>Començar partida</p>
 
@@ -552,7 +550,7 @@ class PartidaController extends Controller
 
                             <label id='jugadorSeleccionatLabel'>Jugador sel.leccionat: <jugador id='jugadorSeleccionatLabelFill'></jugador></label>
 
-                            <label for='nom'>" . $nomdusuarilabel . "</label>
+                            <label for='nom'>" . "Nom d'usuari" . "</label>
                             <input id='usernameLogin' type='text' name='nom' placeholder='Usuari'/>
 
                             <label for='contrasenya'>Contrasenya</label>
@@ -623,11 +621,18 @@ class PartidaController extends Controller
 
     $('body').on( 'click', '#afegirJugador', function() {
 
-        $('#afegirJugadorModal').modal('show');
+        var arrJugadors = eval('[' + readCookie('jugadors') + ']');
+        
+        if (arrJugadors.length < 5) {
+            $('#afegirJugadorModal').modal('show');
 
-        $('body').on('click', '#afegirJugador', function() {
-            $.get()
-        });
+            $('body').on('click', '#afegirJugador', function() {
+                $.get()
+            });
+        } else {
+            alert(`S'ha arribat al màxim de jugadors permès`);
+        }
+
     });
 
     $('#iniciarSessioModalClose').click(function() {
@@ -734,14 +739,22 @@ class PartidaController extends Controller
             if (readCookie('jugadors') == '') {
                 writeCookie('jugadors', JSON.stringify(jugador) , 1);
             } else {
-                writeCookie('jugadors', readCookie('jugadors') + ',' + JSON.stringify(jugador) , 1);
+                writeCookie('jugadors', readCookie('jugadors') + ',' + JSON.stringify(jugador), 1);
             }
-
+            
         } else {
             errormatch();
         }
 
-        console.log(readCookie('jugadors'));
+        var arrJugadors = eval('[' + readCookie('jugadors') + ']');
+        
+        if (arrJugadors.length >= 5) {
+            $('#afegirJugador').addClass('disabledBtn');
+            $('#iniciarSessioModal').modal('hide');
+            $('#afegirJugadorModal').modal('hide');
+        } else {
+            $('#afegirJugador').removeClass('disabledBtn');
+        }
     }
 
     $('#afegirJugadorsBtn').click(function(e) {
@@ -783,6 +796,19 @@ class PartidaController extends Controller
         }
 
         return new JsonResponse(['match' => $match, 'id' => $user->getId(), 'nom' => $user->getNom() . ' ' . $user->getCognoms()]);
+        
+    }
+
+    /**
+     * @Route("/getJugadorNom", name="getJugadorNom")
+     */
+    public function getJugadorNom(Request $request) : JsonResponse {
+
+        $id = $request->request->get('id');
+
+        $user = $this->getUsuari($id);
+
+        return new JsonResponse(['nomcognoms' => $user->getNom() . " " . $user -> getCognoms()]);
         
     }
 

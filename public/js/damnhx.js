@@ -1,6 +1,25 @@
 var keySize = 256;
 var ivSize = 128;
 var iterations = 100;
+data = new Date();
+
+function getCurrentYear() {
+
+    return data.getFullYear();
+
+}
+
+function getCurrentMonth() {
+
+    return data.getMonth();
+
+}
+
+function getCurrentDay() {
+
+    return data.getDate();
+
+}
 
 function writeCookie(name,value,days) {
     var date, expires;
