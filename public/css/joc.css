@@ -639,9 +639,7 @@ button:focus {
     color: #fff;
 }
 
-.box-start:hover {
-    background: red;
-}
+
 
 .parpadeo {
     animation: parpadeo 3s ease-out infinite;
@@ -650,17 +648,6 @@ button:focus {
     pointer-events: auto!important;
 }
 
-.box-start-parpadeo {
-    width: 7.2%;
-    height: 7.2%;
-    border-radius: 90%;
-    position: absolute;
-    top: 51%;
-    left: 48.9%;
-    transform: translate(-180%, -50%);
-    background: white;
-    opacity:0;
-}
 
 #box1 {
     width: 6%;
@@ -672,27 +659,8 @@ button:focus {
 }
 
 
-.box1:hover {
-    background-color: red!important;
-}
 
-.box1-parpadeo {
-    width: 5.5%;
-    height: 5.2%;
-    border-radius: 30px;
-    transform: rotate(37deg);
-    position: absolute;
-    top: 41.2%;
-    left: 41%;
-    background: white;
-    box-shadow: 0px 0px 5px #fff;
-    opacity:0;
-}
-
-
-
-
-.box2 {
+#box2 {
     width: 6%;
     height: 5.8%;
     transform: rotate(37deg);
@@ -702,23 +670,9 @@ button:focus {
 }
 
 
-.box2:hover {
-    background: blue;
-}
 
-.box2-parpadeo {
-    width: 5.5%;
-    height: 5.2%;
-    transform: rotate(37deg);
-    position: absolute;
-    top: 36.3%;
-    left: 43.8%;
-    background: white;
-    border-radius: 30px;
-    opacity:0;
-}
 
-.box3 {
+#box3 {
     width: 6%;
     height: 6%;
     transform: rotate(37deg);
@@ -728,23 +682,8 @@ button:focus {
 }
 
 
-.box3:hover {
-    background: blue;
-}
 
-.box3-parpadeo {
-    width: 5.5%;
-    height: 5.2%;
-    transform: rotate(37deg);
-    position: absolute;
-    top: 31.3%;
-    left: 46.7%;
-    background: white;
-    border-radius: 30px;
-    opacity:0;
-}
-
-.box4 {
+#box4 {
     width: 6%;
     height: 6%;
     transform: rotate(37deg);
@@ -754,23 +693,9 @@ button:focus {
 }
 
 
-.box4:hover {
-    background: blue;
-}
 
-.box4-parpadeo {
-    width: 5.5%;
-    height: 5%;
-    transform: rotate(37deg);
-    position: absolute;
-    top: 26.5%;
-    left: 49.6%;
-    background: white;
-    border-radius: 30px;
-    opacity:0;
-}
 
-.box5 {
+#box5 {
     width: 6%;
     height: 7.8%;
     transform: rotate(37deg);
@@ -780,24 +705,9 @@ button:focus {
 }
 
 
-.box5:hover {
-    background: blue;
-}
 
 
-.box5-parpadeo {
-    width: 5.5%;
-    height: 7%;
-    transform: rotate(37deg);
-    position: absolute;
-    top: 19.6%;
-    left: 53%;
-    background: white;
-    border-radius: 30px;
-    opacity:0;
-}
-
-.box6 {
+#box6 {
     width: 6%;
     height: 9.2%;
     transform: rotate(37deg);
@@ -807,21 +717,6 @@ button:focus {
 }
 
 
-.box6:hover {
-    background: blue;
-}
-
-.box6-parpadeo {
-    width: 5.5%;
-    height: 8.6%;
-    transform: rotate(37deg);
-    position: absolute;
-    top: 11.4%;
-    left: 57.5%;
-    background: blue;
-    border-radius: 30px;
-    opacity:0;
-}
 
 .box6-icono {
     transform: rotate(37deg);
@@ -832,7 +727,7 @@ button:focus {
     font-size: 30px;
 }
 
-.box7 {
+#box7 {
     width: 4.6%;
     height: 9.3%;
     transform: rotate(44deg);
@@ -841,23 +736,9 @@ button:focus {
     left: 61.8%;
 }
 
-.box7:hover {
-    background: blue;
-}
 
-.box7-parpadeo {
-    width: 4%;
-    height: 8.4%;
-    transform: rotate(42deg);
-    position: absolute;
-    top: 16.2%;
-    left: 62.6%;
-    background: white;
-    border-radius: 30px;
-    opacity:0;
-}
 
-.box8 {
+#box8 {
     width: 4.8%;
     height: 9%;
     transform: rotate(54deg);
@@ -867,23 +748,9 @@ button:focus {
 }
 
 
-.box8:hover {
-    background: greenyellow;
-}
 
-.box8-parpadeo {
-    width: 4%;
-    height: 8.4%;
-    transform: rotate(54deg);
-    position: absolute;
-    top: 22.5%;
-    left: 66.3%;
-    background: white;
-    border-radius: 30px;
-    opacity:0;
-}
 
-.box9{
+#box9{
     width: 4.8%;
     height: 9%;
     transform: rotate(64deg);
@@ -893,23 +760,9 @@ button:focus {
 }
 
 
-.box9:hover {
-    background: greenyellow;
-}
 
-.box9-parpadeo {
-    width: 4%;
-    height: 8.4%;
-    transform: rotate(64deg);
-    position: absolute;
-    top: 29.2%;
-    left: 69%;
-    background: white;
-    border-radius: 30px;
-    opacity:0;
-}
 
-.box10{
+#box10{
     width: 4.8%;
     height: 9%;
     transform: rotate(78deg);
@@ -919,23 +772,9 @@ button:focus {
 }
 
 
-.box10:hover {
-    background: blue;
-}
 
-.box10-parpadeo {
-    width: 4%;
-    height: 8.6%;
-    transform: rotate(78deg);
-    position: absolute;
-    top: 36.2%;
-    left: 70.8%;
-    background: white;
-    border-radius: 30px;
-    opacity:0;
-}
 
-.box11{
+#box11{
     width: 4.6%;
     height: 9%;
     transform: rotate(89deg);
@@ -945,23 +784,8 @@ button:focus {
 }
 
 
-.box11:hover {
-    background: blue;
-}
 
-.box11-parpadeo {
-    width: 4%;
-    height: 8.6%;
-    transform: rotate(89deg);
-    position: absolute;
-    top: 43.8%;
-    left: 71.8%;
-    background: blue;
-    border-radius: 30px;
-    opacity:0;
-}
-
-.box12{
+#box12{
     width: 5.2%;
     height: 9%;
     transform: rotate(98deg);
@@ -971,23 +795,8 @@ button:focus {
 }
 
 
-.box12:hover {
-    background: blue;
-}
 
-.box12-parpadeo {
-    width: 4%;
-    height: 8.4%;
-    transform: rotate(100deg);
-    position: absolute;
-    top: 51.6%;
-    left: 71.5%;
-    background: white;
-    border-radius: 30px;
-    opacity:0;
-}
-
-.box13{
+#box13{
     width: 6.2%;
     height: 9.3%;
     transform: rotate(107deg);
@@ -997,21 +806,7 @@ button:focus {
 }
 
 
-.box13:hover {
-    background: blue;
-}
 
-.box13-parpadeo {
-    width: 4%;
-    height: 8.4%;
-    transform: rotate(106deg);
-    position: absolute;
-    top: 59.6%;
-    left: 70%;
-    background: white;
-    border-radius: 30px;
-    opacity:0;
-}
 
 .box13-icono {
     transform: rotate(106deg);
@@ -1022,7 +817,7 @@ button:focus {
     font-size: 30px;
 }
 
-.box14{
+#box14{
     width: 5.2%;
     height: 9%;
     transform: rotate(114deg);
@@ -1032,23 +827,9 @@ button:focus {
 }
 
 
-.box14:hover {
-    background: greenyellow;
-}
 
-.box14-parpadeo {
-    width: 4%;
-    height: 8%;
-    border-radius: 30px;
-    background-color: white;
-    transform: rotate(114deg);
-    position: absolute;
-    top: 66.7%;
-    left: 67.6%;
-    opacity:0;
-}
 
-.box15{
+#box15{
     width: 5.2%;
     height: 9%;
     transform: rotate(125deg);
@@ -1058,23 +839,9 @@ button:focus {
 }
 
 
-.box15:hover {
-    background: greenyellow;
-}
 
-.box15-parpadeo {
-    width: 4%;
-    height: 8%;
-    border-radius: 30px;
-    background-color: white;
-    transform: rotate(125deg);
-    position: absolute;
-    top: 73.2%;
-    left: 64.2%;
-    opacity:0;
-}
 
-.box16{
+#box16{
     width: 5%;
     height: 9%;
     transform: rotate(138deg);
@@ -1084,23 +851,9 @@ button:focus {
 }
 
 
-.box16:hover {
-    background: greenyellow;
-}
 
-.box16-parpadeo {
-    width: 4%;
-    height: 8%;
-    border-radius: 30px;
-    background-color: white;
-    transform: rotate(138deg);
-    position: absolute;
-    top: 78.9%;
-    left: 59.9%;
-    opacity:0;
-}
 
-.box17{
+#box17{
     width: 5%;
     height: 9%;
     transform: rotate(150deg);
@@ -1110,23 +863,9 @@ button:focus {
 }
 
 
-.box17:hover {
-    background: blue;
-}
 
-.box17-parpadeo {
-    width: 4%;
-    height: 8%;
-    border-radius: 30px;
-    background-color: blue;
-    transform: rotate(150deg);
-    position: absolute;
-    top: 83.4%;
-    left: 55.2%;
-    opacity:0;
-}
 
-.box18{
+#box18{
     width: 5.4%;
     height: 8.9%;
     transform: rotate(159deg);
@@ -1136,23 +875,8 @@ button:focus {
 }
 
 
-.box18:hover {
-    background: blue;
-}
 
-.box18-parpadeo {
-    width: 4%;
-    height: 8%;
-    border-radius: 30px;
-    background-color: white;
-    transform: rotate(159deg);
-    position: absolute;
-    top: 86.6%;
-    left: 49.7%;
-    opacity:0;
-}
-
-.box19{
+#box19{
     width: 4.5%;
     height: 8.5%;
     transform: rotate(173deg);
@@ -1162,23 +886,9 @@ button:focus {
 }
 
 
-.box19:hover {
-    background: blue;
-}
 
-.box19-parpadeo {
-    width: 4%;
-    height: 8%;
-    border-radius: 30px;
-    background-color: white;
-    transform: rotate(174deg);
-    position: absolute;
-    top: 88.8%;
-    left: 43.7%;
-    opacity:0;
-}
 
-.box20{
+#box20{
     width: 5.8%;
     height: 8.5%;
     transform: rotate(180deg);
@@ -1188,21 +898,7 @@ button:focus {
 }
 
 
-.box20:hover {
-    background: greenyellow;
-}
 
-.box20-parpadeo {
-    width: 5%;
-    height: 8.2%;
-    border-radius: 30px;
-    background-color: white;
-    transform: rotate(180deg);
-    position: absolute;
-    top: 89.2%;
-    left: 37%;
-    opacity:0;
-}
 
 .box20-icono {
     transform: rotate(180deg);
@@ -1213,7 +909,7 @@ button:focus {
     font-size: 30px;
 }
 
-.box21{
+#box21{
     width: 5%;
     height: 8.8%;
     transform: rotate(189deg);
@@ -1223,23 +919,8 @@ button:focus {
 }
 
 
-.box21:hover {
-    background: blue;
-}
 
-.box21-parpadeo {
-    width: 4%;
-    height: 8%;
-    border-radius: 30px;
-    background-color: white;
-    transform: rotate(184deg);
-    position: absolute;
-    top: 88.5%;
-    left: 31.4%;
-    opacity:0;
-}
-
-.box22{
+#box22{
     width: 4.8%;
     height: 8.8%;
     transform: rotate(200deg);
@@ -1248,24 +929,10 @@ button:focus {
     left: 24.8%;
 }
 
-.box22-parpadeo {
-    width: 4%;
-    height: 8%;
-    border-radius: 30px;
-    background-color: white;
-    transform: rotate(198deg);
-    position: absolute;
-    top: 86.4%;
-    left: 25.4%;
-    opacity:0;
-}
-
-.box22:hover {
-    background: blue;
-}
 
 
-.box23{
+
+#box23{
     width: 4.8%;
     height: 8.8%;
     transform: rotate(211deg);
@@ -1275,23 +942,8 @@ button:focus {
 }
 
 
-.box23:hover {
-    background: blue;
-}
 
-.box23-parpadeo {
-    width: 4%;
-    height: 7.6%;
-    border-radius: 30px;
-    background-color: white;
-    transform: rotate(211deg);
-    position: absolute;
-    top: 83.2%;
-    left: 20.2%;
-    opacity:0;
-}
-
-.box24{
+#box24{
     width: 4.4%;
     height: 8.8%;
     transform: rotate(222deg);
@@ -1301,23 +953,8 @@ button:focus {
 }
 
 
-.box24:hover {
-    background: blue;
-}
 
-.box24-parpadeo {
-    width: 4%;
-    height: 8%;
-    border-radius: 30px;
-    background-color: white;
-    transform: rotate(220deg);
-    position: absolute;
-    top: 78.7%;
-    left: 15.6%;
-    opacity:0;
-}
-
-.box25{
+#box25{
     width: 5%;
     height: 9%;
     transform: rotate(232deg);
@@ -1327,23 +964,8 @@ button:focus {
 }
 
 
-.box25:hover {
-    background: greenyellow;
-}
 
-.box25-parpadeo {
-    width: 4.6%;
-    height: 8%;
-    border-radius: 30px;
-    background-color: white;
-    transform: rotate(232deg);
-    position: absolute;
-    top: 73.2%;
-    left: 11.2%;
-    opacity:0;
-}
-
-.box26{
+#box26{
     width: 5%;
     height: 9%;
     transform: rotate(245deg);
@@ -1353,23 +975,8 @@ button:focus {
 }
 
 
-.box26:hover {
-    background: blue;
-}
 
-.box26-parpadeo {
-    width: 4.6%;
-    height: 8%;
-    border-radius: 30px;
-    background-color: blue;
-    transform: rotate(245deg);
-    position: absolute;
-    top: 66.4%;
-    left: 7.8%;
-    opacity:0;
-}
-
-.box27{
+#box27{
     width: 5.8%;
     height: 8.8%;
     transform: rotate(253deg);
@@ -1379,21 +986,6 @@ button:focus {
 }
 
 
-.box27:hover {
-    background: blue;
-}
-
-.box27-parpadeo {
-    width: 5%;
-    height: 8.2%;
-    border-radius: 30px;
-    background-color: white;
-    transform: rotate(252deg);
-    position: absolute;
-    top: 59.2%;
-    left: 5.3%;
-    opacity:0;
-}
 
 .box27-icono {
     transform: rotate(252deg);
@@ -1404,7 +996,7 @@ button:focus {
     font-size: 30px;
 }
 
-.box28{
+#box28{
     width: 5.2%;
     height: 9%;
     transform: rotate(260deg);
@@ -1414,23 +1006,8 @@ button:focus {
 }
 
 
-.box28:hover {
-    background: blue;
-}
 
-.box28-parpadeo {
-    width: 4.5%;
-    height: 8%;
-    transform: rotate(260deg);
-    position: absolute;
-    top: 51.4%;
-    left: 4.2%;
-    border-radius: 30px;
-    background-color: white;
-    opacity:0;
-}
-
-.box29{
+#box29{
     width: 4.8%;
     height: 9%;
     transform: rotate(274deg);
@@ -1440,23 +1017,8 @@ button:focus {
 }
 
 
-.box29:hover {
-    background: blue;
-}
 
-.box29-parpadeo {
-    width: 4.2%;
-    height: 8%;
-    transform: rotate(270deg);
-    position: absolute;
-    top: 43.8%;
-    left: 4.1%;
-    border-radius: 30px;
-    background-color: blue;
-    opacity:0;
-}
-
-.box30{
+#box30{
     width: 4.6%;
     height: 9%;
     transform: rotate(282deg);
@@ -1466,23 +1028,8 @@ button:focus {
 }
 
 
-.box30:hover {
-    background: blue;
-}
 
-.box30-parpadeo {
-    width: 4.2%;
-    height: 8%;
-    transform: rotate(282deg);
-    position: absolute;
-    top: 36.5%;
-    left: 5%;
-    border-radius: 30px;
-    background-color: white;
-    opacity:0;
-}
-
-.box31{
+#box31{
     width: 4.6%;
     height: 8.7%;
     transform: rotate(294deg);
@@ -1492,23 +1039,8 @@ button:focus {
 }
 
 
-.box31:hover {
-    background: greenyellow;
-}
 
-.box31-parpadeo {
-    width: 4.2%;
-    height: 8%;
-    transform: rotate(290deg);
-    position: absolute;
-    top: 29.4%;
-    left: 6.7%;
-    border-radius: 30px;
-    background-color: white;
-    opacity:0;
-}
-
-.box32{
+#box32{
     width: 4.8%;
     height: 8.7%;
     transform: rotate(306deg);
@@ -1518,23 +1050,8 @@ button:focus {
 }
 
 
-.box32:hover {
-    background: blue;
-}
 
-.box32-parpadeo {
-    width: 4.2%;
-    height: 8%;
-    transform: rotate(306deg);
-    position: absolute;
-    top: 22.6%;
-    left: 9.6%;
-    border-radius: 30px;
-    background-color: white;
-    opacity:0;
-}
-
-.box33{
+#box33{
     width: 4.4%;
     height: 8.8%;
     transform: rotate(316deg);
@@ -1544,23 +1061,9 @@ button:focus {
 }
 
 
-.box33:hover {
-    background: blue;
-}
 
-.box33-parpadeo {
-    width: 4.2%;
-    height: 8%;
-    transform: rotate(316deg);
-    position: absolute;
-    top: 16.7%;
-    left: 13.2%;
-    border-radius: 30px;
-    background-color: white;
-    opacity:0;
-}
 
-.box34{
+#box34{
     width: 5.6%;
     height: 8.7%;
     transform: rotate(325deg);
@@ -1570,21 +1073,6 @@ button:focus {
 }
 
 
-.box34:hover {
-    background: blue;
-}
-
-.box34-parpadeo {
-    width: 5.2%;
-    height: 8.2%;
-    transform: rotate(324deg);
-    position: absolute;
-    top: 11.8%;
-    left: 17.4%;
-    border-radius: 30px;
-    background-color: white;
-    opacity:0;
-}
 
 .box34-icono {
     transform: rotate(324deg);
@@ -1595,7 +1083,7 @@ button:focus {
     font-size: 30px;
 }
 
-.box35{
+#box35{
     width: 4.8%;
     height: 9%;
     transform: rotate(332deg);
@@ -1605,23 +1093,9 @@ button:focus {
 }
 
 
-.box35:hover {
-    background: blue;
-}
 
-.box35-parpadeo {
-    width: 4.2%;
-    height: 8.2%;
-    transform: rotate(332deg);
-    position: absolute;
-    top: 7.4%;
-    left: 23%;
-    border-radius: 30px;
-    background-color: blue;
-    opacity:0;
-}
 
-.box36{
+#box36{
     width: 4.8%;
     height: 9%;
     transform: rotate(345deg);
@@ -1631,23 +1105,8 @@ button:focus {
 }
 
 
-.box36:hover {
-    background: blue;
-}
 
-.box36-parpadeo {
-    width: 4.2%;
-    height: 8.2%;
-    transform: rotate(342deg);
-    position: absolute;
-    top: 4.6%;
-    left: 28.9%;
-    border-radius: 30px;
-    background-color: white;
-    opacity:0;
-}
-
-.box37{
+#box37{
     width: 4.3%;
     height: 9%;
     transform: rotate(354deg);
@@ -1657,23 +1116,9 @@ button:focus {
 }
 
 
-.box37:hover {
-    background: blue;
-}
 
-.box37-parpadeo {
-    width: 4%;
-    height: 8.2%;
-    transform: rotate(354deg);
-    position: absolute;
-    top: 3.2%;
-    left: 34.7%;
-    border-radius: 30px;
-    background-color: white;
-    opacity:0;
-}
 
-.box38{
+#box38{
     width: 4.7%;
     height: 9.6%;
     transform: rotate(365deg);
@@ -1683,23 +1128,8 @@ button:focus {
 }
 
 
-.box38:hover {
-    background: blue;
-}
 
-.box38-parpadeo {
-    width: 4.2%;
-    height: 8.6%;
-    transform: rotate(368deg);
-    position: absolute;
-    top: 2.9%;
-    left: 40.7%;
-    border-radius: 30px;
-    background-color: white;
-    opacity:0;
-}
-
-.box39{
+#box39{
     width: 4.4%;
     height: 9.6%;
     transform: rotate(377deg);
@@ -1709,23 +1139,9 @@ button:focus {
 }
 
 
-.box39:hover {
-    background: blue;
-}
 
-.box39-parpadeo {
-    width: 4%;
-    height: 8.6%;
-    transform: rotate(378deg);
-    position: absolute;
-    top: 4.2%;
-    left: 46.7%;
-    border-radius: 30px;
-    background-color: white;
-    opacity:0;
-}
 
-.box40{
+#box40{
     width: 5%;
     height: 9.6%;
     transform: rotate(390deg);
@@ -1735,23 +1151,9 @@ button:focus {
 }
 
 
-.box40:hover {
-    background: greenyellow;
-}
 
-.box40-parpadeo {
-    width: 4%;
-    height: 8.6%;
-    transform: rotate(390deg);
-    position: absolute;
-    top: 7%;
-    left: 52.6%;
-    border-radius: 30px;
-    background-color: white;
-    opacity:0;
-}
 
-.box41 {
+#box41 {
     width: 6%;
     height: 6%;
     transform: rotate(146deg);
@@ -1761,23 +1163,9 @@ button:focus {
 }
 
 
-.box41:hover {
-    background: blue;
-}
 
-.box41-parpadeo {
-    width: 5.6%;
-    height: 5%;
-    border-radius: 30px;
-    background: white;
-    transform: rotate(146deg);
-    position: absolute;
-    top: 41.2%;
-    left: 32.6%;
-    opacity:0;
-}
 
-.box42 {
+#box42 {
     width: 6%;
     height: 6%;
     transform: rotate(146deg);
@@ -1787,23 +1175,9 @@ button:focus {
 }
 
 
-.box42:hover {
-    background: blue;
-}
 
-.box42-parpadeo {
-    width: 5.6%;
-    height: 5%;
-    border-radius: 30px;
-    background: blue;
-    transform: rotate(146deg);
-    position: absolute;
-    top: 36.2%;
-    left: 29.8%;
-    opacity:0;
-}
 
-.box43 {
+#box43 {
     width: 6.4%;
     height: 6%;
     transform: rotate(146deg);
@@ -1813,23 +1187,9 @@ button:focus {
 }
 
 
-.box43:hover {
-    background: blue;
-}
 
-.box43-parpadeo {
-    width: 5.6%;
-    height: 4.8%;
-    border-radius: 30px;
-    background: white;
-    transform: rotate(146deg);
-    position: absolute;
-    top: 31.1%;
-    left: 27%;
-    opacity:0;
-}
 
-.box44 {
+#box44 {
     width: 6.1%;
     height: 6%;
     transform: rotate(146deg);
@@ -1839,23 +1199,9 @@ button:focus {
 }
 
 
-.box44:hover {
-    background: blue;
-}
 
-.box44-parpadeo {
-    width: 5.6%;
-    height: 4.8%;
-    border-radius: 30px;
-    background: white;
-    transform: rotate(146deg);
-    position: absolute;
-    top: 26.2%;
-    left: 24.2%;
-    opacity:0;
-}
 
-.box45 {
+#box45 {
     width: 6.2%;
     height: 7.3%;
     transform: rotate(146deg);
@@ -1865,23 +1211,9 @@ button:focus {
 }
 
 
-.box45:hover {
-    background: greenyellow;
-}
 
-.box45-parpadeo {
-    width: 5.4%;
-    height: 5.6%;
-    border-radius: 30px;
-    background: white;
-    transform: rotate(146deg);
-    position: absolute;
-    top: 20.2%;
-    left: 21.2%;
-    opacity:0;
-}
 
-.box46 {
+#box46 {
     width: 6%;
     height:6%;
     transform: rotate(252deg);
@@ -1891,23 +1223,9 @@ button:focus {
 }
 
 
-.box46:hover {
-    background: greenyellow;
-}
 
-.box46-parpadeo {
-    width: 5.4%;
-    height: 5%;
-    border-radius: 30px;
-    background-color: white;
-    transform: rotate(252deg);
-    position: absolute;
-    top: 50.9%;
-    left: 30.2%;
-    opacity:0;
-}
 
-.box47 {
+#box47 {
     width: 6%;
     height: 6%;
     transform: rotate(252deg);
@@ -1917,23 +1235,9 @@ button:focus {
 }
 
 
-.box47:hover {
-    background: blue;
-}
 
-.box47-parpadeo {
-    width: 5.4%;
-    height: 5%;
-    border-radius: 30px;
-    background-color: white;
-    transform: rotate(252deg);
-    position: absolute;
-    top: 52.8%;
-    left: 25.5%;
-    opacity:0;
-}
 
-.box48 {
+#box48 {
     width: 6.3%;
     height: 5.8%;
     transform: rotate(252deg);
@@ -1943,23 +1247,9 @@ button:focus {
 }
 
 
-.box48:hover {
-    background: blue;
-}
 
-.box48-parpadeo {
-    width: 5.4%;
-    height: 5%;
-    border-radius: 30px;
-    background-color: white;
-    transform: rotate(252deg);
-    position: absolute;
-    top: 54.7%;
-    left: 20.7%;
-    opacity:0;
-}
 
-.box49 {
+#box49 {
     width: 6.2%;
     height: 6%;
     transform: rotate(252deg);
@@ -1969,23 +1259,9 @@ button:focus {
 }
 
 
-.box49:hover {
-    background: blue;
-}
 
-.box49-parpadeo {
-    width: 5.4%;
-    height: 5%;
-    border-radius: 30px;
-    background-color: blue;
-    transform: rotate(252deg);
-    position: absolute;
-    top: 56.6%;
-    left: 15.9%;
-    opacity:0;
-}
 
-.box50 {
+#box50 {
     width: 6.2%;
     height: 6%;
     transform: rotate(252deg);
@@ -1995,23 +1271,9 @@ button:focus {
 }
 
 
-.box50:hover {
-    background: blue;
-}
 
-.box50-parpadeo {
-    width: 5.4%;
-    height: 5%;
-    border-radius: 30px;
-    background-color: white;
-    transform: rotate(252deg);
-    position: absolute;
-    top: 58.5%;
-    left: 11.1%;
-    opacity:0;
-}
 
-.box51 {
+#box51 {
     width: 6.2%;
     height: 5.7%;
     transform: rotate(108deg);
@@ -2021,23 +1283,9 @@ button:focus {
 }
 
 
-.box51:hover {
-    background: blue;
-}
 
-.box51-parpadeo {
-    width: 5.8%;
-    height: 5.2%;
-    transform: rotate(108deg);
-    border-radius: 30px;
-    position: absolute;
-    background: blue;
-    top: 51%;
-    left: 43.6%;
-    opacity:0;
-}
 
-.box52 {
+#box52 {
     width: 6%;
     height: 5.8%;
     transform: rotate(108deg);
@@ -2047,24 +1295,8 @@ button:focus {
 }
 
 
-.box52:hover {
-    background: greenyellow;
-}
 
-
-.box52-parpadeo {
-    width: 5.4%;
-    height: 4.8%;
-    transform: rotate(108deg);
-    border-radius: 30px;
-    position: absolute;
-    background: white;
-    top: 53%;
-    left: 48.3%;
-    opacity:0;
-}
-
-.box53 {
+#box53 {
     width: 6%;
     height: 5.8%;
     transform: rotate(108deg);
@@ -2074,24 +1306,8 @@ button:focus {
 }
 
 
-.box53:hover {
-    background: blue;
-}
 
-.box53-parpadeo {
-    width: 5.5%;
-    height: 4.8%;
-    transform: rotate(110deg);
-    position: absolute;
-    top: 54.7%;
-    left: 53%;
-    border-radius: 30px;
-    background: white;
-
-    opacity:0;
-}
-
-.box54 {
+#box54 {
     width: 6%;
     height: 5.8%;
     transform: rotate(108deg);
@@ -2101,25 +1317,9 @@ button:focus {
 }
 
 
-.box54:hover {
-    background: blue;
-}
 
 
-.box54-parpadeo {
-    width: 5.8%;
-    height: 5.2%;
-    transform: rotate(104deg);
-    position: absolute;
-    top: 56.5%;
-    left: 57.5%;
-    border-radius: 30px;
-    background: white;
-
-    opacity:0;
-}
-
-.box55 {
+#box55 {
     width: 6.1%;
     height: 6.6%;
     transform: rotate(108deg);
@@ -2129,25 +1329,7 @@ button:focus {
 }
 
 
-.box55:hover {
-    background: blue;
-}
-
-.box55-parpadeo {
-    width: 5.7%;
-    height: 5.2%;
-    transform: rotate(108deg);
-    position: absolute;
-    top: 58.4%;
-    left: 62.8%;
-    border-radius: 30px;
-    background: white;
-
-    opacity:0;
-}
-
-/* SEGUIR POR AQUI!!! CONTINUAR!! */
-.box56 {
+#box56 {
     width: 6.1%;
     height: 5.8%;
     position: absolute;
@@ -2156,24 +1338,9 @@ button:focus {
     transform: translate(-180%, -50%);
 }
 
-.box56:hover {
-    background: blue;
-}
 
 
-.box56-parpadeo {
-    width: 5.6%;
-    height: 4.8%;
-    position: absolute;
-    top: 59.7%;
-    left: 46.8%;
-    transform: translate(-180%, -50%);
-    border-radius: 30px;
-    background: white;
-    opacity:0;
-}
-
-.box57 {
+#box57 {
     width: 6%;
     height: 5.8%;
     position: absolute;
@@ -2182,23 +1349,9 @@ button:focus {
     transform: translate(-180%, -50%);
 }
 
-.box57:hover {
-    background: blue;
-}
 
-.box57-parpadeo {
-    width: 5.6%;
-    height: 4.8%;
-    position: absolute;
-    top: 65.8%;
-    left: 46.85%;
-    transform: translate(-180%, -50%);
-    border-radius: 30px;
-    background: white;
-    opacity:0;
-}
 
-.box58 {
+#box58 {
     width: 6%;
     height: 5.8%;
     position: absolute;
@@ -2207,23 +1360,9 @@ button:focus {
     transform: translate(-180%, -50%);
 }
 
-.box58:hover {
-    background: blue;
-}
 
-.box58-parpadeo {
-    width: 5.6%;
-    height: 4.8%;
-    position: absolute;
-    top: 72%;
-    left: 46.85%;
-    transform: translate(-180%, -50%);
-    border-radius: 30px;
-    background: white;
-    opacity:0;
-}
 
-.box59 {
+#box59 {
     width: 6.1%;
     height: 5.7%;
     position: absolute;
@@ -2232,23 +1371,9 @@ button:focus {
     transform: translate(-180%, -50%);
 }
 
-.box59:hover {
-    background: blue;
-}
 
-.box59-parpadeo {
-    width: 5.6%;
-    height: 4.8%;
-    position: absolute;
-    top: 78.2%;
-    left: 46.85%;
-    transform: translate(-180%, -50%);
-    border-radius: 30px;
-    background: white;
-    opacity:0;
-}
 
-.box60 {
+#box60 {
     width: 6%;
     height: 6.7%;
     position: absolute;
@@ -2257,18 +1382,3 @@ button:focus {
     transform: translate(-180%, -50%);
 }
 
-.box60:hover {
-    background: blue;
-}
-
-.box60-parpadeo {
-    width: 5.6%;
-    height: 5.5%;
-    position: absolute;
-    top: 85%;
-    left: 46.85%;
-    transform: translate(-180%, -50%);
-    border-radius: 30px;
-    background: blue;
-    opacity:0;
-}
