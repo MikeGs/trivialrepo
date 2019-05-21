@@ -313,12 +313,12 @@ table.aligncenter .col {
 	float: left;
 }
 
-#tornarAGrupsBtn {
+#tornarBdcmBtn {
 	margin-bottom: 10px;
 	display: block;
 }
 
-#tornarAGrupsBtn.llistatalumnes {
+#tornarBdcmBtn.llistatalumnes {
 	float: left;
 	margin-top: 10px;
 }
@@ -926,6 +926,10 @@ input[type=password] {
 	width: 100%!important;
 }
 
+.tableHead#temesHead p {
+	width: 50%!important;
+}
+
 .tableNormes p {
 	margin-bottom: 0px!important;
 }
@@ -970,6 +974,17 @@ input[type=password] {
 
 .entrenamentCurs {
 	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+.entrenamentCurs:hover {
+	border: 1px solid orange;
+}
+
+.entrenamentCursSelected {
+	border: 1px solid green;
+	color: green;
+	filter: brightness(1.5);
 }
 
 /* ENTRENAMENT END */

@@ -618,7 +618,9 @@ class PartidaController extends Controller
     $('body').on( 'click', '#canviModeAccept', function() {
         $('#canviModeModal').modal('hide');
         clearHTML();
-        setTimeout(function(){ $('#entrenamentBtn').click(); }, 1000);
+        writeCookie('ferEntreno','redirect',1);
+        location.reload();
+        //setTimeout(function(){ $('#entrenamentBtn').click(); }, 1000);
     });
 
     $('body').on( 'click', '#canviModeDeny', function() {
@@ -848,8 +850,9 @@ class PartidaController extends Controller
         
         foreach($grups as $grup) {
             $llistatGrups = $llistatGrups . "
-            <li class='entrenamentCurs row' id='" . $grup->getId() . "'>
-                <p class='col col-md-12'>" . $grup->getNom() . "</p>
+            <li class='entrenamentCurs row alltransition3' id='" . $grup->getId() . "' subid='gr" . $grup->getId() . "'>
+                <p class='col col-md-6 alltransition3'>" . $grup->getNom() . "</p>
+                <p class='col col-md-6 alltransition3'></p>
             </li>
             ";
         }
@@ -858,8 +861,11 @@ class PartidaController extends Controller
 
         <script>
 
+        $('.entrenamentCurs').removeClass('entrenamentCursSelected');
+
         delete_cookie('cursos');
-        writeCookie('cursos', '', 1);
+
+        cursosArray = [];
 
         </script>
 
@@ -914,8 +920,9 @@ class PartidaController extends Controller
                 <div class='container' id='containerCursos'>
                     
                     <ul class='tableNormes col col-6'>
-                        <li class='row tableHead'>
+                        <li class='row tableHead' id='temesHead'>
                             <p>Cursos</p>
+                            <p>Temes</p>
                         </li>
                         " . $llistatGrups . "
                     </ul>
@@ -956,18 +963,31 @@ class PartidaController extends Controller
             </div>
 
         <script>
-        
+
             $('#tipusPartidaSlider').carousel({
                 interval: false
             });
 
             $('body').on( 'click', '.entrenamentCurs', function() {
-                if (readCookie('cursos') == '') {
-                    writeCookie('cursos', $(this).attr('id'), 1);
-                } else {
-                    writeCookie('cursos', readCookie('cursos') + ',' + $(this).attr('id'), 1);
+                
+                var id = $(this).attr('id');
+                var selected = $(this).hasClass('entrenamentCursSelected');
+                console.log(selected);
+
+                switch(selected) {
+                    case false:
+                        cursosArray.push(id);
+                        $(this).addClass('entrenamentCursSelected');
+                        break;
+                    case true:
+                        var posicio = cursosArray.indexOf(id);
+                        cursosArray.splice(posicio);
+                        $(this).removeClass('entrenamentCursSelected');
+                        break;
                 }
-                console.log(readCookie('cursos'));
+
+                console.log(cursosArray);
+
             });
 
             $('body').on( 'click', '#carouselMultiPrev, #carouselMultiNext', function() {

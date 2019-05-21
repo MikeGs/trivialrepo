@@ -12,9 +12,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Grup;
 use App\Entity\Usuari;
 use App\Entity\Nivell;
+use App\Entity\Tema;
 
 use App\Form\GrupType;
 use App\Form\NivellType;
+use App\Form\TemaType;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -50,6 +52,82 @@ class GrupController extends Controller
             'administradors' => $administradors,
             'alumnes' => $alumnes,
             'title' => $title
+        ]);
+
+    }
+
+    /**
+     * @Route("/nivells", name="nivells")
+     */
+    public function nivells()
+    {
+        $authChecker = $this->container->get('security.authorization_checker');
+
+        if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('fos_user_security_login');
+
+        } else if (!$authChecker->isGranted('ROLE_TEACHER')) {
+
+            return $this->redirectToRoute('joc');
+
+        } 
+
+        $title = "Nivells | Trivial UB";
+        $nivells = $this->getNivells();
+        $administradors = $this->getAdministradors();
+
+        return $this->render('nivell/index.html.twig',[
+            'controller_name' => 'GrupController',
+            'nivells' => $nivells,
+            'administradors' => $administradors,
+            'title' => $title
+        ]);
+
+    }
+
+    /**
+     * @Route("/afegirtema/{nivellid}", name="afegirtema")
+     */
+    public function afegirtema(Request $request, Nivell $nivellid)
+    {
+        $authChecker = $this->container->get('security.authorization_checker');
+
+        if (!$authChecker->isGranted('ROLE_TEACHER') && !$authChecker->isGranted('ROLE_ADMIN') && !$authChecker->isGranted('ROLE_STUDENT')) {
+
+            return $this->redirectToRoute('fos_user_security_login');
+
+        } else if (!$authChecker->isGranted('ROLE_TEACHER')) {
+
+            return $this->redirectToRoute('joc');
+
+        } 
+
+        $tema = new Tema();
+        $form = $this->createForm(TemaType::class, $tema);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            // id	nom	
+
+            $tema->setNom($form->get('nom')->getData());
+            $tema->setIdNivell($nivellid);
+            
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($tema);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('nivells'));
+        }
+
+        $nivell = $this->getNivell($nivellid);
+        $title = "Afegir tema | Trivial UB";
+
+        return $this->render('nivell/afegir.html.twig',[
+            'controller_name' => 'GrupController',
+            'nivell' => $nivell,
+            'title' => $title,
+            'form' => $form->CreateView(),
         ]);
 
     }
@@ -102,8 +180,6 @@ class GrupController extends Controller
         $form->handleRequest($request);
 
          if ($form->isSubmitted()) {
-            echo "submitted";
-
             // id	nom	
 
             $nivell->setNom($form->get('nom')->getData());
@@ -112,7 +188,7 @@ class GrupController extends Controller
             $em->persist($nivell);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('grups'));
+            return $this->redirect($this->generateUrl('nivells'));
         }
 
         $title = "Afegir nivell | Trivial UB";
@@ -163,7 +239,7 @@ class GrupController extends Controller
             $grup->setTempsresposta($form->get('tempsresposta')->getData());
             $grup->setPuntuacioFacil($form->get('puntuacio_facil')->getData());
             $grup->setPuntuacioDificil($form->get('puntuacio_dificil')->getData());
-            $grup->setIdAdministrador(1);
+            $grup->setIdAdministrador($this->getUser()->getId());
             $grup->setIdNivell($this->getNivell($form->get('idNivell')->getData()));
 
             $em = $this->getDoctrine()->getManager();

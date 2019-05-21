@@ -50,8 +50,6 @@
         </ul>
 
         <div id="diagonalColorStart"></div>
-        
-
     </div>
 
     <div id="contingutStart" class="scroll">
@@ -63,6 +61,13 @@
     </div>
 
     <script>
+
+    $(document).ready(function() {
+        if (readCookie('ferEntreno') == "redirect") {
+            $("#entrenamentBtn").click();     
+        }
+        delete_cookie('ferEntreno');
+    });
 
     var arrayButtons = $(".buttonStart");
 
@@ -80,6 +85,8 @@
 
     $(".partidaBtnGrup").click(function() {
 
+        writeCookie('ferEntreno',"noredirect",1);
+
         var grup = this.id;
         var url = "{{ path('getPartidaPortait') }}";
         var codes;
@@ -95,8 +102,15 @@
 
     $("#entrenamentBtn").click(function() {
 
-        asActive("#entrenamentBtn");
+        if (readCookie('ferEntreno') != "redirect") {
+            writeCookie('ferEntreno',"redirect",1);
+            location.reload();
+        }
 
+        delete_cookie('ferEntreno');
+
+        asActive("#entrenamentBtn");
+        clearHTML();
         var url = "{{ path('getEntrenamentPortait') }}";
         $.post(url) 
 		    .done(function(response) {

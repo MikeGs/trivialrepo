@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+
+<div class="m-5">
+
+    <div class="card-header border-bottom bg-white d-flex justify-content-between p-0">
+        <h1 class="h3">Llistat de nivells</h1>
+    </div>
+
+    <div class="Nivells">
+
+    <a href='{{path('afegirnivell')}}' id='afegirNivellb' class="btn btn-success float-right afegirbtn"><i class="fas fa-plus link-white mr-2"></i>Afegir nivell</a>
+
+    <div class="llegenda-taula">
+    
+        <div class="float-right">
+            <p class="float-left mr-3">Llegenda: </p>
+
+            <div class="link-green float-left">
+
+                <i class="fas fa-plus"></i>
+                <label>Afegir tema</label>
+
+            </div>
+        </div>
+
+    </div>
+
+    <table class="table custom-table" id="llistatGrups">
+    <thead>
+        <tr>
+            <th scope="col">Nivell</th>
+            <th scope="col">Grups</th>
+            <th scope="col">Temas</th>
+            <th scope="col">Accions</th>  
+        </tr>
+    </thead>
+    <tbody>
+    {% for nivell in nivells %}
+        <tr>
+        <td scope="col">{{ nivell.nom }}</td>
+        <td>
+        
+        {% for grup in nivell.grups %}
+
+                {% if nivell.id == grup.idNivell.id %}
+                    {{ grup.nom }}
+                {% endif %}
+
+                {% else %}
+                    No té grups
+            {% endfor %}
+
+        </td>
+        <td scope="col">
+
+            {% for tema in nivell.temas %}
+
+                {% if tema.idnivell.id == nivell.id %}
+                
+                    {{ tema.nom }},
+
+                {% endif %}
+
+                {% else %}
+
+                No té temas
+                
+            {% endfor %}
+
+            </a>
+
+        </td>
+        <td scope="col">
+            <a href="{{path('afegirtema', {'nivellid': nivell.id})}}"><i class="fas fa-plus link-green"></i></a>
+        </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+    </div>
+</div>
+
+{% endblock %}
+{% block javascriptsBottom %}
+
+    {{ parent() }}
+
+    <script>
+		$(document).ready( function () {
+
+            llistatGrups = $('#llistatGrups').dataTable( {
+	            "language": {
+	                "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Catalan.json"
+	            }
+	        });
+        });
+
+</script>
+{% endblock %}
