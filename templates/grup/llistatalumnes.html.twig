@@ -51,9 +51,8 @@
     <tbody>
     {% for alumne in alumnes %}
 
-
             <tr>
-            <td scope="col">{{ alumne.nom }}</td>
+            <td scope="col">{{ alumne.nom }} {{ alumne.cognoms }}</td>
             <td scope="col">Jugades</td>
             <td scope="col">Guanyades</td>
             <td scope="col">Entrenaments F</td>
@@ -91,32 +90,39 @@
                             
                             {% set ids = 0 %}
                             {% for alumne in totsalumnes %}
-                                <tr>
-                                    <td class="elementLlistaAlumnesTd">
-                                    
-                                        <a class="elementLlistaAlumnes nodeco" id="{{ alumne.id }}" href="#">
 
-                                            <span class="alumneNom">
-                                                {{alumne.nom}}
-                                            </span> 
-                                            
-                                            <span class="alumneCognom">
-                                                {{alumne.cognoms}}
-                                            </span>
+                                {% if grup in alumne.grups %}
+                                {% else %}
 
-                                        </a>
+                                    <tr>
+                                        <td class="elementLlistaAlumnesTd">
+                                        
+                                            <a class="elementLlistaAlumnes nodeco" id="{{ alumne.id }}" href="#">
 
-                                    </td>
-                                </tr>
+                                                <span class="alumneNom">
+                                                    {{alumne.nom}}
+                                                </span> 
+                                                
+                                                <span class="alumneCognom">
+                                                    {{alumne.cognoms}}
+                                                </span>
+
+                                            </a>
+
+                                        </td>
+                                    </tr>
+
+                                {% endif %}
+
                             {% set ids = ids + 1 %}
                             {% endfor %}
 
                         </table>
-                        <input type="submit" name="Submit" value="Afegir" class="btn btn-primary disabled" id="afegirAlumnesBtn" data-grupid="{{ grup.id }}">
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer" id="afegirUsuariModalBtns">
+                <input type="submit" name="Submit" value="Afegir" class="btn btn-primary disabled" id="afegirAlumnesBtn" data-grupid="{{ grup.id }}">
 			</div>
 		</div>
 	</div>
