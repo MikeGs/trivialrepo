@@ -15,6 +15,7 @@ tema4nom = '';
 tema5nom = '';
 idioma = 'cat';
 params = getParams();
+contadorActiu = false;
 
 $(document).ready(function() {
     carregant();
@@ -46,8 +47,19 @@ function contador() {
 
     count = count - 1;
     if (count < 0) {
+        contadorActiu = false;
         document.getElementById("timer").classList.remove('pass');
         document.getElementById("timer").classList.remove('scalered');
+        document.getElementById("timer").classList.add('out');
+        $('.respostaOpcio').addClass('no-pointer');
+        var opcions = document.getElementsByClassName('respostaOpcio');
+        console.log(respostaCorrecta)
+        for (var o in opcions) {
+            if ($(opcions[o]).text().trim() == respostaCorrecta) {
+                console.log('entra')
+                $(opcions[o]).removeClass('alert-info').addClass('alert-success');
+            }    
+        }
     } else {
         
         document.getElementById("timer").classList.add('pass');
@@ -57,7 +69,11 @@ function contador() {
              document.getElementById("timer").classList.add('scalered');           
         }
     
-        window.setTimeout("contador()", 1000);
+        if (contadorActiu) 
+        {
+            window.setTimeout("contador()", 1000);
+        }
+        
     }
 
 }
@@ -99,6 +115,7 @@ function mostrarPregunta(id, tema, tipus) {
         .done(function(response) {
             $('#modalTitol').text(assignarTemaModal(tema, true));
             $('#pregunta').text(response.pregunta);
+            respostaCorrecta = response.respostaCorrecta;
             respostes = [
                 response.respostaCorrecta, 
                 response.respostaIncorrecta1,
@@ -115,7 +132,9 @@ function mostrarPregunta(id, tema, tipus) {
             }, 500);
 
             count = params[0][0]+1;
-            contador();
+            contadorActiu = true;
+        
+            contador(respostaCorrecta);
             $('body').on('click','.respostaOpcio', function() {
 
                 $('.respostaOpcio').addClass('no-pointer');
@@ -159,6 +178,7 @@ function mostrarPregunta(id, tema, tipus) {
                     $('.respostaOpcio').removeClass('alert-danger');
                     $('.respostaOpcio').addClass('alert-info');
                 }, 2000);
+                contadorActiu = false;
                 $("body").off("click",'.respostaOpcio');
             });
 
@@ -168,6 +188,7 @@ function mostrarPregunta(id, tema, tipus) {
         .done(function(response) {
             $('#modalTitol').text(assignarTemaModal(tema, false));
             $('#pregunta').text(response.pregunta);
+            respostaCorrecta = response.respostaCorrecta;
             respostes = [
                 response.respostaCorrecta, 
                 response.respostaIncorrecta1,
@@ -184,7 +205,9 @@ function mostrarPregunta(id, tema, tipus) {
             }, 500);
 
             count = params[0][0]+1;
-            contador();
+            contadorActiu = true;
+
+            contador(respostaCorrecta);
 
             $('body').on('click','.respostaOpcio', function() {
 
@@ -230,6 +253,7 @@ function mostrarPregunta(id, tema, tipus) {
                     $('.respostaOpcio').removeClass('alert-danger');
                     $('.respostaOpcio').addClass('alert-info');
                 }, 2000);
+                contadorActiu = false;
                 $("body").off("click",'.respostaOpcio');
             });
         });
