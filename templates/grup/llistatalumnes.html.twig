@@ -4,15 +4,21 @@
 
 {% block body %}
 
+<script>
+
+    alumneDesvincularId = '';
+
+</script>
+
 <div class="m-5">
 
     <div class="card-header border-bottom bg-white d-flex justify-content-between p-0">
         <h1 class="h3">{{grup.nom}} - Llistat d'alumnes</h1>
+        <a class="btn btn-link link-blue" href="{{path('grups')}}"><i class="fas fa-arrow-left"></i>Tornar a grups</a>
     </div>
 
     <div class="alumnes">
 
-    <a href='{{path('grups')}}' id='tornarAGrupsBtn' class='nodeco llistatalumnes'><i class="fas fa-chevron-left"></i> Tornar a grups</a>
     <a href='#' class="btn btn-success float-right afegirbtn" id="afegirAlumneBtn"><i class="fas fa-plus link-white mr-2"></i>Afegir alumne</a>
 
     <div class="llegenda-taula">
@@ -51,16 +57,15 @@
     <tbody>
     {% for alumne in alumnes %}
 
-
             <tr>
-            <td scope="col">{{ alumne.nom }}</td>
+            <td scope="col">{{ alumne.nom }} {{ alumne.cognoms }}</td>
             <td scope="col">Jugades</td>
             <td scope="col">Guanyades</td>
             <td scope="col">Entrenaments F</td>
             <td scope="col">{{ alumne.last_login|date('d-m-Y | h:m') }}</td>
             <td scope="col">
-                <a href="#"><i class="fas fa-eye link-blue mr-2"></i></a>
-                <a href="#"><i class="fas fa-times link-red"></i></a>
+                <a href="{{path('resumalumne',{"grupid": grup.id, "alumneid": alumne["usuari_id"] }) }}"><i class="fas fa-eye link-blue mr-2"></i></a>
+                <a class='desvincularAlumne' id='{{alumne["usuari_id"]}}' href="#"><i class="fas fa-times link-red"></i></a>
             </td>
             </tr>
 
@@ -91,32 +96,59 @@
                             
                             {% set ids = 0 %}
                             {% for alumne in totsalumnes %}
-                                <tr>
-                                    <td class="elementLlistaAlumnesTd">
-                                    
-                                        <a class="elementLlistaAlumnes nodeco" id="{{ alumne.id }}" href="#">
 
-                                            <span class="alumneNom">
-                                                {{alumne.nom}}
-                                            </span> 
-                                            
-                                            <span class="alumneCognom">
-                                                {{alumne.cognoms}}
-                                            </span>
+                                {% if grup in alumne.grups %}
+                                {% else %}
 
-                                        </a>
+                                    <tr>
+                                        <td class="elementLlistaAlumnesTd">
+                                        
+                                            <a class="elementLlistaAlumnes nodeco" id="{{ alumne.id }}" href="#">
 
-                                    </td>
-                                </tr>
+                                                <span class="alumneNom">
+                                                    {{alumne.nom}}
+                                                </span> 
+                                                
+                                                <span class="alumneCognom">
+                                                    {{alumne.cognoms}}
+                                                </span>
+
+                                            </a>
+
+                                        </td>
+                                    </tr>
+
+                                {% endif %}
+
                             {% set ids = ids + 1 %}
                             {% endfor %}
 
                         </table>
-                        <input type="submit" name="Submit" value="Afegir" class="btn btn-primary disabled" id="afegirAlumnesBtn" data-grupid="{{ grup.id }}">
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer" id="afegirUsuariModalBtns">
+                <input type="submit" name="Submit" value="Afegir" class="btn btn-primary disabled" id="afegirAlumnesBtn" data-grupid="{{ grup.id }}">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="desvincularUsuariModal" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h6 class="modal-title" id="desvincularUsuariModal">Desvincular alumne</h6>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div id="desvincularUsuariModalModalMsg">
+					
+				</div>
+			</div>
+			<div class="modal-footer" id="desvincularUsuariModalBtns">
 			</div>
 		</div>
 	</div>
@@ -185,6 +217,37 @@
 		    	var reload = `{{ path('alumnesGrup' , {id: grup.id}) }}`;
 		    	window.location.replace(reload);
 		    });
+
+            $('body').on('click', '.desvincularAlumne', function() {
+		    	
+                alumneDesvincularId = $(this).attr('id');
+
+                $("#desvincularUsuariModalModalMsg").html("<h3>Segur que es vol desvincular l'alumne del grup?</h3><div style='margin-top: 15px' id='acceptdenyModel' class='col col-md-12'><a id='desvincularAccept' style='margin-right: 5px' href='#' class='btn btn-success'>Si</a><a id='desvincularDeny' href='#' class='btn btn-danger'>No</a></div>");
+                
+                $("#desvincularUsuariModal").modal("show");
+
+		    });
+
+            $('body').on('click', '#desvincularAccept', function() {
+		    	
+                var url = `{{ path('desvincularAlumneGrup') }}`;
+
+                $.post(url, { 'idUsuari': alumneDesvincularId, 'idGrup': {{grup.id}} }) 
+		    		.done(function(response) {
+		    			location.reload();
+					})
+					.fail(console.log("error"));
+                e.preventDefault();
+
+		    });
+
+            $('body').on('click', '#desvincularDeny', function() {
+		    	
+                alumneDesvincularId = '';
+                $('#desvincularUsuariModal').click();
+
+		    });
+
 
         });
 

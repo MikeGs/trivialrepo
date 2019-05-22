@@ -415,6 +415,30 @@ class PartidaController extends Controller
         return colors[random];
     }
 
+    function enterKeyup() {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            $('#usernameLogin, #passwordLogin').blur();
+            $('#iniciarSessioModalBtn').click();
+        }
+    }
+
+    function checkJugadors() {
+        if (eval('[' + readCookie('jugadors') + ']').length <= 1) {
+            $('.playPartidaCard a, .playPartidaCard').addClass('disabledBtn');
+            $('#partidaWarning').css({
+                'display': 'block',
+            });
+        } else {
+            $('.playPartidaCard a, .playPartidaCard').removeClass('disabledBtn');
+            $('#partidaWarning').css({
+                'display': 'none',
+            });
+        }
+
+        return eval('[' + readCookie('jugadors') + ']').length;
+    }
+
     function getRandomNumberColor() {
         var min=0; 
         var max=4;  
@@ -437,7 +461,16 @@ class PartidaController extends Controller
     writeCookie('grup', '" . $grupid . "');
 
     delete_cookie('nomjugadors');
-    writeCookie('nomjugadors', '" . $user->getNom() . " " . $user->getCognoms() . "');
+    delete_cookie('nomjugadorsString');
+
+    var nomjugadoractual = `" . $user->getNom() . " " . $user->getCognoms() . "`;
+
+    writeCookie('nomjugadors', nomjugadoractual.toString(), 1);
+    writeCookie('nomjugadorsString', '`' + nomjugadoractual + '`', 1);
+
+    $('#perfilFloat').css({
+        'background-color': color[1],
+    })
 
     </script>
 
@@ -529,13 +562,15 @@ class PartidaController extends Controller
 
             <div class='playPartidaCard'>
 
-                <a href='" . $jugarUrl . "' class='alltransition3 playPartidaButton'>
+                <a href='#' class='alltransition3 playPartidaButton' id='PlayPButton'>
 
                     <p class='alltransition3'>Començar partida</p>
 
                 </a>
 
             </div>
+
+            <label id='partidaWarning'>Es necessiten més jugadors</label>
 
         </div>    
 
@@ -589,16 +624,16 @@ class PartidaController extends Controller
                             
                             <h2 id='iniciarSessioTitle' style='color: black!important'>Comprovar identitat</h2>
 
-                            <label id='jugadorSeleccionatLabel'>Jugador sel.leccionat: <jugador id='jugadorSeleccionatLabelFill'></jugador></label>
+                                <label id='jugadorSeleccionatLabel'>Jugador sel.leccionat: <jugador id='jugadorSeleccionatLabelFill'></jugador></label>
 
-                            <label for='nom'>" . "Nom d'usuari" . "</label>
-                            <input id='usernameLogin' type='text' name='nom' placeholder='Usuari'/>
+                                <label for='nom'>" . "Nom d'usuari" . "</label>
+                                <input id='usernameLogin' type='text' name='nom' placeholder='Usuari'/>
 
-                            <label for='contrasenya'>Contrasenya</label>
-                            <input id='passwordLogin' type='password' name='contrasenya'/>
+                                <label for='contrasenya'>Contrasenya</label>
+                                <input id='passwordLogin' type='password' name='contrasenya'/>
 
-                            <input type='submit' name='Submit' value='Iniciar sessió' class='btn btn-primary disabled' id='iniciarSessioModalBtn'>
-                            <!-- data-usuariid='{{ usuari.id }}' -->
+                                <input type='submit' name='Submit' value='Iniciar sessió' class='btn btn-primary disabled' id='iniciarSessioModalBtn'>
+                                <!-- data-usuariid='{{ usuari.id }}' -->
 
                         </div>
                     </div>
@@ -635,12 +670,32 @@ class PartidaController extends Controller
                 </div>
             </div>
         </div>
+
     </div>
 
     <script>
-        
+
     $('#tipusPartidaSlider').carousel({
         interval: false
+    });
+
+    checkJugadors();
+
+    var inputUsername = document.getElementById('usernameLogin');
+    var inputPassword = document.getElementById('passwordLogin');
+
+    inputUsername.addEventListener('keyup', function(event) {
+        enterKeyup();
+    });
+
+    inputPassword.addEventListener('keyup', function(event) {
+        enterKeyup();
+    });
+
+    $('body').on( 'click', '#PlayPButton', function() {
+        if (checkJugadors() > 1) {
+            window.location.href = '" . $jugarUrl . "';
+        }
     });
 
     $('body').on( 'click', '#carouselMultiPrev, #carouselMultiNext', function() {
@@ -649,16 +704,31 @@ class PartidaController extends Controller
 
     $('body').on( 'click', '#canviModeAccept', function() {
         $('#canviModeModal').modal('hide');
-        $('#entrenamentBtn').click();
+        clearHTML();
+        writeCookie('ferEntreno','redirect',1);
+        location.reload();
+        //setTimeout(function(){ $('#entrenamentBtn').click(); }, 1000);
     });
 
     $('body').on( 'click', '#canviModeDeny', function() {
 
-        $('#carouselEntrenament').removeClass('active');
-        $('#carouselMultijugador').addClass('active');
+        swap();
 
         $('#canviModeModal').modal('hide');
     });
+
+    $('body').on( 'click', '#canviModeModal', function() {
+                
+        swap();
+
+    });
+
+    function swap() {
+
+        $('#carouselEntrenament').removeClass('active');
+        $('#carouselMultijugador').addClass('active');
+
+    }
 
     $('body').on( 'click', '#afegirJugador', function() {
 
@@ -765,7 +835,7 @@ class PartidaController extends Controller
                 $(latestelementllista).removeClass('usuariSeleccionat');
             }*/
 
-            $('#playerList ul').append(`<li class='alltransition3'><a href='#' secid='` + matchidsent+ `' id='jug` + matchidsent + `'><i class='alltransition3 fas fa-user mr-2'></i>` + matchnom + `</a></li>`);
+            $('#playerList ul').append(`<li class='alltransition3' id='jugli` + matchidsent + `'><a href='#' secid='` + matchidsent+ `' id='jug` + matchidsent + `'><i class='alltransition3 fas fa-user mr-2'></i>` + matchnom + `<a href='#' data='`+ matchidsent + `' class='removePlayerBtn'><i class='alltransition3 fas fa-times'></i></a></a></li>`);
 
             var color = getRandomColor(colors);
             var matchnomid = '#jug' + matchidsent;
@@ -777,13 +847,15 @@ class PartidaController extends Controller
 
             if (readCookie('jugadors') == '') {
                 writeCookie('jugadors', JSON.stringify(jugador) , 1);
-                writeCookie('nomjugadors', matchnom);
+                writeCookie('nomjugadors', matchnom.toString(), 1);
+                writeCookie('nomjugadorsString', '`' + matchnom + '`', 1);
             } else {
                 writeCookie('jugadors', readCookie('jugadors') + ',' + JSON.stringify(jugador), 1);
-                writeCookie('nomjugadors', readCookie('nomjugadors') + ',' + matchnom, 1);
+                writeCookie('nomjugadors', readCookie('nomjugadors') + ',' + matchnom.toString(), 1);
+                writeCookie('nomjugadorsString', readCookie('nomjugadorsString') + ',`' + matchnom + '`', 1);
             }
 
-          
+            console.log(readCookie('nomjugadors'))
             
         } else {
             errormatch();
@@ -798,7 +870,55 @@ class PartidaController extends Controller
         } else {
             $('#afegirJugador').removeClass('disabledBtn');
         }
+
+        checkJugadors();
     }
+
+    $('body').on( 'click', '.removePlayerBtn', function() {
+
+        var removeId = $(this).attr('data');
+        var arrJugadors = eval('[' + readCookie('jugadors') + ']');
+
+        var posicioRemove = '';
+
+        arrJugadors.forEach(function(jugador) {
+            if (jugador[0] == removeId) {
+                posicioRemove = arrJugadors.indexOf(jugador);
+            }
+        });
+
+        arrJugadors.splice(posicioRemove, 1);
+
+        var arrJugadorsStr = '';
+
+        arrJugadors.forEach(function(jugador, idx) {
+            if (idx === arrJugadors.length - 1) {
+                arrJugadorsStr += '[' + jugador[0] + ',' + '`' + jugador[1] + '`]';
+            } else {
+                arrJugadorsStr += '[' + jugador[0] + ',' + '`' + jugador[1] + '`]' + ',';
+            }
+        });
+
+        writeCookie('jugadors', arrJugadorsStr , 1);
+
+        var NomJugadorsStrCookie = readCookie('nomjugadorsString')
+        var arrNomJugadorsStr = '';
+
+        var arrNomJugadors = eval('[' + NomJugadorsStrCookie + ']');
+        arrNomJugadors.splice(posicioRemove, 1);
+        
+        /*writeCookie('nomjugadors', arrNomJugadorsStr , 1);*/
+        writeCookie('nomjugadors', arrNomJugadors , 1);
+
+        console.log(readCookie('nomjugadors'));
+
+        $('#jugli' + removeId).remove();
+
+        $('.elementLlistaJugadors[secid=' + removeId + ']').removeClass('usuariSeleccionat');
+
+        checkJugadors();
+
+    });
 
     $('#afegirJugadorsBtn').click(function(e) {
 
@@ -858,11 +978,340 @@ class PartidaController extends Controller
     }
 
     /**
+     * @Route("/llistatTemes", name="llistatTemes")
+     */
+    function llistatTemes(Request $request) {
+
+        $grupid = $request->request->get('grupid');
+        $grup = $this->getGrup($grupid);
+        $temes = $grup->getIdNivell()->getTemas();
+
+        $temesSeleccionats = $request->request->get('temesArray');
+        if ($temesSeleccionats == null) {
+            $temesSeleccionats = [""];
+        }
+        var_dump($temesSeleccionats);
+
+        $html = '';
+
+        foreach ($temes as $tema) {
+
+            $html = $html . "
+
+            <tr>
+
+                <td class='elementLlistaTemesTd'>
+                <a class='
+            ";
+
+                foreach ($temesSeleccionats as $temasel) {
+                    if($tema->getId() == $temasel) {
+                        var_dump('seleccionat');
+                        $html = $html . "temaSeleccionat ";
+                    }
+                }
+
+            
+            $html = $html . "elementLlistaTemes nodeco'" . " name=" . $tema->getNom() . "' id='tema". $tema->getId() . "' secid='" . $tema->getId() . "' href='#'>
+
+                        <span class='temaNom'>
+                            " . $tema->getNom() . "
+                        </span> 
+
+                        <span class='temaNum'>
+                           " . $tema->getId() . "
+                        </span>
+
+                    </a>
+
+                </td>
+                
+            </tr>
+            
+            ";
+
+        }
+
+        return new Response(
+            $html
+        );
+
+    }
+
+    /**
      * @Route("/getEntrenamentPortait", name="getEntrenamentPortait")
      */
     function getEntrenamentPortait(Request $request) {
 
-        $html = "";
+        $user = $this->getUser();
+        $grups = $this->getUser()->getGrups();
+
+        $llistatGrups = "";
+        $grupArray = "";
+
+        foreach($grups as $grup) {
+            $llistatGrups = $llistatGrups . "
+            <li class='entrenamentCurs row alltransition3' id='" . $grup->getId() . "' subid='gr" . $grup->getId() . "'>
+                <p class='col col-md-6 alltransition3 grupNom'>" . $grup->getNom() . "</p>
+                <p class='col col-md-6 alltransition3 grupTemes'></p>
+            </li>
+            ";
+
+            $grupArray = $grupArray . "
+                [" . $grup->getId() . ",[]],
+            ";
+        }
+
+        $html = "
+
+        <script>
+
+        lastgrupclicked = '';
+        lastgrupid = '';
+        temes = [];
+        temesGrup = [" . 
+        
+        $grupArray
+
+        . "];
+
+        $('.entrenamentCurs').removeClass('entrenamentCursSelected');
+
+        delete_cookie('cursos');
+
+        cursosArray = [];
+
+        </script>
+
+        <div id='multiplayerLobby' class='row p-4 col-9'>
+
+            <div class='container' id='titleEntrenament'>
+                <h2>Sala d'espera | Entrenament</h2>
+            </div>
+
+            <div class='container row' id='topLobby'>
+    
+            <div id='tipusPartidaSlider' class='col col-md-6 carousel slide' data-ride='carousel'>
+
+                <div class='carousel-inner'>
+                    <div class='carousel-item' id='carouselMultijugador'>
+
+                        <div class='carouselVertical'>
+                            <p class='ontopCarousel'>Partida multijugador</p>
+                        </div>
+
+                    </div>
+                    <div class='carousel-item active' id='carouselEntrenament'>
+
+                        <div class='carouselVertical'>
+                            <p class='ontopCarousel'>Entrenament</p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <a class='carousel-control-prev' id='carouselMultiPrev' href='#tipusPartidaSlider' role='button' data-slide='prev'>
+                    <span class='carousel-control-prev-icon' aria-hidden='true'></span>
+                    <span class='sr-only'>Previous</span>
+                </a>
+
+                <a class='carousel-control-next' id='carouselMultiNext' href='#tipusPartidaSlider' role='button' data-slide='next'>
+                    <span class='carousel-control-next-icon' aria-hidden='true'></span>
+                    <span class='sr-only'>Next</span>
+                </a>
+
+            </div>
+
+            <div id='playerList' class='col col-md-4'>
+                <ul>
+                    <p id='playerListHead' style='margin-bottom: 0px!important'>Jugador:</p>
+                    <li class='alltransition3'><a href='#' id='currentPlayer'><i class='alltransition3 fas fa-user mr-2'></i>" . $user->getUsername() . "</a></li>
+                </ul>
+            </div>
+
+            <div class='container row' id='containerCursosEntrenament'>
+        
+                <div class='container' id='containerCursos'>
+                    
+                    <ul class='tableNormes col col-6'>
+                        <li class='row tableHead' id='temesHead'>
+                            <p>Cursos</p>
+                            <p>Temes</p>
+                        </li>
+                        " . $llistatGrups . "
+                    </ul>
+
+                </div>
+            
+            </div>
+
+        </div>
+
+        </div>
+
+        <div id='canviModeModal' class='modal fade' tabindex='-1' role='dialog'>
+            <div class='modal-dialog' role='document'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <h6 class='modal-title' id='canviModeModal'>Canvi de mode</h6>
+                        <button id='canviModeModalClose' type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                            <span aria-hidden='true'>&times;</span>
+                        </button>
+                    </div>
+                    <div class='modal-body'>
+                        <div id='canviModeModalMsg'>
+
+                            <h3 id='canviModeTitle'>S'està a punt de canviar el mode de joc, desitjes continuar?</h3>
+                            <div id='acceptdenyModel' class='col col-md-12'>
+
+                                <a href='#' class='btn btn-success' id='canviModeAccept'>Si</a>
+                                <a href='#' class='btn btn-danger' id='canviModeDeny'>No</a>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class='modal-footer' id='CanviModeModalBtns'>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+
+        <div id='seleccionarTemaModal' class='modal fade' tabindex='-1' role='dialog'>
+            <div class='modal-dialog' role='document'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <h6 class='modal-title' id='seleccionarTemaModal'>Sel.lecció de temes</h6>
+                        <button id='seleccionarTemaModalClose' type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                            <span aria-hidden='true'>&times;</span>
+                        </button>
+                    </div>
+                    <div class='modal-body'>
+                        <div id='seleccionarTemaModalMsg'>
+
+                            <div class='form-group'>
+                            <table class='col-12' id='temesGrupTable'>
+
+                                <tr>
+                                    <th scope='col'>Grup: " . $grup->getNom() . "</th>
+                                </tr>
+
+                                <div id='temesReload'>
+                                </div>
+
+                            </table>
+    
+                        </div>
+                    </div>
+                    <div class='modal-footer' id='seleccionarTemaModalBtns'>
+                        <input type='submit' name='Submit' value='Tancar' class='btn btn-success' id='tancarTemesBtn'>
+                    </div>
+                </div>
+            </div>
+
+        <script>
+
+            $('#tipusPartidaSlider').carousel({
+                interval: false
+            });
+
+            $('body').on( 'click', '.entrenamentCurs', function() {
+
+                var id = $(this).attr('id');
+
+                lastgrupid = id;
+
+                var url = '" . $this->generateUrl('llistatTemes') . "';
+
+                clearHTMLModalTemes();
+
+                $.post(url, { 'grupid': lastgrupid, 'temesArray': temes }) 
+                    .done(function(response) {
+                        $('#temesGrupTable #temesReload').html('');
+                        $('#temesGrupTable').html(response);
+                    });
+
+                var selected = $(this).hasClass('entrenamentCursSelected');
+
+                $('#seleccionarTemaModal').modal('show');
+
+            });
+
+            $('body').on( 'click', '.elementLlistaTemes', function() {
+                
+                var id = $(this).attr('secid');
+                var posicioGrupArray = '';
+
+                temesGrup.forEach(function(grupA) {
+                    if (grupA[0] == lastgrupid) {
+                        posicioGrupArray = temesGrup.indexOf(grupA);
+                    }
+                });
+
+                if(!$(this).hasClass('temaSeleccionat')) {
+                    temes.push(id);
+                    temesGrup[posicioGrupArray][1].push(id);
+                    $(this).addClass('temaSeleccionat');
+                } else {
+                    var posiciotemes = temes.indexOf(id);
+                    var posicio = temesGrup[posicioGrupArray][1].indexOf(id);
+                    temes.splice(posiciotemes,1);
+                    temesGrup[posicioGrupArray][1].splice(posicio, 1);
+                    $(this).removeClass('temaSeleccionat');
+                }
+
+                var temestext = '';
+
+                temesGrup[posicioGrupArray][1].forEach(function(tema) {
+                    temestext += '<span>' + tema + ',' + '</span>';
+                });
+
+                console.log(temes);
+                $('.entrenamentCurs#' + lastgrupid + ' .grupTemes').html(temestext);
+
+            });
+
+            $('body').on( 'click', '#tancarTemesBtn', function() {
+                $('#seleccionarTemaModal').modal('hide');
+            });
+
+            $('body').on( 'click', '#carouselMultiPrev, #carouselMultiNext', function() {
+                $('#canviModeModal').modal('show');
+            });
+        
+            $('body').on( 'click', '#canviModeAccept', function() {
+                $('#canviModeModal').modal('hide');
+                clearHTML();
+                $('#entrenamentBtn').removeClass('active');
+                setTimeout(function(){ $('#llistatGrupsJoc li:first-child a').click(); }, 1000);
+            });
+        
+            $('body').on( 'click', '#canviModeDeny', function() {
+                
+                swap();
+        
+                $('#canviModeModal').modal('hide');
+            });
+
+            $('body').on( 'click', '#canviModeModal', function() {
+                
+                swap();
+
+            });
+
+            function swap() {
+
+                $('#carouselMultijugador').removeClass('active');
+                $('#carouselEntrenament').addClass('active');
+
+            }
+
+            $(window).trigger('resize');
+
+        </script>
+
+        </div>";
 
         return new Response(
             $html

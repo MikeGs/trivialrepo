@@ -21,6 +21,23 @@ function getCurrentDay() {
 
 }
 
+function clearHTML() {
+
+    while($("#contingutStart").html() != "") {
+        $('.modal-backdrop').removeClass('show').addClass('hide').remove();
+        $("#contingutStart").html("");
+    }
+
+}
+
+function clearHTMLModalTemes() {
+
+    while($("#temesGrupTable").html() != "") {
+        $("#temesGrupTable").html("");
+    }
+
+}
+
 function writeCookie(name,value,days) {
     var date, expires;
     if (days) {
@@ -107,6 +124,18 @@ $(window).on('resize', function () {
 
     $("#tipusPartidaSlider .carousel-item").css({
         "height": $("#tipusPartidaSlider .carousel-inner").height(),
+    });
+
+    $("#containerCursos").css({
+        "width": $("#tipusPartidaSlider").width() + 30,
+    });
+
+    $("#containerNormes").css({
+        "width": $("#tipusPartidaSlider").width() + 60,
+    });
+
+    $("#containerComençarPartida").css({
+        "width": $("#containerNormesStart").width() - $("#containerNormes").width() - 30,
     });
 
 });
