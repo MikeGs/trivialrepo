@@ -108,28 +108,58 @@ function mostrarPregunta(id, tema, tipus) {
              
             shuffle(respostes);
             assignarRespostesModal(respostes);
-            setTimeout(function(){ $('#modalPregunta').show(); }, 500);
+            setTimeout(function(){ 
+                $('#modalPregunta').show(); 
+                $('#ui_dado').addClass('amagat');
+                $('#result').text('');
+            }, 500);
 
             count = params[0][0]+1;
             contador();
-
             $('body').on('click','.respostaOpcio', function() {
 
                 $('.respostaOpcio').addClass('no-pointer');
                 if ($(this).text().trim() == response.respostaCorrecta) {
                     $(this).removeClass('alert-info').addClass('alert-success');
+                    //sumar punts i quesito
+                    //comprovar si s'acaba partida
+                    if (jugadorsArray[jugadorActual].sumaQuesitos >= 5) {
+                        //acaba
+                    } else {
+                        mostrarBotoDau();
+                    }
+                    //--> no --> tirar un altre cop
                 } else {
                     $(this).removeClass('alert-info').addClass('alert-danger');
                     var opcions = document.getElementsByClassName('respostaOpcio');
                     for (var o in opcions) {
                         if ($(opcions[o]).text().trim() == response.respostaCorrecta) {
                             $(opcions[o]).removeClass('alert-info').addClass('alert-success');
-                        }
-                        
+                        }    
                     }
+                    //restar punts i quesito
+                    //saltar torn
+                    jugadorsArray[jugadorActual].finalitzaTorn();
+                    console.log(jugadorActual);
+                    jugadorActual++;
+                    if (jugadorActual >= jugadorsArray.length) {
+                        jugadorActual = 0;
+                        console.log('reinicio player');
+                    }
+                    setTimeout(function(){
+                        jugadorsArray[jugadorActual].iniciaTorn();
+                        mostrarBotoDau();
+                    }, 2000);
                 }
-
-                setTimeout(function(){ $('#modalPregunta').css('display', 'none') }, 2000);
+                setTimeout(function(){ 
+                    $('#modalPregunta').css('display', 'none'); 
+                    count = params[0][0]+1; 
+                    $('.respostaOpcio').removeClass('no-pointer');
+                    $('.respostaOpcio').removeClass('alert-success');
+                    $('.respostaOpcio').removeClass('alert-danger');
+                    $('.respostaOpcio').addClass('alert-info');
+                }, 2000);
+                $("body").off("click",'.respostaOpcio');
             });
 
         });
@@ -147,11 +177,61 @@ function mostrarPregunta(id, tema, tipus) {
             
             shuffle(respostes);
             assignarRespostesModal(respostes);
-            setTimeout(function(){ $('#modalPregunta').show(); }, 500);
+            setTimeout(function(){ 
+                $('#modalPregunta').show(); 
+                $('#ui_dado').addClass('amagat');
+                $('#result').text('');
+            }, 500);
 
             count = params[0][0]+1;
-
             contador();
+
+            $('body').on('click','.respostaOpcio', function() {
+
+                $('.respostaOpcio').addClass('no-pointer');
+                if ($(this).text().trim() == response.respostaCorrecta) {
+                    $(this).removeClass('alert-info').addClass('alert-success');
+                    //sumar punts i quesito
+                    //comprovar si s'acaba partida
+                    if (jugadorsArray[jugadorActual].sumaQuesitos >= 5) {
+                        //acaba
+                    } else {
+                        mostrarBotoDau();
+                    }
+                    //--> no --> tirar un altre cop
+                } else {
+                    $(this).removeClass('alert-info').addClass('alert-danger');
+                    var opcions = document.getElementsByClassName('respostaOpcio');
+                    for (var o in opcions) {
+                        if ($(opcions[o]).text().trim() == response.respostaCorrecta) {
+                            $(opcions[o]).removeClass('alert-info').addClass('alert-success');
+                        }    
+                    }
+                    //restar punts i quesito
+                    //saltar torn
+                    jugadorsArray[jugadorActual].finalitzaTorn();
+                    console.log(jugadorActual);
+                    jugadorActual++;
+                    if (jugadorActual >= jugadorsArray.length) {
+                        jugadorActual = 0;
+                        console.log('player reinicio');
+                    }
+                    setTimeout(function(){
+                        jugadorsArray[jugadorActual].iniciaTorn();
+                        mostrarBotoDau();
+                    }, 2000);
+                }
+            
+                setTimeout(function(){ 
+                    $('#modalPregunta').css('display', 'none'); 
+                    count = params[0][0]+1; 
+                    $('.respostaOpcio').removeClass('no-pointer');
+                    $('.respostaOpcio').removeClass('alert-success');
+                    $('.respostaOpcio').removeClass('alert-danger');
+                    $('.respostaOpcio').addClass('alert-info');
+                }, 2000);
+                $("body").off("click",'.respostaOpcio');
+            });
         });
     }
 }
@@ -273,7 +353,7 @@ function getCookie(cname) {
 function getJugador(jugador, index) {
     var cookie = getCookie("nomjugadors");
     noms = cookie.split(',');
-    $("#mostrarJugadors").append("<div style='background-color:" + jugador[1] + ";' class='row m-0' id='" + jugador[0] + "'><div class='ranking'></div><div class='col jugador'>" + noms[index] + "</div></div>");
+    $("#mostrarJugadors").append("<div style='background-color:" + jugador[1] + ";' class='row m-0' id='" + jugador[0] + "'><div class='ranking'></div><div class='col jugador'>" + noms[index].replace(/`/g, '') + "</div></div>");
 }
 
 function shuffle(array) {
@@ -340,6 +420,10 @@ function Jugador(elementId, color) {
 
     this.getCasellaActual = function() {
         return casellaActual;
+    }
+
+    this.sumaQuesitos = function() {
+        return this.tema1Quesito + this.tema2Quesito + this.tema3Quesito + this.tema4Quesito + this.tema5Quesito;
     }
 
 }
