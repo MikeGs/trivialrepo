@@ -789,6 +789,10 @@ input[type=password] {
 	padding: 0px;
 }
 
+#playerList ul li {
+	position: relative;
+}
+
 #playerList ul li a {
 	width: 100%;
 	border-bottom: 1px solid white;
@@ -939,6 +943,43 @@ input[type=password] {
 	font-size: 25px;
 
 	padding: 0px 15px;
+}
+
+.playPartidaCard.disabledBtn a p {
+	/*color: #CD5C5C!important;*/
+	color: rgba(41,41,41,1)!important;
+}
+
+.removePlayerBtn {
+	float: right!important;
+	position: absolute!important;
+	color: black!important;
+	top: 0px;
+	right: 0px;
+	border: 0px!important;
+
+	display: table;
+	padding: 0px!important;
+	width: auto!important;
+}
+
+.removePlayerBtn i {
+	display: table-cell;
+	vertical-align: middle;
+	width: 100%;
+	text-align: center;
+	width:44px!important;
+	height: 44px!important;
+}
+
+.removePlayerBtn:hover {
+	color: red!important;
+}
+
+#partidaWarning {
+	color: red;
+	float: right;
+	display: none;
 }
 
 #containerCursosEntrenament {

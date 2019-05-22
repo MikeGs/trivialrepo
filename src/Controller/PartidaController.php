@@ -415,6 +415,30 @@ class PartidaController extends Controller
         return colors[random];
     }
 
+    function enterKeyup() {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            $('#usernameLogin, #passwordLogin').blur();
+            $('#iniciarSessioModalBtn').click();
+        }
+    }
+
+    function checkJugadors() {
+        if (eval('[' + readCookie('jugadors') + ']').length <= 1) {
+            $('.playPartidaCard a, .playPartidaCard').addClass('disabledBtn');
+            $('#partidaWarning').css({
+                'display': 'block',
+            });
+        } else {
+            $('.playPartidaCard a, .playPartidaCard').removeClass('disabledBtn');
+            $('#partidaWarning').css({
+                'display': 'none',
+            });
+        }
+
+        return eval('[' + readCookie('jugadors') + ']').length;
+    }
+
     function getRandomNumberColor() {
         var min=0; 
         var max=4;  
@@ -437,7 +461,7 @@ class PartidaController extends Controller
     writeCookie('grup', '" . $grupid . "');
 
     delete_cookie('nomjugadors');
-    writeCookie('nomjugadors', '" . $user->getNom() . " " . $user->getCognoms() . "');
+    writeCookie('nomjugadors', '`" . $user->getNom() . " " . $user->getCognoms() . "`');
 
     $('#perfilFloat').css({
         'background-color': color[1],
@@ -533,13 +557,15 @@ class PartidaController extends Controller
 
             <div class='playPartidaCard'>
 
-                <a href='" . $jugarUrl . "' class='alltransition3 playPartidaButton'>
+                <a href='#' class='alltransition3 playPartidaButton' id='PlayPButton'>
 
                     <p class='alltransition3'>Començar partida</p>
 
                 </a>
 
             </div>
+
+            <label id='partidaWarning'>Es necessiten més jugadors</label>
 
         </div>    
 
@@ -593,16 +619,16 @@ class PartidaController extends Controller
                             
                             <h2 id='iniciarSessioTitle' style='color: black!important'>Comprovar identitat</h2>
 
-                            <label id='jugadorSeleccionatLabel'>Jugador sel.leccionat: <jugador id='jugadorSeleccionatLabelFill'></jugador></label>
+                                <label id='jugadorSeleccionatLabel'>Jugador sel.leccionat: <jugador id='jugadorSeleccionatLabelFill'></jugador></label>
 
-                            <label for='nom'>" . "Nom d'usuari" . "</label>
-                            <input id='usernameLogin' type='text' name='nom' placeholder='Usuari'/>
+                                <label for='nom'>" . "Nom d'usuari" . "</label>
+                                <input id='usernameLogin' type='text' name='nom' placeholder='Usuari'/>
 
-                            <label for='contrasenya'>Contrasenya</label>
-                            <input id='passwordLogin' type='password' name='contrasenya'/>
+                                <label for='contrasenya'>Contrasenya</label>
+                                <input id='passwordLogin' type='password' name='contrasenya'/>
 
-                            <input type='submit' name='Submit' value='Iniciar sessió' class='btn btn-primary disabled' id='iniciarSessioModalBtn'>
-                            <!-- data-usuariid='{{ usuari.id }}' -->
+                                <input type='submit' name='Submit' value='Iniciar sessió' class='btn btn-primary disabled' id='iniciarSessioModalBtn'>
+                                <!-- data-usuariid='{{ usuari.id }}' -->
 
                         </div>
                     </div>
@@ -643,9 +669,28 @@ class PartidaController extends Controller
     </div>
 
     <script>
-        
+
     $('#tipusPartidaSlider').carousel({
         interval: false
+    });
+
+    checkJugadors();
+
+    var inputUsername = document.getElementById('usernameLogin');
+    var inputPassword = document.getElementById('passwordLogin');
+
+    inputUsername.addEventListener('keyup', function(event) {
+        enterKeyup();
+    });
+
+    inputPassword.addEventListener('keyup', function(event) {
+        enterKeyup();
+    });
+
+    $('body').on( 'click', '#PlayPButton', function() {
+        if (checkJugadors() > 1) {
+            window.location.href = '" . $jugarUrl . "';
+        }
     });
 
     $('body').on( 'click', '#carouselMultiPrev, #carouselMultiNext', function() {
@@ -785,7 +830,7 @@ class PartidaController extends Controller
                 $(latestelementllista).removeClass('usuariSeleccionat');
             }*/
 
-            $('#playerList ul').append(`<li class='alltransition3'><a href='#' secid='` + matchidsent+ `' id='jug` + matchidsent + `'><i class='alltransition3 fas fa-user mr-2'></i>` + matchnom + `</a></li>`);
+            $('#playerList ul').append(`<li class='alltransition3' id='jugli` + matchidsent + `'><a href='#' secid='` + matchidsent+ `' id='jug` + matchidsent + `'><i class='alltransition3 fas fa-user mr-2'></i>` + matchnom + `<a href='#' data='`+ matchidsent + `' class='removePlayerBtn'><i class='alltransition3 fas fa-times'></i></a></a></li>`);
 
             var color = getRandomColor(colors);
             var matchnomid = '#jug' + matchidsent;
@@ -797,13 +842,11 @@ class PartidaController extends Controller
 
             if (readCookie('jugadors') == '') {
                 writeCookie('jugadors', JSON.stringify(jugador) , 1);
-                writeCookie('nomjugadors', matchnom);
+                writeCookie('nomjugadors', '`' + matchnom + '`');
             } else {
                 writeCookie('jugadors', readCookie('jugadors') + ',' + JSON.stringify(jugador), 1);
-                writeCookie('nomjugadors', readCookie('nomjugadors') + ',' + matchnom, 1);
+                writeCookie('nomjugadors', readCookie('nomjugadors') + ',' + '`' + matchnom + '`', 1);
             }
-
-          
             
         } else {
             errormatch();
@@ -818,7 +861,64 @@ class PartidaController extends Controller
         } else {
             $('#afegirJugador').removeClass('disabledBtn');
         }
+
+        checkJugadors();
     }
+
+    $('body').on( 'click', '.removePlayerBtn', function() {
+
+        var removeId = $(this).attr('data');
+        var arrJugadors = eval('[' + readCookie('jugadors') + ']');
+
+        var posicioRemove = '';
+
+        arrJugadors.forEach(function(jugador) {
+            if (jugador[0] == removeId) {
+                posicioRemove = arrJugadors.indexOf(jugador);
+            }
+        });
+
+        arrJugadors.splice(posicioRemove, 1);
+
+        var arrNomJugadors = eval('[' + readCookie('nomjugadors') + ']');
+        arrNomJugadors.splice(posicioRemove);
+
+        console.log(arrJugadors);
+        console.log(arrNomJugadors);
+
+        var arrJugadorsStr = '';
+
+        arrJugadors.forEach(function(jugador, idx) {
+            if (idx === arrJugadors.length - 1) {
+                arrJugadorsStr += '[' + jugador[0] + ',' + '`' + jugador[1] + '`]';
+            } else {
+                arrJugadorsStr += '[' + jugador[0] + ',' + '`' + jugador[1] + '`]' + ',';
+            }
+        });
+
+        writeCookie('jugadors', arrJugadorsStr , 1);
+
+        console.log(readCookie('jugadors'));
+
+        var arrNomJugadorsStr = '';
+
+        arrNomJugadors.forEach(function(jugador, idx) {
+            if (idx === arrNomJugadors.length - 1) {
+                arrJugadorsStr += '`' + jugador + '`';
+            } else {
+                arrJugadorsStr += '`' + jugador + '`' + ',';
+            }
+        });
+
+        writeCookie('nomjugadors', arrNomJugadorsStr , 1);
+
+        $('#jugli' + removeId).remove();
+
+        $('.elementLlistaJugadors[secid=' + removeId + ']').removeClass('usuariSeleccionat');
+
+        checkJugadors();
+
+    });
 
     $('#afegirJugadorsBtn').click(function(e) {
 
