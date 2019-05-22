@@ -34,12 +34,12 @@
             <div id="menuLateral">
                 <ul id="menuList">
                     <li class="{% if app.request.attributes.get('_route') == 'inici' %}active{% endif %}"><a href="{{ path('inici') }}"><i class="fas fa-home mr-2"></i>INICI</a></li>
-                    <li class="{% if app.request.attributes.get('_route') == 'grups' or app.request.attributes.get('_route') == 'alumnesGrup' or app.request.attributes.get('_route') == 'resumalumne' %}active{% endif %}"><a href="{{ path('grups') }}"><i class="fas fa-sitemap mr-2"></i>GRUPS</a></li>
-                    <li class="{% if app.request.attributes.get('_route') == 'nivells' %}active{% endif %}"><a href="{{ path('nivells') }}"><i class="fas fa-layer-group mr-2"></i>NIVELLS</a></li>
-                    <li class="{% if app.request.attributes.get('_route') == 'usuaris' %}active{% endif %}"><a href="{{ path('usuaris') }}"><i class="fas fa-users mr-2"></i>USUARIS</a></li>
+                    <li class="{% if app.request.attributes.get('_route') == 'grups' or app.request.attributes.get('_route') == 'alumnesGrup' or app.request.attributes.get('_route') == 'resumalumne' or app.request.attributes.get('_route') == 'afegirgrup' %}active{% endif %}"><a href="{{ path('grups') }}"><i class="fas fa-sitemap mr-2"></i>GRUPS</a></li>
+                    <li class="{% if app.request.attributes.get('_route') == 'nivells' or app.request.attributes.get('_route') == 'afegirnivell' %}active{% endif %}"><a href="{{ path('nivells') }}"><i class="fas fa-layer-group mr-2"></i>NIVELLS</a></li>
+                    <li class="{% if app.request.attributes.get('_route') == 'usuaris'  or app.request.attributes.get('_route') == 'afegirUsuari' %}active{% endif %}"><a href="{{ path('usuaris') }}"><i class="fas fa-users mr-2"></i>USUARIS</a></li>
                     <li><a href="#"><i class="fas fa-trophy mr-2"></i>PARTIDES</a></li>
                     <li><a href="#"><i class="fas fa-graduation-cap mr-2"></i>ENTRENAMENTS</a></li>
-                    <li class="{% if app.request.attributes.get('_route') == 'preguntes' %}active{% endif %}"><a href="{{ path('preguntes') }}"><i class="fas fa-question mr-2"></i>PREGUNTES</a></li>
+                    <li class="{% if app.request.attributes.get('_route') == 'preguntes' or app.request.attributes.get('_route') == 'afegirPregunta' %}active{% endif %}"><a href="{{ path('preguntes') }}"><i class="fas fa-question mr-2"></i>PREGUNTES</a></li>
                 </ul>
             </div>
             {# contingut #}

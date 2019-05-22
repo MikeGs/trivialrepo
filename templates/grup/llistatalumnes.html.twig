@@ -4,6 +4,12 @@
 
 {% block body %}
 
+<script>
+
+    alumneDesvincularId = '';
+
+</script>
+
 <div class="m-5">
 
     <div class="card-header border-bottom bg-white d-flex justify-content-between p-0">
@@ -12,7 +18,7 @@
     </div>
 
     <div class="alumnes">
-    
+
     <a href='#' class="btn btn-success float-right afegirbtn" id="afegirAlumneBtn"><i class="fas fa-plus link-white mr-2"></i>Afegir alumne</a>
 
     <div class="llegenda-taula">
@@ -59,7 +65,7 @@
             <td scope="col">{{ alumne.last_login|date('d-m-Y | h:m') }}</td>
             <td scope="col">
                 <a href="{{path('resumalumne',{"grupid": grup.id, "alumneid": alumne["usuari_id"] }) }}"><i class="fas fa-eye link-blue mr-2"></i></a>
-                <a href="#"><i class="fas fa-times link-red"></i></a>
+                <a class='desvincularAlumne' id='{{alumne["usuari_id"]}}' href="#"><i class="fas fa-times link-red"></i></a>
             </td>
             </tr>
 
@@ -128,6 +134,26 @@
 	</div>
 </div>
 
+<div id="desvincularUsuariModal" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h6 class="modal-title" id="desvincularUsuariModal"></h6>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div id="desvincularUsuariModalModalMsg">
+					
+				</div>
+			</div>
+			<div class="modal-footer" id="desvincularUsuariModalBtns">
+			</div>
+		</div>
+	</div>
+</div>
+
 {% endblock %}
 {% block javascriptsBottom %}
 
@@ -191,6 +217,37 @@
 		    	var reload = `{{ path('alumnesGrup' , {id: grup.id}) }}`;
 		    	window.location.replace(reload);
 		    });
+
+            $('body').on('click', '.desvincularAlumne', function() {
+		    	
+                alumneDesvincularId = $(this).attr('id');
+
+                $("#desvincularUsuariModalModalMsg").html("<h3>Segur que es vol desvincular l'alumne del grup?</h3><div id='acceptdenyModel' class='col col-md-12'><a id='desvincularAccept' style='margin-right: 5px' href='#' class='btn btn-success'>Si</a><a id='desvincularDeny' href='#' class='btn btn-danger'>No</a></div>");
+                
+                $("#desvincularUsuariModal").modal("show");
+
+		    });
+
+            $('body').on('click', '#desvincularAccept', function() {
+		    	
+                var url = `{{ path('desvincularAlumneGrup') }}`;
+
+                $.post(url, { 'idUsuari': alumneDesvincularId, 'idGrup': {{grup.id}} }) 
+		    		.done(function(response) {
+		    			location.reload();
+					})
+					.fail(console.log("error"));
+                e.preventDefault();
+
+		    });
+
+            $('body').on('click', '#desvincularDeny', function() {
+		    	
+                alumneDesvincularId = '';
+                $('#desvincularUsuariModal').click();
+
+		    });
+
 
         });
 
