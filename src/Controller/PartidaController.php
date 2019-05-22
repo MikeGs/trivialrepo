@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 use App\Entity\Usuari;
 use App\Entity\Grup;
+use App\Entity\Tema;
+use App\Entity\Nivell;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -58,6 +60,30 @@ class PartidaController extends Controller
 /*
         $nivell = $em->getRepository(Nivell::class)->findOneById();
         $temes = $em->getRepository(Tema::class)->findByNivell();
+        
+
+        $pteguntes = $em->getRepository(Pregunta::class)->find(['idTema' => $temesSel]);*/
+        
+
+        return $this->render('partida/joc.html.twig', [
+            "getJugadorNomUrl" => $getJugadorNomUrl,
+            /*'temes' => ,
+            'preguntes' => ,*/
+        ]);
+    }
+
+    /**
+     * @Route("/get-temes", name="getTemes")
+     */
+    public function getTemes(Request $request) : JsonResponse {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $grup = $em->getRepository(Grup::class)->findOneById($request->request->get('grup'));
+        $nivell = $this->getNivellGrup($grup);
+
+        $temes = $em->getRepository(Tema::class)->findByIdNivell($nivell);
+
         $maxRand = count($temes);
 
         $temesPartida = array();
@@ -66,7 +92,7 @@ class PartidaController extends Controller
         $count = 0;
         do {
             $num = rand(1, $maxRand);
-            $tema = $temes[$num];
+            $tema = $temes[$num-1];
             if (!in_array($tema, $temesPartida)) {
                 array_push($temesPartida, $tema);
                 $count++;
@@ -76,13 +102,17 @@ class PartidaController extends Controller
             }
         } while (!$temesSel);
 
-        $pteguntes = $em->getRepository(Pregunta::class)->find(['idTema' => $temesSel]);*/
-        
-
-        return $this->render('partida/joc.html.twig', [
-            "getJugadorNomUrl" => $getJugadorNomUrl,
-            /*'temes' => ,
-            'preguntes' => ,*/
+        return new JsonResponse([
+            'tema1' => $temesPartida[0]->getId(),
+            'tema1nom' => $temesPartida[0]->getNom(),
+            'tema2' => $temesPartida[1]->getId(),
+            'tema2nom' => $temesPartida[1]->getNom(),
+            'tema3' => $temesPartida[2]->getId(),
+            'tema3nom' => $temesPartida[2]->getNom(),
+            'tema4' => $temesPartida[3]->getId(),
+            'tema4nom' => $temesPartida[3]->getNom(),
+            'tema5' => $temesPartida[4]->getId(),
+            'tema5nom' => $temesPartida[4]->getNom(),
         ]);
     }
 
@@ -280,7 +310,7 @@ class PartidaController extends Controller
 
     $password = $this->pw();
 
-    $colors = "[['red', 'rgba(255,0,0,0.3)'], ['blue','rgba(0,0,255,0.3)'], ['green', 'rgba(0,255,0,0.3)'], ['pink', 'rgba(255,192,203,0.6)'], ['orange', 'rgba(249,191,59,0.3)']]";
+    $colors = "[['red', 'rgba(255,0,0,0.3)'], ['blue','rgba(0,0,255,0.3)'], ['green', 'rgba(0,255,0,0.3)'], ['purple', 'rgba( 128, 0, 128,0.8)'], ['orange', 'rgba(249,191,59,0.3)']]";
 
     $checkLoginUrl = $this->generateUrl('checklogin');
     $jugarUrl = $this->generateUrl('jugar');
@@ -404,7 +434,10 @@ class PartidaController extends Controller
     writeCookie('jugadors', JSON.stringify(jugadoractual), 1);
 
     delete_cookie('grup');
-    writeCookie('grup', '" . $grupid . ", 1');
+    writeCookie('grup', '" . $grupid . "');
+
+    delete_cookie('nomjugadors');
+    writeCookie('nomjugadors', '" . $user->getNom() . " " . $user->getCognoms() . "');
 
     </script>
 
@@ -742,13 +775,15 @@ class PartidaController extends Controller
 
             var arrayJugadors = [eval(readCookie('jugadors'))];
 
-            console.log(arrayJugadors);
-
             if (readCookie('jugadors') == '') {
                 writeCookie('jugadors', JSON.stringify(jugador) , 1);
+                writeCookie('nomjugadors', matchnom);
             } else {
                 writeCookie('jugadors', readCookie('jugadors') + ',' + JSON.stringify(jugador), 1);
+                writeCookie('nomjugadors', readCookie('nomjugadors') + ',' + matchnom, 1);
             }
+
+          
             
         } else {
             errormatch();

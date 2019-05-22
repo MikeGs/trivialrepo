@@ -1,74 +1,74 @@
-var box_start = new Casella('box-start', 'inici', '');
+box_start = new Casella('box_start', 'inici', '');
 
-var box1 = new Casella('box1', 'normal', tema1);
-var box2 = new Casella('box2', 'normal', tema2);
-var box3 = new Casella('box3', 'doble', '');
-var box4 = new Casella('box4', 'normal', tema3);
-var box5 = new Casella('box5', 'normal', tema4);
-var box6 = new Casella('box6', 'quesito', tema5);
+box1 = new Casella('box1', 'normal', tema1);
+box2 = new Casella('box2', 'normal', tema2);
+box3 = new Casella('box3', 'doble', '');
+box4 = new Casella('box4', 'normal', tema3);
+box5 = new Casella('box5', 'normal', tema4);
+box6 = new Casella('box6', 'quesito', tema5);
 
-var box7 = new Casella('box7', 'normal', tema2);
-var box8 = new Casella('box8', 'normal', tema3);
-var box9 = new Casella('box9', 'doble', '');
-var box10 = new Casella('box10', 'normal', tema1);
-var box11 = new Casella('box11', 'normal', tema5);
-var box12 = new Casella('box12', 'normal', tema4);
-var box13 = new Casella('box13', 'quesito', tema2);
+box7 = new Casella('box7', 'normal', tema2);
+box8 = new Casella('box8', 'normal', tema3);
+box9 = new Casella('box9', 'doble', '');
+box10 = new Casella('box10', 'normal', tema1);
+box11 = new Casella('box11', 'normal', tema5);
+box12 = new Casella('box12', 'normal', tema4);
+box13 = new Casella('box13', 'quesito', tema2);
 
-var box14 = new Casella('box14', 'normal', tema3);
-var box15 = new Casella('box15', 'normal', tema4);
-var box16 = new Casella('box16', 'doble', '');
-var box17 = new Casella('box17', 'normal', tema5);
-var box18 = new Casella('box18', 'normal', tema2);
-var box19 = new Casella('box19', 'normal', tema1);
-var box20 = new Casella('box20', 'quesito', tema3);
+box14 = new Casella('box14', 'normal', tema3);
+box15 = new Casella('box15', 'normal', tema4);
+box16 = new Casella('box16', 'doble', '');
+box17 = new Casella('box17', 'normal', tema5);
+box18 = new Casella('box18', 'normal', tema2);
+box19 = new Casella('box19', 'normal', tema1);
+box20 = new Casella('box20', 'quesito', tema3);
 
-var box21 = new Casella('box21', 'normal', tema4);
-var box22 = new Casella('box22', 'normal', tema1);
-var box23 = new Casella('box23', 'doble', '');
-var box24 = new Casella('box24', 'normal', tema2);
-var box25 = new Casella('box25', 'normal', tema3);
-var box26 = new Casella('box26', 'normal', tema5);
-var box27 = new Casella('box27', 'quesito', tema4);
+box21 = new Casella('box21', 'normal', tema4);
+box22 = new Casella('box22', 'normal', tema1);
+box23 = new Casella('box23', 'doble', '');
+box24 = new Casella('box24', 'normal', tema2);
+box25 = new Casella('box25', 'normal', tema3);
+box26 = new Casella('box26', 'normal', tema5);
+box27 = new Casella('box27', 'quesito', tema4);
 
-var box28 = new Casella('box28', 'normal', tema1);
-var box29 = new Casella('box29', 'normal', tema5);
-var box30 = new Casella('box30', 'doble', '');
-var box31 = new Casella('box31', 'normal', tema3);
-var box32 = new Casella('box32', 'normal', tema4);
-var box33 = new Casella('box33', 'normal', tema2);
-var box34 = new Casella('box34', 'quesito', tema1);
+box28 = new Casella('box28', 'normal', tema1);
+box29 = new Casella('box29', 'normal', tema5);
+box30 = new Casella('box30', 'doble', '');
+box31 = new Casella('box31', 'normal', tema3);
+box32 = new Casella('box32', 'normal', tema4);
+box33 = new Casella('box33', 'normal', tema2);
+box34 = new Casella('box34', 'quesito', tema1);
 
-var box35 = new Casella('box35', 'normal', tema5);
-var box36 = new Casella('box36', 'normal', tema2);
-var box37 = new Casella('box37', 'doble', '');
-var box38 = new Casella('box38', 'normal', tema4);
-var box39 = new Casella('box39', 'normal', tema1);
-var box40 = new Casella('box40', 'normal', tema3);
+box35 = new Casella('box35', 'normal', tema5);
+box36 = new Casella('box36', 'normal', tema2);
+box37 = new Casella('box37', 'doble', '');
+box38 = new Casella('box38', 'normal', tema4);
+box39 = new Casella('box39', 'normal', tema1);
+box40 = new Casella('box40', 'normal', tema3);
 
-var box41 = new Casella('box41', 'normal', tema4);
-var box42 = new Casella('box42', 'normal', tema5);
-var box43 = new Casella('box43', 'doble', '');
-var box44 = new Casella('box44', 'normal', tema2);
-var box45 = new Casella('box45', 'normal', tema3);
+box41 = new Casella('box41', 'normal', tema4);
+box42 = new Casella('box42', 'normal', tema5);
+box43 = new Casella('box43', 'doble', '');
+box44 = new Casella('box44', 'normal', tema2);
+box45 = new Casella('box45', 'normal', tema3);
 
-var box46 = new Casella('box46', 'normal', tema3);
-var box47 = new Casella('box47', 'normal', tema1);
-var box48 = new Casella('box48', 'doble', '');
-var box49 = new Casella('box49', 'normal', tema5);
-var box50 = new Casella('box50', 'normal', tema2);
+box46 = new Casella('box46', 'normal', tema3);
+box47 = new Casella('box47', 'normal', tema1);
+box48 = new Casella('box48', 'doble', '');
+box49 = new Casella('box49', 'normal', tema5);
+box50 = new Casella('box50', 'normal', tema2);
 
-var box51 = new Casella('box51', 'normal', tema5);
-var box52 = new Casella('box52', 'normal', tema3);
-var box53 = new Casella('box53', 'doble', '');
-var box54 = new Casella('box54', 'normal', tema4);
-var box55 = new Casella('box55', 'normal', tema2);
+box51 = new Casella('box51', 'normal', tema5);
+box52 = new Casella('box52', 'normal', tema3);
+box53 = new Casella('box53', 'doble', '');
+box54 = new Casella('box54', 'normal', tema4);
+box55 = new Casella('box55', 'normal', tema2);
 
-var box56 = new Casella('box56', 'normal', tema2);
-var box57 = new Casella('box57', 'normal', tema4);
-var box58 = new Casella('box58', 'doble', '');
-var box59 = new Casella('box59', 'normal', tema1);
-var box60 = new Casella('box60', 'normal', tema5);
+box56 = new Casella('box56', 'normal', tema2);
+box57 = new Casella('box57', 'normal', tema4);
+box58 = new Casella('box58', 'doble', '');
+box59 = new Casella('box59', 'normal', tema1);
+box60 = new Casella('box60', 'normal', tema5);
 
 //tirada 1 casella start
 box_start.afegirCasella(1,box1);
