@@ -415,6 +415,8 @@ table.aligncenter .col {
 	background-color: rgba(0,0,0,0.2)!important;
 	font-weight: bold;
 	filter: brightness(2);
+
+	padding-left: 40px;
 }
 
 #startMenuUl .active:hover {
@@ -1281,6 +1283,66 @@ input[type=password] {
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
+/* FLOAT PERFIL USUARI */
+
+#usuariFloat {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	z-index: 30;
+
+	background-color: rgba(255,255,255,0.1);
+	border-radius: 25px;
+	overflow: hidden;
+}
+
+#usuariFloat:hover {
+	background-color: rgba(255,255,255,0.2);
+}
+
+#perfilFloat label, #perfilNom label {
+	margin-bottom: 0px;
+	width: 100%;
+	color: white;
+	text-align: center;
+
+	font-weight: bold;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+#perfilFloat {
+	border: 2px solid white;
+	border-radius: 50%;
+	width: 50px;
+
+	background-color: rgba(41,41,41,1);
+}
+
+#perfilNom {
+	padding-left: 25px!important;
+}
+
+#perfilFloat, #perfilNom {
+	float: left;
+	padding: 10px;
+
+	display: table;
+	height: 50px;
+	position: relative;
+	z-index: 1;
+}
+
+#usuariFloat label {
+	z-index: 1;
+}
+
+#perfilNom {
+
+}
+
+/* FLOAT PERFIL USUARI END */
+
 /* MODAL INICIAR SESSIÓ PARTIDA */
 
 .modal-backdrop {
@@ -1383,6 +1445,10 @@ input[type=password] {
 
 	#multiplayerLobby > .container {
 		padding: 0px!important;
+	}
+
+	#usuariFloat {
+		display: none;
 	}
 
 }

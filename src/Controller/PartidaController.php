@@ -406,6 +406,10 @@ class PartidaController extends Controller
     delete_cookie('grup');
     writeCookie('grup', '" . $grupid . ", 1');
 
+    $('#perfilFloat').css({
+        'background-color': color[1],
+    })
+
     </script>
 
     <div id='multiplayerLobby' class='row p-4 col-9'>
@@ -1084,6 +1088,8 @@ class PartidaController extends Controller
                 lastgrupid = id;
 
                 var url = '" . $this->generateUrl('llistatTemes') . "';
+
+                clearHTMLModalTemes();
 
                 $.post(url, { 'grupid': lastgrupid, 'temesArray': temes }) 
                     .done(function(response) {

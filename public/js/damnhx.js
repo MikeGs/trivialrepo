@@ -30,6 +30,14 @@ function clearHTML() {
 
 }
 
+function clearHTMLModalTemes() {
+
+    while($("#temesGrupTable").html() != "") {
+        $("#temesGrupTable").html("");
+    }
+
+}
+
 function writeCookie(name,value,days) {
     var date, expires;
     if (days) {

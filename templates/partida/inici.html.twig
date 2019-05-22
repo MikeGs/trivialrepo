@@ -30,6 +30,19 @@
 
 <body class="container row col col-12 m-0 p-0">
 
+    <div id='usuariFloat' class="alltransition3">
+        <div id='usuariFloatInt'>
+
+            <div id='perfilNom'>
+                <label>{{app.user.nom}}</label>
+            </div>
+
+            <div id='perfilFloat' class='alltransition3'>
+                <label>{{app.user.nom|slice(0, 1)}}</label>
+            </div>
+        </div>
+    </div>
+
     <div id="startMenu">
 
         <h1 class="p-3">Trivial</h1>
