@@ -781,6 +781,8 @@ input[type=password] {
 
 	width: 50%!important;
 	max-width: none!important;
+
+	min-height: 310px;
 }
 
 #playerList ul {
@@ -1211,6 +1213,11 @@ input[type=password] {
 
 .buttonLoginRegister {
 	width: 50%!important;
+	display: inline-block;
+}
+
+.buttonLoginRequest {
+	width: 80%!important;
 	display: inline-block;
 }
 

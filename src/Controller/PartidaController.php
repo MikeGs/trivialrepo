@@ -520,7 +520,18 @@ class PartidaController extends Controller
             });
         }
 
+        checkMinMaxJugadors(eval('[' + readCookie('jugadors') + ']').length);
+
         return eval('[' + readCookie('jugadors') + ']').length;
+    }
+
+    function checkMinMaxJugadors(arrayJugadorsLength) {
+
+        if (arrayJugadorsLength >= 1 && arrayJugadorsLength <= 4) {
+            $('#afegirJugador').removeClass('disabledBtn');
+        } else {
+            $('#afegirJugador').addClass('disabledBtn');
+        }
     }
 
     function getRandomNumberColor() {
@@ -545,7 +556,12 @@ class PartidaController extends Controller
     writeCookie('grup', '" . $grupid . "');
 
     delete_cookie('nomjugadors');
-    writeCookie('nomjugadors', '`" . $user->getNom() . " " . $user->getCognoms() . "`');
+    delete_cookie('nomjugadorsString');
+
+    var nomjugadoractual = `" . $user->getNom() . " " . $user->getCognoms() . "`;
+
+    writeCookie('nomjugadors', nomjugadoractual.toString(), 1);
+    writeCookie('nomjugadorsString', '`' + nomjugadoractual + '`', 1);
 
     $('#perfilFloat').css({
         'background-color': color[1],
@@ -815,7 +831,7 @@ class PartidaController extends Controller
 
         var arrJugadors = eval('[' + readCookie('jugadors') + ']');
         
-        if (arrJugadors.length < 5) {
+        if (arrJugadors.length <= 4) {
             $('#afegirJugadorModal').modal('show');
 
             $('body').on('click', '#afegirJugador', function() {
@@ -928,11 +944,15 @@ class PartidaController extends Controller
 
             if (readCookie('jugadors') == '') {
                 writeCookie('jugadors', JSON.stringify(jugador) , 1);
-                writeCookie('nomjugadors', '`' + matchnom + '`');
+                writeCookie('nomjugadors', matchnom.toString(), 1);
+                writeCookie('nomjugadorsString', '`' + matchnom + '`', 1);
             } else {
                 writeCookie('jugadors', readCookie('jugadors') + ',' + JSON.stringify(jugador), 1);
-                writeCookie('nomjugadors', readCookie('nomjugadors') + ',' + '`' + matchnom + '`', 1);
+                writeCookie('nomjugadors', readCookie('nomjugadors') + ',' + matchnom.toString(), 1);
+                writeCookie('nomjugadorsString', readCookie('nomjugadorsString') + ',`' + matchnom + '`', 1);
             }
+
+            console.log(readCookie('nomjugadors'))
             
         } else {
             errormatch();
@@ -964,13 +984,24 @@ class PartidaController extends Controller
             }
         });
 
+        var colorRemove = '';
+
+        colors.forEach(function(color) {
+            if (color[0] == arrJugadors[posicioRemove][1]) {
+                colorRemove = colors.indexOf(color);
+            }
+        });
+
+        var colornRemove = '';
+
+        colorsn.forEach(function(colorn) {
+            if (colorn == colorRemove) {
+                colornRemove = colorsn.indexOf(colorn);
+            }
+        });
+
+        colorsn.splice(colornRemove,1);
         arrJugadors.splice(posicioRemove, 1);
-
-        var arrNomJugadors = eval('[' + readCookie('nomjugadors') + ']');
-        arrNomJugadors.splice(posicioRemove);
-
-        console.log(arrJugadors);
-        console.log(arrNomJugadors);
 
         var arrJugadorsStr = '';
 
@@ -984,19 +1015,16 @@ class PartidaController extends Controller
 
         writeCookie('jugadors', arrJugadorsStr , 1);
 
-        console.log(readCookie('jugadors'));
-
+        var NomJugadorsStrCookie = readCookie('nomjugadorsString')
         var arrNomJugadorsStr = '';
 
-        arrNomJugadors.forEach(function(jugador, idx) {
-            if (idx === arrNomJugadors.length - 1) {
-                arrJugadorsStr += '`' + jugador + '`';
-            } else {
-                arrJugadorsStr += '`' + jugador + '`' + ',';
-            }
-        });
+        var arrNomJugadors = eval('[' + NomJugadorsStrCookie + ']');
+        arrNomJugadors.splice(posicioRemove, 1);
+        
+        /*writeCookie('nomjugadors', arrNomJugadorsStr , 1);*/
+        writeCookie('nomjugadors', arrNomJugadors , 1);
 
-        writeCookie('nomjugadors', arrNomJugadorsStr , 1);
+        //console.log(readCookie('nomjugadors'));
 
         $('#jugli' + removeId).remove();
 

@@ -5,6 +5,8 @@
     <p><strong>{{ 'profile.show.email'|trans }}:</strong> {{ user.email }}</p>
     <p><strong>{{ 'profile.show.nom'|trans }}:</strong> {{ user.nom }} {{ user.cognoms }}</p>
     <p><strong>{{ 'profile.show.codiAlumne'|trans }}:</strong> {{ user.codiAlumne }}</p>
-    <a class="btn customBlueBtn mr-1" href={% if is_granted('ROLE_TEACHER') == false %}"{{ path('joc') }}"{% else %}"{{ path('inici') }}"{% endif %}>Tornar a l'inici</a><a class="btn customAddBtn" href="{{ path('fos_user_profile_edit') }}">Editar</a>
+    <a class="btn customBlueBtn mr-1" href={% if is_granted('ROLE_TEACHER') == false %}"{{ path('joc') }}"{% else %}"{{ path('inici') }}"{% endif %}>Tornar a l'inici</a>
+    <a class="btn customAddBtn" href="{{ path('fos_user_profile_edit') }}">Editar</a>
+    <a class="btn customAddBtn" href="{{ path('fos_user_change_password') }}">{{ 'change_password.submit'|trans }}</a>
 </div>
 
