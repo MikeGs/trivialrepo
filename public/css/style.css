@@ -313,12 +313,12 @@ table.aligncenter .col {
 	float: left;
 }
 
-#tornarAGrupsBtn {
+#tornarBdcmBtn {
 	margin-bottom: 10px;
 	display: block;
 }
 
-#tornarAGrupsBtn.llistatalumnes {
+#tornarBdcmBtn.llistatalumnes {
 	float: left;
 	margin-top: 10px;
 }
@@ -361,28 +361,36 @@ table.aligncenter .col {
 
 /* LLISTAT ALUMNES ETC */
 
-.elementLlistaAlumnes, .elementLlistaAlumnesTd, .elementLlistaJugadors, .elementLlistaJugadorsTd {
+.elementLlistaAlumnes, .elementLlistaAlumnesTd, .elementLlistaJugadors, .elementLlistaJugadorsTd, .elementLlistaTemes, .elementLlistaTemesTd {
 	width: 100%;
 	display: block;
 }
 
-.elementLlistaAlumnes, .elementLlistaJugadors {
+.elementLlistaAlumnes, .elementLlistaJugadors, .elementLlistaTemes {
 	padding: 10px;
 	transition: background-color .4s ease-in-out;
 	border: 2px solid transparent;
 	border-bottom: 1px solid rgba(41,41,41,0.2);
 }
 
-.elementLlistaAlumnes:hover, .elementLlistaJugadors:hover {
+.elementLlistaAlumnes:hover, .elementLlistaJugadors:hover, .elementLlistaTemes:hover {
 	background-color: rgba(0,0,0,0.1);
 }
 
-.usuariSeleccionat {
+.usuariSeleccionat, .temaSeleccionat {
 	background-color: rgba(0,255,0,0.1);
 }
 
 #afegirJugadorsBtn {
-	margin-top: 15px;
+	/*margin-top: 15px;*/
+}
+
+.temaNum {
+	float: right;
+}
+
+.grupNom, .grupTemes {
+	overflow: hidden;
 }
 
 /* MODAL FIX PADDING RIGHT */
@@ -407,6 +415,8 @@ table.aligncenter .col {
 	background-color: rgba(0,0,0,0.2)!important;
 	font-weight: bold;
 	filter: brightness(2);
+
+	padding-left: 40px;
 }
 
 #startMenuUl .active:hover {
@@ -825,8 +835,74 @@ input[type=password] {
 	font-size: 15px!important;
 }
 
+/* RESUM ALUMNE */
+
+.grupAlumne {
+	background-color: rgba(41,41,41,0.2);
+	display: inline-block;
+	padding: 10px;
+	border-radius: 5px;
+}
+
+#alumneContainer {
+	margin-top: 30px;
+}
+
+.alumneWrap, #alumneContainer {
+	width: 100%!important;
+	max-width: none!important;
+
+	margin-right: 0px!important;
+	margin-left: 0px!important;
+}
+
+.alumneDetails {
+	max-width: 500px;
+}
+
+.alumneDetails label {
+	font-weight: bold;
+	width: 150px;
+}
+
+#alumneGrupsLabel {
+	float: left;
+}
+
+#alumneGrupsDetail {
+	width: calc(100% - 150px);
+	float: left;
+}
+
+.alumneDetails label, .alumneDetails p {
+	float: left;
+}
+
+.alumneProfile {
+	min-width: 175px;
+	max-height: 160px;
+
+	text-align: center;
+
+	background-color: rgba(41,41,41,0.05);
+	display: block;
+}
+
+#alumneMiniatura {
+	font-size: 100px;
+}
+
+.detailCamp {
+	width: 100%;
+	display: block;
+	overflow: hidden;
+}
+
+/* RESUM ALUMNE END */
+
 #containerNormesStart {
 	margin-top: 40px;
+	padding-right: 0px;
 }
 
 .playPartidaCard {
@@ -865,13 +941,30 @@ input[type=password] {
 	padding: 0px 15px;
 }
 
-#containerNormes {
+#containerCursosEntrenament {
+	padding-left: 0px!important;
+}
+
+#containerNormes, #containerCursosEntrenament {
+	margin: 0px!important;
+}
+
+/* #containerCursos */
+/*#containerNormes {
 	width: 55%!important;
+}*/
+
+#containerCursos {
+	margin: 0px!important;
+	padding-left: 0px!important;
+	padding-right: 0px!important;
 }
 
 #containerComençarPartida {
-	width: 45%!important;
+	/*width: 45%!important;*/
 	padding: 0px 0px!important;
+	max-width: 50%!important;
+	margin: 0px!important;
 }
 
 .playPartidaButton {
@@ -880,7 +973,7 @@ input[type=password] {
 
 .tableNormes {
 	width: 100%!important;
-	max-width: 524px!important
+	max-width: none!important
 }
 
 .tableNormes li {
@@ -919,6 +1012,10 @@ input[type=password] {
 
 .tableHead p {
 	width: 100%!important;
+}
+
+.tableHead#temesHead p {
+	width: 50%!important;
 }
 
 .tableNormes p {
@@ -960,6 +1057,25 @@ input[type=password] {
 .card-blue:hover {
 	background-color: #4ba5e5;
 }
+
+/* ENTRENAMENT */
+
+.entrenamentCurs {
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+.entrenamentCurs:hover {
+	border: 1px solid orange;
+}
+
+.entrenamentCursSelected {
+	border: 1px solid green;
+	color: green;
+	filter: brightness(1.5);
+}
+
+/* ENTRENAMENT END */
 
 /* TRANSICIONS */
 
@@ -1167,6 +1283,70 @@ input[type=password] {
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
+/* FLOAT PERFIL USUARI */
+
+#usuariFloat {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	z-index: 30;
+
+	background-color: rgba(255,255,255,0.1);
+	border-radius: 25px;
+	overflow: hidden;
+}
+
+#usuariFloat:hover {
+	background-color: rgba(255,255,255,0.2);
+}
+
+#usuariFloat:hover #perfilFloat label {
+	transform: scale(1.5);
+}
+
+#perfilFloat label, #perfilNom label {
+	margin-bottom: 0px;
+	width: 100%;
+	color: white;
+	text-align: center;
+
+	font-weight: bold;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+#perfilFloat {
+	border: 2px solid white;
+	border-radius: 50%;
+	width: 50px;
+
+	background-color: rgba(41,41,41,1);
+}
+
+#perfilNom {
+	padding-left: 25px!important;
+}
+
+#perfilFloat, #perfilNom {
+	float: left;
+	padding: 10px;
+
+	display: table;
+	height: 50px;
+	position: relative;
+	z-index: 1;
+}
+
+#usuariFloat label {
+	z-index: 1;
+}
+
+#perfilNom {
+
+}
+
+/* FLOAT PERFIL USUARI END */
+
 /* MODAL INICIAR SESSIÓ PARTIDA */
 
 .modal-backdrop {
@@ -1219,7 +1399,7 @@ input[type=password] {
 	text-align: center;
 }
 
-#canviModeAccept, #canviModeDeny {
+#canviModeAccept, #canviModeDeny, #desvincularAccept, #desvincularDeny {
 	width: 75px;
 }
 
@@ -1271,11 +1451,15 @@ input[type=password] {
 		padding: 0px!important;
 	}
 
+	#usuariFloat {
+		display: none;
+	}
+
 }
 
 @media screen and (max-width: 1030px) {
 
-	#tipusPartidaSlider, #playerList, #containerNormes, #containerComençarPartida {
+	#tipusPartidaSlider, #playerList, #containerNormes, #containerComençarPartida, #containerCursos {
 		flex: none!important;
 		width: 100%!important;
 		max-width: none!important;

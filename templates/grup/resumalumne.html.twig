@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+<div class="m-5">
+
+    <div class="card-header border-bottom bg-white d-flex justify-content-between p-0">
+        <h1 class="h3">Resum de l'alumne - {{alumne.nom}} {{alumne.cognoms}}</h1>
+        <a class="btn btn-link link-blue" href="{{path('alumnesGrup', {'id': grup.id})}}"><i class="fas fa-arrow-left"></i> TORNAR</a>
+    </div>
+
+    <div class="container" id='alumneContainer'>
+
+        <div class="alumneWrap col col-md-12 row">
+
+            <div class="alumneProfile col col-md-12 col-lg-3">
+
+                <div id="alumneMiniatura">
+                    <i class="fas fa-user ml-2 mr-1"></i>
+                </div>
+
+            </div>
+
+            <div class="alumneDetails p-3 col col-md-12 col-lg-9">
+            
+                <div class="detailCamp">
+                    <label id='alumneNomLabel'>Nom: </label>
+                    <p id='alumneNomDetail'>{{alumne.nom}}</p>
+                </div>
+
+                <div class="detailCamp">
+                    <label id='alumneCognomsLabel'>Cognoms: </label>
+                    <p id='alumneCognomsDetail'>{{alumne.cognoms}}</p>
+                </div>
+
+                <div class="detailCamp">
+                    <label id='alumneGrupsLabel'>Grups: </label>
+                    <p id='alumneGrupsDetail'>
+
+                        {% for grup in alumne.grups %}
+                            <span class='grupAlumne'>{{grup.nom}}</span>
+                        {% endfor %}
+
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card-header border-bottom bg-white d-flex justify-content-between p-0" style="margin-bottom: 15px; margin-top: 15px">
+            <h1 class="h3">Partides</h1>
+        </div>
+
+        <div class='alumnePartides'>
+
+            <table class="table custom-table" id="llistatPartides">
+                <thead>
+                    <tr>
+                        <th scope="col">Data</th>
+                        <th scope="col">Tipus</th>
+                        <th scope="col">Puntuació</th>
+                        <th scope="col">Accions</th>  
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--<tr>
+                        <td scope="col">Dataprtida</td>
+                        <td scope="col">TipusPartida</td>
+                        <td scope="col">PuntuacióAlumne</td>
+                        <td scope="col">Accions</td>
+                    </tr>-->
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+    
+
+</div>
+{% endblock %}
+
+{% block javascriptsBottom %}
+
+    {{ parent() }}
+
+    <script>
+		$(document).ready( function () {
+
+            llistatPartides = $('#llistatPartides').dataTable( {
+	            "language": {
+	                "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Catalan.json"
+	            }
+	        });
+        });
+
+</script>
+{% endblock %}
+

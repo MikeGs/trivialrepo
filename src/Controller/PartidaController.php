@@ -439,6 +439,10 @@ class PartidaController extends Controller
     delete_cookie('nomjugadors');
     writeCookie('nomjugadors', '" . $user->getNom() . " " . $user->getCognoms() . "');
 
+    $('#perfilFloat').css({
+        'background-color': color[1],
+    })
+
     </script>
 
     <div id='multiplayerLobby' class='row p-4 col-9'>
@@ -635,6 +639,7 @@ class PartidaController extends Controller
                 </div>
             </div>
         </div>
+
     </div>
 
     <script>
@@ -649,16 +654,31 @@ class PartidaController extends Controller
 
     $('body').on( 'click', '#canviModeAccept', function() {
         $('#canviModeModal').modal('hide');
-        $('#entrenamentBtn').click();
+        clearHTML();
+        writeCookie('ferEntreno','redirect',1);
+        location.reload();
+        //setTimeout(function(){ $('#entrenamentBtn').click(); }, 1000);
     });
 
     $('body').on( 'click', '#canviModeDeny', function() {
 
-        $('#carouselEntrenament').removeClass('active');
-        $('#carouselMultijugador').addClass('active');
+        swap();
 
         $('#canviModeModal').modal('hide');
     });
+
+    $('body').on( 'click', '#canviModeModal', function() {
+                
+        swap();
+
+    });
+
+    function swap() {
+
+        $('#carouselEntrenament').removeClass('active');
+        $('#carouselMultijugador').addClass('active');
+
+    }
 
     $('body').on( 'click', '#afegirJugador', function() {
 
@@ -858,11 +878,340 @@ class PartidaController extends Controller
     }
 
     /**
+     * @Route("/llistatTemes", name="llistatTemes")
+     */
+    function llistatTemes(Request $request) {
+
+        $grupid = $request->request->get('grupid');
+        $grup = $this->getGrup($grupid);
+        $temes = $grup->getIdNivell()->getTemas();
+
+        $temesSeleccionats = $request->request->get('temesArray');
+        if ($temesSeleccionats == null) {
+            $temesSeleccionats = [""];
+        }
+        var_dump($temesSeleccionats);
+
+        $html = '';
+
+        foreach ($temes as $tema) {
+
+            $html = $html . "
+
+            <tr>
+
+                <td class='elementLlistaTemesTd'>
+                <a class='
+            ";
+
+                foreach ($temesSeleccionats as $temasel) {
+                    if($tema->getId() == $temasel) {
+                        var_dump('seleccionat');
+                        $html = $html . "temaSeleccionat ";
+                    }
+                }
+
+            
+            $html = $html . "elementLlistaTemes nodeco'" . " name=" . $tema->getNom() . "' id='tema". $tema->getId() . "' secid='" . $tema->getId() . "' href='#'>
+
+                        <span class='temaNom'>
+                            " . $tema->getNom() . "
+                        </span> 
+
+                        <span class='temaNum'>
+                           " . $tema->getId() . "
+                        </span>
+
+                    </a>
+
+                </td>
+                
+            </tr>
+            
+            ";
+
+        }
+
+        return new Response(
+            $html
+        );
+
+    }
+
+    /**
      * @Route("/getEntrenamentPortait", name="getEntrenamentPortait")
      */
     function getEntrenamentPortait(Request $request) {
 
-        $html = "";
+        $user = $this->getUser();
+        $grups = $this->getUser()->getGrups();
+
+        $llistatGrups = "";
+        $grupArray = "";
+
+        foreach($grups as $grup) {
+            $llistatGrups = $llistatGrups . "
+            <li class='entrenamentCurs row alltransition3' id='" . $grup->getId() . "' subid='gr" . $grup->getId() . "'>
+                <p class='col col-md-6 alltransition3 grupNom'>" . $grup->getNom() . "</p>
+                <p class='col col-md-6 alltransition3 grupTemes'></p>
+            </li>
+            ";
+
+            $grupArray = $grupArray . "
+                [" . $grup->getId() . ",[]],
+            ";
+        }
+
+        $html = "
+
+        <script>
+
+        lastgrupclicked = '';
+        lastgrupid = '';
+        temes = [];
+        temesGrup = [" . 
+        
+        $grupArray
+
+        . "];
+
+        $('.entrenamentCurs').removeClass('entrenamentCursSelected');
+
+        delete_cookie('cursos');
+
+        cursosArray = [];
+
+        </script>
+
+        <div id='multiplayerLobby' class='row p-4 col-9'>
+
+            <div class='container' id='titleEntrenament'>
+                <h2>Sala d'espera | Entrenament</h2>
+            </div>
+
+            <div class='container row' id='topLobby'>
+    
+            <div id='tipusPartidaSlider' class='col col-md-6 carousel slide' data-ride='carousel'>
+
+                <div class='carousel-inner'>
+                    <div class='carousel-item' id='carouselMultijugador'>
+
+                        <div class='carouselVertical'>
+                            <p class='ontopCarousel'>Partida multijugador</p>
+                        </div>
+
+                    </div>
+                    <div class='carousel-item active' id='carouselEntrenament'>
+
+                        <div class='carouselVertical'>
+                            <p class='ontopCarousel'>Entrenament</p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <a class='carousel-control-prev' id='carouselMultiPrev' href='#tipusPartidaSlider' role='button' data-slide='prev'>
+                    <span class='carousel-control-prev-icon' aria-hidden='true'></span>
+                    <span class='sr-only'>Previous</span>
+                </a>
+
+                <a class='carousel-control-next' id='carouselMultiNext' href='#tipusPartidaSlider' role='button' data-slide='next'>
+                    <span class='carousel-control-next-icon' aria-hidden='true'></span>
+                    <span class='sr-only'>Next</span>
+                </a>
+
+            </div>
+
+            <div id='playerList' class='col col-md-4'>
+                <ul>
+                    <p id='playerListHead' style='margin-bottom: 0px!important'>Jugador:</p>
+                    <li class='alltransition3'><a href='#' id='currentPlayer'><i class='alltransition3 fas fa-user mr-2'></i>" . $user->getUsername() . "</a></li>
+                </ul>
+            </div>
+
+            <div class='container row' id='containerCursosEntrenament'>
+        
+                <div class='container' id='containerCursos'>
+                    
+                    <ul class='tableNormes col col-6'>
+                        <li class='row tableHead' id='temesHead'>
+                            <p>Cursos</p>
+                            <p>Temes</p>
+                        </li>
+                        " . $llistatGrups . "
+                    </ul>
+
+                </div>
+            
+            </div>
+
+        </div>
+
+        </div>
+
+        <div id='canviModeModal' class='modal fade' tabindex='-1' role='dialog'>
+            <div class='modal-dialog' role='document'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <h6 class='modal-title' id='canviModeModal'>Canvi de mode</h6>
+                        <button id='canviModeModalClose' type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                            <span aria-hidden='true'>&times;</span>
+                        </button>
+                    </div>
+                    <div class='modal-body'>
+                        <div id='canviModeModalMsg'>
+
+                            <h3 id='canviModeTitle'>S'està a punt de canviar el mode de joc, desitjes continuar?</h3>
+                            <div id='acceptdenyModel' class='col col-md-12'>
+
+                                <a href='#' class='btn btn-success' id='canviModeAccept'>Si</a>
+                                <a href='#' class='btn btn-danger' id='canviModeDeny'>No</a>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class='modal-footer' id='CanviModeModalBtns'>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+
+        <div id='seleccionarTemaModal' class='modal fade' tabindex='-1' role='dialog'>
+            <div class='modal-dialog' role='document'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <h6 class='modal-title' id='seleccionarTemaModal'>Sel.lecció de temes</h6>
+                        <button id='seleccionarTemaModalClose' type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                            <span aria-hidden='true'>&times;</span>
+                        </button>
+                    </div>
+                    <div class='modal-body'>
+                        <div id='seleccionarTemaModalMsg'>
+
+                            <div class='form-group'>
+                            <table class='col-12' id='temesGrupTable'>
+
+                                <tr>
+                                    <th scope='col'>Grup: " . $grup->getNom() . "</th>
+                                </tr>
+
+                                <div id='temesReload'>
+                                </div>
+
+                            </table>
+    
+                        </div>
+                    </div>
+                    <div class='modal-footer' id='seleccionarTemaModalBtns'>
+                        <input type='submit' name='Submit' value='Tancar' class='btn btn-success' id='tancarTemesBtn'>
+                    </div>
+                </div>
+            </div>
+
+        <script>
+
+            $('#tipusPartidaSlider').carousel({
+                interval: false
+            });
+
+            $('body').on( 'click', '.entrenamentCurs', function() {
+
+                var id = $(this).attr('id');
+
+                lastgrupid = id;
+
+                var url = '" . $this->generateUrl('llistatTemes') . "';
+
+                clearHTMLModalTemes();
+
+                $.post(url, { 'grupid': lastgrupid, 'temesArray': temes }) 
+                    .done(function(response) {
+                        $('#temesGrupTable #temesReload').html('');
+                        $('#temesGrupTable').html(response);
+                    });
+
+                var selected = $(this).hasClass('entrenamentCursSelected');
+
+                $('#seleccionarTemaModal').modal('show');
+
+            });
+
+            $('body').on( 'click', '.elementLlistaTemes', function() {
+                
+                var id = $(this).attr('secid');
+                var posicioGrupArray = '';
+
+                temesGrup.forEach(function(grupA) {
+                    if (grupA[0] == lastgrupid) {
+                        posicioGrupArray = temesGrup.indexOf(grupA);
+                    }
+                });
+
+                if(!$(this).hasClass('temaSeleccionat')) {
+                    temes.push(id);
+                    temesGrup[posicioGrupArray][1].push(id);
+                    $(this).addClass('temaSeleccionat');
+                } else {
+                    var posiciotemes = temes.indexOf(id);
+                    var posicio = temesGrup[posicioGrupArray][1].indexOf(id);
+                    temes.splice(posiciotemes,1);
+                    temesGrup[posicioGrupArray][1].splice(posicio, 1);
+                    $(this).removeClass('temaSeleccionat');
+                }
+
+                var temestext = '';
+
+                temesGrup[posicioGrupArray][1].forEach(function(tema) {
+                    temestext += '<span>' + tema + ',' + '</span>';
+                });
+
+                console.log(temes);
+                $('.entrenamentCurs#' + lastgrupid + ' .grupTemes').html(temestext);
+
+            });
+
+            $('body').on( 'click', '#tancarTemesBtn', function() {
+                $('#seleccionarTemaModal').modal('hide');
+            });
+
+            $('body').on( 'click', '#carouselMultiPrev, #carouselMultiNext', function() {
+                $('#canviModeModal').modal('show');
+            });
+        
+            $('body').on( 'click', '#canviModeAccept', function() {
+                $('#canviModeModal').modal('hide');
+                clearHTML();
+                $('#entrenamentBtn').removeClass('active');
+                setTimeout(function(){ $('#llistatGrupsJoc li:first-child a').click(); }, 1000);
+            });
+        
+            $('body').on( 'click', '#canviModeDeny', function() {
+                
+                swap();
+        
+                $('#canviModeModal').modal('hide');
+            });
+
+            $('body').on( 'click', '#canviModeModal', function() {
+                
+                swap();
+
+            });
+
+            function swap() {
+
+                $('#carouselMultijugador').removeClass('active');
+                $('#carouselEntrenament').addClass('active');
+
+            }
+
+            $(window).trigger('resize');
+
+        </script>
+
+        </div>";
 
         return new Response(
             $html
