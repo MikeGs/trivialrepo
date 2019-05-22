@@ -361,28 +361,36 @@ table.aligncenter .col {
 
 /* LLISTAT ALUMNES ETC */
 
-.elementLlistaAlumnes, .elementLlistaAlumnesTd, .elementLlistaJugadors, .elementLlistaJugadorsTd {
+.elementLlistaAlumnes, .elementLlistaAlumnesTd, .elementLlistaJugadors, .elementLlistaJugadorsTd, .elementLlistaTemes, .elementLlistaTemesTd {
 	width: 100%;
 	display: block;
 }
 
-.elementLlistaAlumnes, .elementLlistaJugadors {
+.elementLlistaAlumnes, .elementLlistaJugadors, .elementLlistaTemes {
 	padding: 10px;
 	transition: background-color .4s ease-in-out;
 	border: 2px solid transparent;
 	border-bottom: 1px solid rgba(41,41,41,0.2);
 }
 
-.elementLlistaAlumnes:hover, .elementLlistaJugadors:hover {
+.elementLlistaAlumnes:hover, .elementLlistaJugadors:hover, .elementLlistaTemes:hover {
 	background-color: rgba(0,0,0,0.1);
 }
 
-.usuariSeleccionat {
+.usuariSeleccionat, .temaSeleccionat {
 	background-color: rgba(0,255,0,0.1);
 }
 
 #afegirJugadorsBtn {
 	margin-top: 15px;
+}
+
+.temaNum {
+	float: right;
+}
+
+.grupNom, .grupTemes {
+	overflow: hidden;
 }
 
 /* MODAL FIX PADDING RIGHT */
@@ -865,6 +873,10 @@ input[type=password] {
 	padding: 0px 15px;
 }
 
+#containerNormes {
+	margin: 0px!important;
+}
+
 #containerNormes, #containerCursos {
 	width: 55%!important;
 }
@@ -877,6 +889,8 @@ input[type=password] {
 #containerComençarPartida {
 	width: 45%!important;
 	padding: 0px 0px!important;
+	max-width: 50%!important;
+	margin: 0px!important;
 }
 
 .playPartidaButton {

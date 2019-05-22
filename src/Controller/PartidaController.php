@@ -839,6 +839,67 @@ class PartidaController extends Controller
     }
 
     /**
+     * @Route("/llistatTemes", name="llistatTemes")
+     */
+    function llistatTemes(Request $request) {
+
+        $grupid = $request->request->get('grupid');
+        $grup = $this->getGrup($grupid);
+        $temes = $grup->getIdNivell()->getTemas();
+
+        $temesSeleccionats = $request->request->get('temesArray');
+        if ($temesSeleccionats == null) {
+            $temesSeleccionats = [""];
+        }
+        var_dump($temesSeleccionats);
+
+        $html = '';
+
+        foreach ($temes as $tema) {
+
+            $html = $html . "
+
+            <tr>
+
+                <td class='elementLlistaTemesTd'>
+                <a class='
+            ";
+
+                foreach ($temesSeleccionats as $temasel) {
+                    if($tema->getId() == $temasel) {
+                        var_dump('seleccionat');
+                        $html = $html . "temaSeleccionat ";
+                    }
+                }
+
+            
+            $html = $html . "elementLlistaTemes nodeco'" . " name=" . $tema->getNom() . "' id='tema". $tema->getId() . "' secid='" . $tema->getId() . "' href='#'>
+
+                        <span class='temaNom'>
+                            " . $tema->getNom() . "
+                        </span> 
+
+                        <span class='temaNum'>
+                           " . $tema->getId() . "
+                        </span>
+
+                    </a>
+
+                </td>
+                
+            </tr>
+            
+            ";
+
+        }
+
+        return new Response(
+            $html
+        );
+
+    }
+
+    /**
      * @Route("/getEntrenamentPortait", name="getEntrenamentPortait")
      */
     function getEntrenamentPortait(Request $request) {
@@ -847,19 +908,33 @@ class PartidaController extends Controller
         $grups = $this->getUser()->getGrups();
 
         $llistatGrups = "";
-        
+        $grupArray = "";
+
         foreach($grups as $grup) {
             $llistatGrups = $llistatGrups . "
             <li class='entrenamentCurs row alltransition3' id='" . $grup->getId() . "' subid='gr" . $grup->getId() . "'>
-                <p class='col col-md-6 alltransition3'>" . $grup->getNom() . "</p>
-                <p class='col col-md-6 alltransition3'></p>
+                <p class='col col-md-6 alltransition3 grupNom'>" . $grup->getNom() . "</p>
+                <p class='col col-md-6 alltransition3 grupTemes'></p>
             </li>
+            ";
+
+            $grupArray = $grupArray . "
+                [" . $grup->getId() . ",[]],
             ";
         }
 
         $html = "
 
         <script>
+
+        lastgrupclicked = '';
+        lastgrupid = '';
+        temes = [];
+        temesGrup = [" . 
+        
+        $grupArray
+
+        . "];
 
         $('.entrenamentCurs').removeClass('entrenamentCursSelected');
 
@@ -961,6 +1036,40 @@ class PartidaController extends Controller
                     </div>
                 </div>
             </div>
+    
+        </div>
+
+        <div id='seleccionarTemaModal' class='modal fade' tabindex='-1' role='dialog'>
+            <div class='modal-dialog' role='document'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <h6 class='modal-title' id='seleccionarTemaModal'>Sel.lecció de temes</h6>
+                        <button id='seleccionarTemaModalClose' type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                            <span aria-hidden='true'>&times;</span>
+                        </button>
+                    </div>
+                    <div class='modal-body'>
+                        <div id='seleccionarTemaModalMsg'>
+
+                            <div class='form-group'>
+                            <table class='col-12' id='temesGrupTable'>
+
+                                <tr>
+                                    <th scope='col'>Grup: " . $grup->getNom() . "</th>
+                                </tr>
+
+                                <div id='temesReload'>
+                                </div>
+
+                            </table>
+    
+                        </div>
+                    </div>
+                    <div class='modal-footer' id='seleccionarTemaModalBtns'>
+                        <input type='submit' name='Submit' value='Tancar' class='btn btn-success' id='tancarTemesBtn'>
+                    </div>
+                </div>
+            </div>
 
         <script>
 
@@ -969,25 +1078,61 @@ class PartidaController extends Controller
             });
 
             $('body').on( 'click', '.entrenamentCurs', function() {
-                
-                var id = $(this).attr('id');
-                var selected = $(this).hasClass('entrenamentCursSelected');
-                console.log(selected);
 
-                switch(selected) {
-                    case false:
-                        cursosArray.push(id);
-                        $(this).addClass('entrenamentCursSelected');
-                        break;
-                    case true:
-                        var posicio = cursosArray.indexOf(id);
-                        cursosArray.splice(posicio);
-                        $(this).removeClass('entrenamentCursSelected');
-                        break;
+                var id = $(this).attr('id');
+
+                lastgrupid = id;
+
+                var url = '" . $this->generateUrl('llistatTemes') . "';
+
+                $.post(url, { 'grupid': lastgrupid, 'temesArray': temes }) 
+                    .done(function(response) {
+                        $('#temesGrupTable #temesReload').html('');
+                        $('#temesGrupTable').html(response);
+                    });
+
+                var selected = $(this).hasClass('entrenamentCursSelected');
+
+                $('#seleccionarTemaModal').modal('show');
+
+            });
+
+            $('body').on( 'click', '.elementLlistaTemes', function() {
+                
+                var id = $(this).attr('secid');
+                var posicioGrupArray = '';
+
+                temesGrup.forEach(function(grupA) {
+                    if (grupA[0] == lastgrupid) {
+                        posicioGrupArray = temesGrup.indexOf(grupA);
+                    }
+                });
+
+                if(!$(this).hasClass('temaSeleccionat')) {
+                    temes.push(id);
+                    temesGrup[posicioGrupArray][1].push(id);
+                    $(this).addClass('temaSeleccionat');
+                } else {
+                    var posiciotemes = temes.indexOf(id);
+                    var posicio = temesGrup[posicioGrupArray][1].indexOf(id);
+                    temes.splice(posiciotemes,1);
+                    temesGrup[posicioGrupArray][1].splice(posicio, 1);
+                    $(this).removeClass('temaSeleccionat');
                 }
 
-                console.log(cursosArray);
+                var temestext = '';
 
+                temesGrup[posicioGrupArray][1].forEach(function(tema) {
+                    temestext += '<span>' + tema + ',' + '</span>';
+                });
+
+                console.log(temes);
+                $('.entrenamentCurs#' + lastgrupid + ' .grupTemes').html(temestext);
+
+            });
+
+            $('body').on( 'click', '#tancarTemesBtn', function() {
+                $('#seleccionarTemaModal').modal('hide');
             });
 
             $('body').on( 'click', '#carouselMultiPrev, #carouselMultiNext', function() {
@@ -997,6 +1142,7 @@ class PartidaController extends Controller
             $('body').on( 'click', '#canviModeAccept', function() {
                 $('#canviModeModal').modal('hide');
                 clearHTML();
+                $('#entrenamentBtn').removeClass('active');
                 setTimeout(function(){ $('#llistatGrupsJoc li:first-child a').click(); }, 1000);
             });
         
@@ -1019,6 +1165,8 @@ class PartidaController extends Controller
                 $('#carouselEntrenament').addClass('active');
 
             }
+
+            $(window).trigger('resize');
 
         </script>
 
