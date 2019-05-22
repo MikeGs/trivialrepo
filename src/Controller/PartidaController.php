@@ -887,6 +887,23 @@ class PartidaController extends Controller
             }
         });
 
+        var colorRemove = '';
+
+        colors.forEach(function(color) {
+            if (color[0] == arrJugadors[posicioRemove][1]) {
+                colorRemove = colors.indexOf(color);
+            }
+        });
+
+        var colornRemove = '';
+
+        colorsn.forEach(function(colorn) {
+            if (colorn == colorRemove) {
+                colornRemove = colorsn.indexOf(colorn);
+            }
+        });
+
+        colorsn.splice(colornRemove,1);
         arrJugadors.splice(posicioRemove, 1);
 
         var arrJugadorsStr = '';
