@@ -8,11 +8,11 @@
 
     <div class="card-header border-bottom bg-white d-flex justify-content-between p-0">
         <h1 class="h3">{{grup.nom}} - Llistat d'alumnes</h1>
+        <a class="btn btn-link link-blue" href="{{path('grups')}}"><i class="fas fa-arrow-left"></i>Tornar a grups</a>
     </div>
 
     <div class="alumnes">
-
-    <a href='{{path('grups')}}' id='tornarAGrupsBtn' class='nodeco llistatalumnes'><i class="fas fa-chevron-left"></i> Tornar a grups</a>
+    
     <a href='#' class="btn btn-success float-right afegirbtn" id="afegirAlumneBtn"><i class="fas fa-plus link-white mr-2"></i>Afegir alumne</a>
 
     <div class="llegenda-taula">
@@ -58,7 +58,7 @@
             <td scope="col">Entrenaments F</td>
             <td scope="col">{{ alumne.last_login|date('d-m-Y | h:m') }}</td>
             <td scope="col">
-                <a href="#"><i class="fas fa-eye link-blue mr-2"></i></a>
+                <a href="{{path('resumalumne',{"grupid": grup.id, "alumneid": alumne["usuari_id"] }) }}"><i class="fas fa-eye link-blue mr-2"></i></a>
                 <a href="#"><i class="fas fa-times link-red"></i></a>
             </td>
             </tr>

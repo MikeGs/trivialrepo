@@ -157,6 +157,43 @@ class GrupController extends Controller
     }
 
     /**
+     * @Route("/grup/{grupid}/{alumneid}", name="resumalumne")
+     */
+    public function resumalumne($grupid, $alumneid)
+    {
+
+        $title = "Resum alumne | Trivial UB";
+        $grup = $this->getGrup($grupid);
+        $administradors = $this->getAdministradors();
+        $alumnes = $this->getAlumnesCurs($grupid);
+        $alumneSeleccionat = null;
+
+        foreach($alumnes as $alumne) {
+            if ($alumne['usuari_id'] == $alumneid) {
+                //var_dump($alumne);
+                $alumneSeleccionat = $alumne;
+            }       
+        }
+
+        if ($alumneSeleccionat == null) {
+            return $this->redirectToRoute('inici');
+        }
+
+        $alumneSeleccionat = $this->getUsuari($alumneSeleccionat["usuari_id"]);
+
+        $totsalumnes = $this->getTotsAlumnes();
+
+        return $this->render('grup/resumalumne.html.twig',[
+            'controller_name' => 'GrupController',
+            'grup' =>  $grup,
+            'alumnes' => $alumnes,
+            'alumne' => $alumneSeleccionat,
+            'title' => $title
+        ]);
+
+    }
+
+    /**
      * @Route("/afegirnivell", name="afegirnivell")
      */
     public function newNivell(Request $request)

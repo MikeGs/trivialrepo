@@ -833,6 +833,71 @@ input[type=password] {
 	font-size: 15px!important;
 }
 
+/* RESUM ALUMNE */
+
+.grupAlumne {
+	background-color: rgba(41,41,41,0.2);
+	display: inline-block;
+	padding: 10px;
+	border-radius: 5px;
+}
+
+#alumneContainer {
+	margin-top: 30px;
+}
+
+.alumneWrap, #alumneContainer {
+	width: 100%!important;
+	max-width: none!important;
+
+	margin-right: 0px!important;
+	margin-left: 0px!important;
+}
+
+.alumneDetails {
+	max-width: 500px;
+}
+
+.alumneDetails label {
+	font-weight: bold;
+	width: 150px;
+}
+
+#alumneGrupsLabel {
+	float: left;
+}
+
+#alumneGrupsDetail {
+	width: calc(100% - 150px);
+	float: left;
+}
+
+.alumneDetails label, .alumneDetails p {
+	float: left;
+}
+
+.alumneProfile {
+	min-width: 175px;
+	max-height: 160px;
+
+	text-align: center;
+
+	background-color: rgba(41,41,41,0.05);
+	display: block;
+}
+
+#alumneMiniatura {
+	font-size: 100px;
+}
+
+.detailCamp {
+	width: 100%;
+	display: block;
+	overflow: hidden;
+}
+
+/* RESUM ALUMNE END */
+
 #containerNormesStart {
 	margin-top: 40px;
 }
