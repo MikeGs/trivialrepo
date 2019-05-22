@@ -709,6 +709,14 @@ button:focus {
     border: 1px solid #FFDB70!important;
 }
 
+.no-pointer {
+    pointer-events: none;
+}
+
+.respostaOpcio {
+    cursor: pointer;
+}
+
 .resposta {
     background-color: rgb(255, 255, 255, 0.3);
 }
@@ -793,6 +801,7 @@ button:focus {
     pointer-events: auto!important;
     border-radius: 50%;
     box-shadow: 0px 0px 10px white;
+    z-index: 4;
 }
 
 

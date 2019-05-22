@@ -111,10 +111,25 @@ function mostrarPregunta(id, tema, tipus) {
             setTimeout(function(){ $('#modalPregunta').show(); }, 500);
 
             count = params[0][0]+1;
-            console.log(params[0][0]);
             contador();
-            $(body).on('click','.respostaOpcio', function() {
-                
+
+            $('body').on('click','.respostaOpcio', function() {
+
+                $('.respostaOpcio').addClass('no-pointer');
+                if ($(this).text().trim() == response.respostaCorrecta) {
+                    $(this).removeClass('alert-info').addClass('alert-success');
+                } else {
+                    $(this).removeClass('alert-info').addClass('alert-danger');
+                    var opcions = document.getElementsByClassName('respostaOpcio');
+                    for (var o in opcions) {
+                        if ($(opcions[o]).text().trim() == response.respostaCorrecta) {
+                            $(opcions[o]).removeClass('alert-info').addClass('alert-success');
+                        }
+                        
+                    }
+                }
+
+                setTimeout(function(){ $('#modalPregunta').css('display', 'none') }, 2000);
             });
 
         });
@@ -135,7 +150,7 @@ function mostrarPregunta(id, tema, tipus) {
             setTimeout(function(){ $('#modalPregunta').show(); }, 500);
 
             count = params[0][0]+1;
-            console.log(count);
+
             contador();
         });
     }
@@ -364,10 +379,12 @@ function Casella(elementId, tipus, tema) {
 
 function dado(){
     $('#ui_dado').removeClass('amagat');
+    $('#ui_dado').css('zIndex', '2');
   $('#platform').removeClass('stop').addClass('playing');
   $('#dice');
   setTimeout(function(){
     $('#platform').removeClass('playing').addClass('stop');
+    $('#ui_dado').css('zIndex', '1');
     var number = Math.floor(Math.random() * 6) + 1;
     var x = 0, y = 20, z = -20;
     switch(number){
@@ -402,7 +419,7 @@ function dado(){
     $('#result').html(number);
 
     var casellaActual = window[jugadorsArray[jugadorActual].getCasellaActual().id];
-    casellaActual.activarCaselles(6);
+    casellaActual.activarCaselles(number);
     amagarBotoDau();
   }, 1120);
 };
