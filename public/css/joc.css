@@ -69,8 +69,19 @@ button {
     margin: 0 auto;
     width: 100%;
     padding: 20px 40px;
-    background-color: #876EDF;
-    border-bottom: 1px solid #876EDF;
+    text-shadow: 1px 1px 1px #292929;
+}
+
+.modal-header h5, .modal-header #time {
+    font-weight: 800!important;
+}
+
+#timer.pass {
+    animation: scale 1s linear infinite;
+}
+
+#timer.scalered {
+    animation: scalered 1s linear infinite;
 }
 
 .header-quesito {
@@ -1518,3 +1529,22 @@ button:focus {
     transform: translate(-180%, -50%);
 }
 
+@keyframes scale {
+    50% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes scalered {
+    50% {
+        transform: scale(1.2);
+        color: red;
+    }
+    100% {
+        transform: scale(1);
+        color: white;
+    }
+}

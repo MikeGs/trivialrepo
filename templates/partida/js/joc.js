@@ -8,11 +8,13 @@ tema2 = '';
 tema3 = ''
 tema4 = '';
 tema5 = '';
-team1nom = '';
-team2nom = '';
-team3nom = '';
-team4nom = '';
-team5nom = '';
+tema1nom = '';
+tema2nom = '';
+tema3nom = '';
+tema4nom = '';
+tema5nom = '';
+idioma = 'cat';
+params = getParams();
 
 $(document).ready(function() {
     carregant();
@@ -37,40 +39,143 @@ $(document).ready(function() {
         
 
     }, 3000);
-    //
+    
 });
+
+function contador() {
+
+    count = count - 1;
+    if (count < 0) {
+        document.getElementById("timer").classList.remove('pass');
+        document.getElementById("timer").classList.remove('scalered');
+    } else {
+        
+        document.getElementById("timer").classList.add('pass');
+        document.getElementById("time").innerHTML = count;
+        if (count == (params[0][0]/2)) {
+            document.getElementById("timer").classList.remove('pass');
+             document.getElementById("timer").classList.add('scalered');           
+        }
+    
+        window.setTimeout("contador()", 1000);
+    }
+
+}
 
 function prepararJoc() {
     var url = `{{ path('getTemes') }}`;
     $.post(url, { 'grup' : getGrup() })
     .done(function(response) {
-        console.log(response)
+
         tema1 = response.tema1;
         tema2 = response.tema2;
         tema3 = response.tema3;
         tema4 = response.tema4;
         tema5 = response.tema5;
-        team1nom = response.tema1nom;
-        team2nom = response.tema2nom;
-        team3nom = response.tema3nom;
-        team4nom = response.tema4nom;
-        team5nom = response.tema5nom;
+        tema1nom = response.tema1nom;
+        tema2nom = response.tema2nom;
+        tema3nom = response.tema3nom;
+        tema4nom = response.tema4nom;
+        tema5nom = response.tema5nom;
         {% include 'partida/js/caselles.js' %}
         loadJugadors();
+        $('#est-tema1').text(tema1nom);
+        $('#est-tema2').text(tema2nom);
+        $('#est-tema3').text(tema3nom);
+        $('#est-tema4').text(tema4nom);
+        $('#est-tema5').text(tema5nom);
+        
     });
 }
 
 function mostrarPregunta(id, tema, tipus) {
+    var url = `{{ path('getPregunta') }}`;
     desactivarCaselles();
     setTimeout(function(){ jugadorsArray[jugadorActual].canviarCasella(id); }, 500);
     if (tipus == 'doble') {
         mostrarBotoDau();
     } else if (tipus == 'quesito') {
+        $.post(url, { 'tema': tema, 'idioma': idioma, 'quesito': true })
+        .done(function(response) {
+            $('#modalTitol').text(assignarTemaModal(tema, true));
+            $('#pregunta').text(response.pregunta);
+            respostes = [
+                response.respostaCorrecta, 
+                response.respostaIncorrecta1,
+                response.respostaIncorrecta2,
+                response.respostaIncorrecta3
+                ];
+             
+            shuffle(respostes);
+            assignarRespostesModal(respostes);
+            setTimeout(function(){ $('#modalPregunta').show(); }, 500);
 
+            count = params[0][0]+1;
+            console.log(params[0][0]);
+            contador();
+            $(body).on('click','.respostaOpcio', function() {
+                
+            });
+
+        });
     } else {
+        $.post(url, { 'tema': tema, 'idioma': idioma, 'quesito': false })
+        .done(function(response) {
+            $('#modalTitol').text(assignarTemaModal(tema, false));
+            $('#pregunta').text(response.pregunta);
+            respostes = [
+                response.respostaCorrecta, 
+                response.respostaIncorrecta1,
+                response.respostaIncorrecta2,
+                response.respostaIncorrecta3
+                ];
+            
+            shuffle(respostes);
+            assignarRespostesModal(respostes);
+            setTimeout(function(){ $('#modalPregunta').show(); }, 500);
 
+            count = params[0][0]+1;
+            console.log(count);
+            contador();
+        });
     }
-    //setTimeout(function(){ $('#modalPregunta').show(); }, 500);
+}
+
+function assignarRespostesModal(respostes) {
+    $('#respostaAText').text(respostes[0]);
+    $('#respostaBText').text(respostes[1]);
+    $('#respostaCText').text(respostes[2]);
+    $('#respostaDText').text(respostes[3]);
+}
+
+function getParams() {
+    return eval("[" + readCookie("params") + "]");
+}
+
+function assignarTemaModal(tema, quesito) {
+    var titolModal = '';
+    if (tema1 == tema) {
+        titolModal = tema1nom;
+        $('.modal-header').css({'background-color': '#5CB85C', 'border-bottom': '1px solid #5CB85C'});
+    } else if (tema2 == tema) {
+        titolModal = tema2nom;
+        $('.modal-header').css({'background-color': '#D9534F', 'border-bottom': '1px solid #D9534F'});
+    } else if (tema3 == tema) {
+        titolModal = tema3nom;
+        $('.modal-header').css({'background-color': '#5BBFDE', 'border-bottom': '1px solid #5BBFDE'});
+    } else if (tema4 == tema) {
+        titolModal = tema4nom;
+        $('.modal-header').css({'background-color': '#876EDF', 'border-bottom': '1px solid #876EDF'});
+    } else if (tema5 == tema) {
+        titolModal = tema5nom;
+        $('.modal-header').css({'background-color': '#F0D54E', 'border-bottom': '1px solid #F0D54E'});
+    }
+    if (quesito) {
+        $('.modal-header').addClass('header-quesito');
+    } else {
+        $('.modal-header').removeClass('header-quesito');
+    }
+    return titolModal;
 }
 
 function mostrarBotoDau() {
@@ -297,7 +402,7 @@ function dado(){
     $('#result').html(number);
 
     var casellaActual = window[jugadorsArray[jugadorActual].getCasellaActual().id];
-    casellaActual.activarCaselles(number);
+    casellaActual.activarCaselles(6);
     amagarBotoDau();
   }, 1120);
 };
