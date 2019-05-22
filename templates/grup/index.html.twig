@@ -12,8 +12,8 @@
 
     <div class="grups">
 
-    <a href='{{path('afegirgrup')}}' id='afegirGrupb' class="btn btn-success float-right afegirbtn"><i class="fas fa-plus link-white mr-2"></i>Afegir grup</a>
-    <a href='{{path('afegirnivell')}}' id='afegirNivellb' class="btn btn-success float-right afegirbtn"><i class="fas fa-plus link-white mr-2"></i>Afegir nivell</a>
+    <a href='{{path('afegirgrup')}}' id='afegirGrupb' class="btn btn-success float-right afegirbtn"><i class="fas fa-plus link-white mr-2"></i>Afegir grup</a>-
+    <!--<a href='{{path('afegirnivell')}}' id='afegirNivellb' class="btn btn-success float-right afegirbtn"><i class="fas fa-plus link-white mr-2"></i>Afegir nivell</a>-->
 
     <div class="llegenda-taula">
     
@@ -50,6 +50,9 @@
     </thead>
     <tbody>
     {% for grup in grups %}
+
+    {% if app.user.id == grup.idAdministrador and "ROLE_TEACHER" in app.user.roles or "ROLE_ADMIN" in app.user.roles %}
+
         <tr>
         <td scope="col">{{ grup.nom }}</td>
         <td scope="col">{{ grup.datainici|date('d-m-Y') }}</td>
@@ -90,6 +93,7 @@
             <a href="#"><i class="fas fa-cog link-green"></i></a>
         </td>
         </tr>
+        {% endif %}
         {% endfor %}
     </tbody>
     </table>

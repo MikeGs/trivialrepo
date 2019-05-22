@@ -30,6 +30,19 @@
 
 <body class="container row col col-12 m-0 p-0">
 
+    <div id='usuariFloat' class="alltransition3">
+        <div id='usuariFloatInt'>
+
+            <div id='perfilNom'>
+                <label>{{app.user.nom}}</label>
+            </div>
+
+            <div id='perfilFloat' class='alltransition3'>
+                <label class="alltransition3">{{app.user.nom|slice(0, 1)}}</label>
+            </div>
+        </div>
+    </div>
+
     <div id="startMenu">
 
         <h1 class="p-3">Trivial</h1>
@@ -45,13 +58,11 @@
             </li>
             <li><a id="entrenamentBtn" class="buttonStart list-group-item" href="#">Entrenament</a></li>
             <li><a id="rankingBtn" class="buttonStart list-group-item" href="#">Rànquing</a></li>
-            <li><a id="perfilBtn" class="buttonStart list-group-item" href="#">Perfil</a></li>
-            <li><a id="sortirElement" class="buttonStart list-group-item" href="#">Sortir</a></li>
+            <li><a id="perfilBtn" class="buttonStart list-group-item" href="{{ path('fos_user_profile_edit') }}">Perfil</a></li>
+            <li><a id="sortirElement" class="buttonStart list-group-item" href="{{ path('fos_user_security_logout') }}">Sortir</a></li>
         </ul>
 
         <div id="diagonalColorStart"></div>
-        
-
     </div>
 
     <div id="contingutStart" class="scroll">
@@ -59,10 +70,17 @@
     </div>
 
     <div class="backgroundRotate">
-        <img src="img/bgrotate.png"/>
+        <img src="{{asset('img/bgrotate.png')}}"/>
     </div>
 
     <script>
+
+    $(document).ready(function() {
+        if (readCookie('ferEntreno') == "redirect") {
+            $("#entrenamentBtn").click();     
+        }
+        delete_cookie('ferEntreno');
+    });
 
     var arrayButtons = $(".buttonStart");
 
@@ -80,6 +98,8 @@
 
     $(".partidaBtnGrup").click(function() {
 
+        writeCookie('ferEntreno',"noredirect",1);
+
         var grup = this.id;
         var url = "{{ path('getPartidaPortait') }}";
         var codes;
@@ -95,8 +115,15 @@
 
     $("#entrenamentBtn").click(function() {
 
-        asActive("#entrenamentBtn");
+        if (readCookie('ferEntreno') != "redirect") {
+            writeCookie('ferEntreno',"redirect",1);
+            location.reload();
+        }
 
+        delete_cookie('ferEntreno');
+
+        asActive("#entrenamentBtn");
+        clearHTML();
         var url = "{{ path('getEntrenamentPortait') }}";
         $.post(url) 
 		    .done(function(response) {
