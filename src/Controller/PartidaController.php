@@ -436,7 +436,18 @@ class PartidaController extends Controller
             });
         }
 
+        checkMinMaxJugadors(eval('[' + readCookie('jugadors') + ']').length);
+
         return eval('[' + readCookie('jugadors') + ']').length;
+    }
+
+    function checkMinMaxJugadors(arrayJugadorsLength) {
+
+        if (arrayJugadorsLength >= 1 && arrayJugadorsLength <= 4) {
+            $('#afegirJugador').removeClass('disabledBtn');
+        } else {
+            $('#afegirJugador').addClass('disabledBtn');
+        }
     }
 
     function getRandomNumberColor() {
@@ -734,7 +745,7 @@ class PartidaController extends Controller
 
         var arrJugadors = eval('[' + readCookie('jugadors') + ']');
         
-        if (arrJugadors.length < 5) {
+        if (arrJugadors.length <= 4) {
             $('#afegirJugadorModal').modal('show');
 
             $('body').on('click', '#afegirJugador', function() {
@@ -927,7 +938,7 @@ class PartidaController extends Controller
         /*writeCookie('nomjugadors', arrNomJugadorsStr , 1);*/
         writeCookie('nomjugadors', arrNomJugadors , 1);
 
-        console.log(readCookie('nomjugadors'));
+        //console.log(readCookie('nomjugadors'));
 
         $('#jugli' + removeId).remove();
 
