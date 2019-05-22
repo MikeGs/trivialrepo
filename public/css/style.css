@@ -900,6 +900,7 @@ input[type=password] {
 
 #containerNormesStart {
 	margin-top: 40px;
+	padding-right: 0px;
 }
 
 .playPartidaCard {
@@ -938,21 +939,27 @@ input[type=password] {
 	padding: 0px 15px;
 }
 
-#containerNormes {
+#containerCursosEntrenament {
+	padding-left: 0px!important;
+}
+
+#containerNormes, #containerCursosEntrenament {
 	margin: 0px!important;
 }
 
-#containerNormes, #containerCursos {
+/* #containerCursos */
+/*#containerNormes {
 	width: 55%!important;
-}
+}*/
 
 #containerCursos {
 	margin: 0px!important;
 	padding-left: 0px!important;
+	padding-right: 0px!important;
 }
 
 #containerComençarPartida {
-	width: 45%!important;
+	/*width: 45%!important;*/
 	padding: 0px 0px!important;
 	max-width: 50%!important;
 	margin: 0px!important;
@@ -964,7 +971,7 @@ input[type=password] {
 
 .tableNormes {
 	width: 100%!important;
-	max-width: 524px!important
+	max-width: none!important
 }
 
 .tableNormes li {

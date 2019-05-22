@@ -118,6 +118,18 @@ $(window).on('resize', function () {
         "height": $("#tipusPartidaSlider .carousel-inner").height(),
     });
 
+    $("#containerCursos").css({
+        "width": $("#tipusPartidaSlider").width() + 30,
+    });
+
+    $("#containerNormes").css({
+        "width": $("#tipusPartidaSlider").width() + 60,
+    });
+
+    $("#containerComençarPartida").css({
+        "width": $("#containerNormesStart").width() - $("#containerNormes").width() - 30,
+    });
+
 });
 
 /* MEDIA QUERIES END */
