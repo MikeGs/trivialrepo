@@ -138,7 +138,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h6 class="modal-title" id="desvincularUsuariModal"></h6>
+				<h6 class="modal-title" id="desvincularUsuariModal">Desvincular alumne</h6>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -222,7 +222,7 @@
 		    	
                 alumneDesvincularId = $(this).attr('id');
 
-                $("#desvincularUsuariModalModalMsg").html("<h3>Segur que es vol desvincular l'alumne del grup?</h3><div id='acceptdenyModel' class='col col-md-12'><a id='desvincularAccept' style='margin-right: 5px' href='#' class='btn btn-success'>Si</a><a id='desvincularDeny' href='#' class='btn btn-danger'>No</a></div>");
+                $("#desvincularUsuariModalModalMsg").html("<h3>Segur que es vol desvincular l'alumne del grup?</h3><div style='margin-top: 15px' id='acceptdenyModel' class='col col-md-12'><a id='desvincularAccept' style='margin-right: 5px' href='#' class='btn btn-success'>Si</a><a id='desvincularDeny' href='#' class='btn btn-danger'>No</a></div>");
                 
                 $("#desvincularUsuariModal").modal("show");
 

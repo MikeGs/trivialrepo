@@ -1300,6 +1300,10 @@ input[type=password] {
 	background-color: rgba(255,255,255,0.2);
 }
 
+#usuariFloat:hover #perfilFloat label {
+	transform: scale(1.5);
+}
+
 #perfilFloat label, #perfilNom label {
 	margin-bottom: 0px;
 	width: 100%;
