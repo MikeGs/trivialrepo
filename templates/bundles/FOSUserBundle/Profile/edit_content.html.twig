@@ -32,6 +32,7 @@
     	<div class="mt-4 alert col-12 alert-info">Indica la teva contrasenya per guardar els canvis.</div>
 	    {{ form_label(form.current_password) }}
 	    {{ form_widget(form.current_password) }}
+         {{ form_errors(form.current_password) }}
 	{% endif %}
 
     <div class="col col-lg-12 mb-3 buttonLoginRegisterDiv">

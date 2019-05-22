@@ -1057,6 +1057,11 @@ input[type=password] {
 	display: inline-block;
 }
 
+.buttonLoginRequest {
+	width: 80%!important;
+	display: inline-block;
+}
+
 .formulario-register{
 	margin-top: 50px!important;
 }
