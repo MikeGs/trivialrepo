@@ -132,6 +132,52 @@ class GrupController extends Controller
 
     }
 
+    public function getPartidesAlumnes($alumnes) {
+
+        $temes_partides = [];
+        $counter = [];
+
+        $idx = 0;
+        foreach($alumnes as $alumne) {
+
+            $numPartides = 0;
+
+            $em = $this->getDoctrine()->getManager();
+
+            $connection = $em->getConnection();
+            $statement = $connection->prepare("SELECT *
+            from tema_partida p where id = " . $alumne["usuari_id"]);
+            $statement->execute();
+
+            $temes_partides_array = $statement->fetchAll();
+
+            $temes_partides[$idx] = [$alumne["usuari_id"], $temes_partides_array];
+
+            //var_dump($alumne["usuari_id"]);
+
+            $idx++;
+        }
+
+        return $temes_partides;
+
+    }
+
+    public function comptarPartides() {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $connection = $em->getConnection();
+        $statement = $connection->prepare("SELECT usuari_id, partida_id, count(DISTINCT partida_id) as partides from tema_partida p");
+        $statement->execute();
+
+        $numPartides = $statement->fetchAll();
+            
+        var_dump($numPartides);
+
+        return $numPartides;
+
+    }
+
     /**
      * @Route("/grup/{id}", name="alumnesGrup")
      */
@@ -145,13 +191,18 @@ class GrupController extends Controller
 
         $totsalumnes = $this->getTotsAlumnes();
 
+        $temes_partides = $this->getPartidesAlumnes($alumnes);
+        $comptadorPartides = $this->comptarPartides();
+
         return $this->render('grup/llistatalumnes.html.twig',[
             'controller_name' => 'GrupController',
             'grup' =>  $grup,
             'administradors' => $administradors,
             'alumnes' => $alumnes,
             'totsalumnes' => $totsalumnes,
-            'title' => $title
+            'title' => $title,
+            'temes_partides' => $temes_partides,
+            'comptadorPartides' => $comptadorPartides,
         ]);
 
     }

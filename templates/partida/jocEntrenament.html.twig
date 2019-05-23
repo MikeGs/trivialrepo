@@ -100,6 +100,11 @@
         preguntes = '';
         id = 0;
 
+        temesPuntuacio = [];
+        temesEncerts = [];
+        temesErrors = [];
+        temes = '';
+
         $(document).ready(function() {
             getPreguntes();
         });
@@ -108,11 +113,18 @@
 
         urlGetPregunta = "{{getPreguntaUrl}}";
         urlGetResposta = "{{urlGetResposta}}";
+        urlPujarTemes = "{{urlPujarTemes}}";
 
         function getPreguntes() {
 
-            var temes = eval('[' + readCookie('temes') + ']');
+            temes = eval('[' + readCookie('temes') + ']');
             var preguntesNum = readCookie('preguntesNum');
+
+            temes.forEach(function(tema, idx) {
+                temesPuntuacio[idx] = 0;
+                temesEncerts[idx] = 0;
+                temesErrors[idx] = 0;
+            });
 
             console.log(temes);
 
@@ -149,6 +161,8 @@
                 }
 
                 console.log(preguntes.ids);
+
+                pujarPartida();
 
                 QuestionLoop(0);
             }

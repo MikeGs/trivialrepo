@@ -6,7 +6,14 @@ checkRespostaBool = false;
 checkPartidaPujadaBool = false;
 respostaPartidaPujada = '';
 
+partidaId = '';
+currentTema = '';
+
+PujarTemesResponse = '';
+checkTemesPartidaPujatsBool = false;
+
 //puntuacio = 0;
+
 nivellid = readCookie("nivell");
 
 function QuestionLoop(id) {
@@ -18,15 +25,75 @@ function QuestionLoop(id) {
                 pregunta = response;
         });
 
+        /*if (id == 2) {
+            pujarTemes_Partida();
+        }*/
+
         setTimeout(function(){ checkPregunta() }, 500);
 
     } else {
         
         alert("Fi de l'entrenament!");
-
-        pujarPartida();
+        pujarTemes_Partida();
 
     }
+
+}
+
+function pujarTemes_Partida() {
+
+    Temes_partida = [];
+
+    /*console.log(temesPuntuacio);
+    console.log(temesEncerts);
+    console.log(temesErrors);*/
+
+    temes.forEach(function(tema, idx) {
+
+        var tp = new Tema_partida(tema, temesPuntuacio[idx], temesEncerts[idx], temesErrors[idx]);
+        Temes_partida[idx] = tp;
+
+    });
+
+    console.log(Temes_partida);
+
+    Temes_partidaJSON = JSON.stringify(Temes_partida);
+
+    $.post(urlPujarTemes, { 'temes_partidaJSON': Temes_partidaJSON }) 
+            .done(function(response) {
+                PujarTemesResponse = response;
+        });
+
+        setTimeout(function(){ checkTemesPartidaPujats() }, 500);
+
+}
+
+function checkTemesPartidaPujats() {
+
+    if (PujarTemesResponse == '') {
+        checkTemesPartidaPujatsBool = false;
+        checkTemesPartidaPujats();
+    } else {
+        checkTemesPartidaPujatsBool = true;
+    }
+
+    if (checkTemesPartidaPujatsBool) {
+        console.log("Temes_partida pujats correctament");
+    }
+
+}
+
+function Tema_partida(temaid, puntuacio, encerts, errors) {
+    // 	id	usuari_id	partida_id	id_tema_id	nom	puntuacio	encerts	errors	formatges
+
+    this.usuari_id = 0;
+    this.partida_id = partidaId;
+    this.id_tema_id = temaid;
+    this.nom = "Tema";
+    this.puntuacio = puntuacio;
+    this.encerts = encerts;
+    this.errors = errors;
+    this.formatges = 0;
 
 }
 
@@ -36,7 +103,7 @@ function pujarPartida() {
 
     $.post(urlPujarPartida, { 'partida': partida}) 
             .done(function(response) {
-                respostaPartidaPujada = response
+                respostaPartidaPujada = eval('[' + response + ']');
         });
 
     setTimeout(function(){ checkPartidaPujada() }, 500);
@@ -54,6 +121,8 @@ function checkPartidaPujada() {
 
     if (checkPartidaPujadaBool) {
         console.log("Partida pujada correctament");
+        console.log("partidaid: " + respostaPartidaPujada[0]);
+        partidaId = respostaPartidaPujada[0];
     }
 
 }
@@ -72,6 +141,8 @@ function checkPregunta() {
         pregunta = '';
         pregunta = new Pregunta(preguntaObj);
         preguntaObj = '';
+
+        currentTema = pregunta.tema;
 
         console.log(pregunta);
 
@@ -139,6 +210,16 @@ function checkResposta(resposta) {
 
 }
 
+function getTemaPos() {
+    var pos = '';
+    temes.forEach(function(tema, idx) {
+        if (tema == currentTema) {
+            pos = idx;
+        }
+    });
+    return pos;
+}
+
 function checkIfCorrecte() {
 
     //console.log(respostaFinale);
@@ -152,6 +233,11 @@ function checkIfCorrecte() {
 
     console.log(respostaFinale);
 
+    var posicioTema = getTemaPos();
+    console.log("Current tema: " + currentTema + " Posició: " + posicioTema);
+
+    actualitzarValors(respostaFinale[0], posicioTema);
+
     if (respostaFinale[0] == true) {
         console.log('Correcte');
         respostaCorrecte();
@@ -159,6 +245,29 @@ function checkIfCorrecte() {
         console.log('Incorrecte');
         respostaIncorrecte();
     }
+
+}
+
+function actualitzarValors(boolResposta, posicioTema) {
+
+    /*temesPuntuacio = [];
+    temesEncerts = [];
+    temesErrors = [];*/
+
+    switch(boolResposta) {
+        case true:
+            temesPuntuacio[posicioTema] = temesPuntuacio[posicioTema] + 15;
+            temesEncerts[posicioTema]++;
+            break;
+        case false:
+            temesPuntuacio[posicioTema] = temesPuntuacio[posicioTema] - 7;
+            temesErrors[posicioTema]++;
+            break;
+    }
+
+    console.log(temesPuntuacio);
+    console.log(temesEncerts);
+    console.log(temesErrors);
 
 }
 

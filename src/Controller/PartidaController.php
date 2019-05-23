@@ -15,6 +15,7 @@ use App\Entity\Pregunta;
 use App\Entity\Dificultat;
 use App\Entity\Partida;
 use App\Entity\TipusPartida;
+use App\Entity\TemaPartida;
 
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -1533,6 +1534,57 @@ class PartidaController extends Controller
 
     }
 
+    function getPartida($id) {
+
+        $partida = $this->getDoctrine()
+            ->getRepository(Partida::class)
+            ->find($id);
+
+        return $partida;
+
+    }
+
+    /**
+     * @Route("/urlPujarTemes", name="urlPujarTemes")
+     */
+    public function urlPujarTemes(Request $request) {
+
+        $Temes_partidaJSON = $request->request->get('temes_partidaJSON');
+        $temes_partida = json_decode($Temes_partidaJSON);
+        $usuari = $this->getUser();
+
+        //var_dump($temes_partida);
+
+        foreach($temes_partida as $tema_partida) {
+
+            $partida = $this->getPartida($tema_partida->partida_id);
+            $tema = $this->getTema($tema_partida->id_tema_id);
+
+            $tp = new TemaPartida();
+            $tp->setNom($tema_partida->nom);
+            $tp->setPuntuacio((int)$tema_partida->puntuacio);
+            $tp->setEncerts((int)$tema_partida->encerts);
+            $tp->setErrors((int)$tema_partida->errors);
+            $tp->setFormatges((int)$tema_partida->formatges);
+            $tp->setUsuari($usuari);
+            $tp->setPartida($partida);
+            $tp->setIdTema($tema);
+
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($tp);
+            $em->flush();
+
+            //var_dump($tp);
+
+        }
+
+        return new Response(
+            "true"
+        );
+
+    }
+
     /**
      * @Route("/jugarEntrenament", name="jugarEntrenament")
      */
@@ -1544,6 +1596,7 @@ class PartidaController extends Controller
         $getPreguntaUrl = $this->generateUrl('getPreguntaById');
         $urlGetResposta = $this->generateUrl('getRespostaPregunta');
         $urlPujarPartida = $this->generateUrl('pujarPartida');
+        $urlPujarTemes = $this->generateUrl('urlPujarTemes');
 
         $title = "Partida d'entrenament | Trivial UB";
 
@@ -1553,6 +1606,7 @@ class PartidaController extends Controller
             'getPreguntaUrl' => $getPreguntaUrl,
             'urlGetResposta' => $urlGetResposta,
             'urlPujarPartida' => $urlPujarPartida,
+            'urlPujarTemes' => $urlPujarTemes,
         ]);
 
 
@@ -1587,7 +1641,7 @@ class PartidaController extends Controller
         $usuari = $this->getUser();
 
         $data = new DateTime();
-        var_dump($data);
+        //var_dump($data);
 
         $nivell = $this->getNivell((int)$partidaArray["idNivell"]);
         $tipusPartida = $this->getTipusPartida((int)$partidaArray["idTipusPartida"]);
@@ -1598,15 +1652,28 @@ class PartidaController extends Controller
         $partida->setidTipusPartida($tipusPartida);
         $partida->addUsuari($usuari);
 
-        //var_dump($partida);
-
         $em = $this->getDoctrine()->getManager();
 
         $em->persist($partida);
+        $em->persist($usuari);
         $em->flush();
 
+        $dataFind = $partida->getData();
+        $dataJSON = json_encode($dataFind);
+        $dataObj = json_decode($dataJSON);
+
+        $dataFinal = substr($dataObj->date, 0, strlen($dataObj->date)-7);
+
+        $connection = $em->getConnection();
+        $statement = $connection->prepare("SELECT p.id, p.data as data
+        from partida p where p.data LIKE '" . $dataFinal . "' LIMIT 1");
+        $statement->execute();
+
+        $partidesTemp = $statement->fetchAll();
+        $partidaId = $partidesTemp[0]["id"];
+
         return new Response(
-            "true"
+            $partidaId . "," . "true"
         );
     }
 
