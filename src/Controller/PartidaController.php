@@ -106,9 +106,9 @@ class PartidaController extends Controller
     }
 
     /**
-     * @Route("/get-pregunta", name="getPregunta")
+     * @Route("/get-pregunta", name="getPregunta_ajax")
      */
-    public function getPregunta(Request $request) : JsonResponse {
+    public function getPreguntaAJAX(Request $request) : JsonResponse {
 
         $em = $this->getDoctrine()->getManager();
 

@@ -105,7 +105,7 @@ function prepararJoc() {
 }
 
 function mostrarPregunta(id, tema, tipus) {
-    var url = `{{ path('getPregunta') }}`;
+    var url = `{{ path('getPregunta_ajax') }}`;
     desactivarCaselles();
     setTimeout(function(){ jugadorsArray[jugadorActual].canviarCasella(id); }, 500);
     if (tipus == 'doble') {
