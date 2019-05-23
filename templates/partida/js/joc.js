@@ -43,7 +43,7 @@ $(document).ready(function() {
     
 });
 
-function contador(quesito) {
+function contador(tema,quesito) {
 
     count = count - 1;
     if (count < 0) {
@@ -62,10 +62,12 @@ function contador(quesito) {
         }
         tempsFinalitzat();
         if (quesito) {
-            restarPunts(quesito);
+            restarQuesito(tema);
+            jugadorsArray[jugadorActual].printQuesitos();
         } else {
             restarPunts(tema);
         }
+        jugadorsArray[jugadorActual].printEstadistiques();
 
         jugadorsArray[jugadorActual].finalitzaTorn();
 
@@ -118,6 +120,11 @@ function prepararJoc() {
         tema3 = response.tema3;
         tema4 = response.tema4;
         tema5 = response.tema5;
+        tema1est = 'est-bar2';
+        tema2est = 'est-bar5';
+        tema3est = 'est-bar4';
+        tema4est = 'est-bar3';
+        tema5est = 'est-bar1';
         tema1nom = response.tema1nom;
         tema2nom = response.tema2nom;
         tema3nom = response.tema3nom;
@@ -164,7 +171,7 @@ function mostrarPregunta(id, tema, tipus) {
             count = params[0][0]+1;
             contadorActiu = true;
         
-            contador(true);
+            contador(tema,true);
             $('body').on('click','.respostaOpcio', function() {
 
                 $('.respostaOpcio').addClass('no-pointer');
@@ -173,6 +180,7 @@ function mostrarPregunta(id, tema, tipus) {
 
                     assignarQuesito(tema);
                     jugadorsArray[jugadorActual].printQuesitos();
+                    jugadorsArray[jugadorActual].printEstadistiques();
                     //comprovar si s'acaba partida
                     if (jugadorsArray[jugadorActual].sumaQuesitos >= 5) {
                         //acaba
@@ -191,7 +199,7 @@ function mostrarPregunta(id, tema, tipus) {
                     }
                     restarQuesito(tema);
                     jugadorsArray[jugadorActual].printQuesitos();
-
+                    jugadorsArray[jugadorActual].printEstadistiques();
                     jugadorsArray[jugadorActual].finalitzaTorn();
 
                     jugadorActual++;
@@ -241,7 +249,7 @@ function mostrarPregunta(id, tema, tipus) {
             count = params[0][0]+1;
             contadorActiu = true;
 
-            contador(false);
+            contador(tema,false);
 
             $('body').on('click','.respostaOpcio', function() {
 
@@ -250,6 +258,7 @@ function mostrarPregunta(id, tema, tipus) {
                     $(this).removeClass('alert-info').addClass('alert-success');
                     
                     sumarPunts(tema);
+                    jugadorsArray[jugadorActual].printEstadistiques();
                     setTimeout(function(){ 
                         mostrarBotoDau();
                     }, 2000);
@@ -263,6 +272,7 @@ function mostrarPregunta(id, tema, tipus) {
                         }    
                     }
                     restarPunts(tema);
+                    jugadorsArray[jugadorActual].printEstadistiques();
                     //saltar torn
                     jugadorsArray[jugadorActual].finalitzaTorn();
 
@@ -339,30 +349,35 @@ function assignarQuesito(tema) {
         color = '#5CB85C';
         jugadorsArray[jugadorActual].tema1Encerts += 1;
         jugadorsArray[jugadorActual].tema1Puntuacio += params[0][2];
+        console.log(jugadorsArray[jugadorActual].tema1Encerts)
     } else if (tema2 == tema) {
         jugadorsArray[jugadorActual].addQuesitoTema2();
         msg += `vermell!`;
         color = '#D9534F';
         jugadorsArray[jugadorActual].tema2Encerts += 1;
         jugadorsArray[jugadorActual].tema2Puntuacio += params[0][2];
+        console.log(jugadorsArray[jugadorActual].tema2Encerts)
     } else if (tema3 == tema) {
         jugadorsArray[jugadorActual].addQuesitoTema3();
         msg += `blau!`;
         color = '#5BBFDE';
         jugadorsArray[jugadorActual].tema3Encerts += 1;
         jugadorsArray[jugadorActual].tema3Puntuacio += params[0][2];
+        console.log(jugadorsArray[jugadorActual].tema3Encerts)
     } else if (tema4 == tema) {
         jugadorsArray[jugadorActual].addQuesitoTema4();
         msg += `lila!`;
         color = '#876EDF';
         jugadorsArray[jugadorActual].tema4Encerts += 1;
         jugadorsArray[jugadorActual].tema4Puntuacio += params[0][2];
+        console.log(jugadorsArray[jugadorActual].tema4Encerts)
     } else if (tema5 == tema) {
         jugadorsArray[jugadorActual].addQuesitoTema5();
         msg += `groc!`;
         color = '#F0D54E';
         jugadorsArray[jugadorActual].tema5Encerts += 1;
         jugadorsArray[jugadorActual].tema5Puntuacio += params[0][2];
+        console.log(jugadorsArray[jugadorActual].tema5Encerts)
     }
 
     jugadorsArray[jugadorActual].totalPuntuacio += params[0][2];
@@ -668,6 +683,7 @@ function Jugador(elementId, color) {
         $('#points-span').text(jugadorsArray[jugadorActual].totalPuntuacio);
         $('#points-shadow-span').text($('#points-span').text());
         jugadorsArray[jugadorActual].printQuesitos();
+        jugadorsArray[jugadorActual].printEstadistiques();
     }
 
     this.finalitzaTorn = function() {
@@ -765,6 +781,39 @@ function Jugador(elementId, color) {
         } else {
             $('.groc').addClass('no-quesito');
         }
+    }
+
+    this.printEstadistiques = function() {
+        var max1 = this.tema1Encerts + this.tema1Errors;
+        var actualEncerts1 = (this.tema1Encerts / max1) * 100;
+
+        $('#'+tema1est).attr('aria-valuenow', actualEncerts1);
+        $('#'+tema1est).css('width', actualEncerts1 + '%');
+
+
+        var max2 = this.tema2Encerts + this.tema2Errors;
+        var actualEncerts2 = (this.tema2Encerts / max2) * 100;
+
+        $('#'+tema2est).attr('aria-valuenow', actualEncerts2);
+        $('#'+tema2est).css('width', actualEncerts2 + '%');
+
+        var max3 = this.tema3Encerts + this.tema3Errors;
+        var actualEncerts3 = (this.tema3Encerts / max3) * 100;
+
+        $('#'+tema3est).attr('aria-valuenow', actualEncerts3);
+        $('#'+tema3est).css('width', actualEncerts3 + '%');
+
+        var max4 = this.tema4Encerts + this.tema4Errors;
+        var actualEncerts4 = (this.tema4Encerts / max4) * 100;
+
+        $('#'+tema4est).attr('aria-valuenow', actualEncerts4);
+        $('#'+tema4est).css('width', actualEncerts4 + '%');
+
+        var max5 = this.tema5Encerts + this.tema5Errors;
+        var actualEncerts5 = (this.tema5Encerts / max5) * 100;
+
+        $('#'+tema5est).attr('aria-valuenow', actualEncerts5);
+        $('#'+tema5est).css('width', actualEncerts5 + '%');
     }
 
 }
