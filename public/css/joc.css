@@ -194,7 +194,12 @@ button {
     box-shadow: inset 0 10px 50px #C12824;
 }
 
+.progress > div {
+  text-align: center;
+}
+
 #est-bar1 {
+  color: black;
     background-color: #F0D54E;
 }
 #est-bar1-2 {
