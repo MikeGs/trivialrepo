@@ -62,7 +62,7 @@ box51 = new Casella('box51', 'normal', tema5);
 box52 = new Casella('box52', 'normal', tema3);
 box53 = new Casella('box53', 'doble', '');
 box54 = new Casella('box54', 'normal', tema4);
-box55 = new Casella('box55', 'normal', tema2);
+box55 = new Casella('box55', 'normal', tema1);
 
 box56 = new Casella('box56', 'normal', tema2);
 box57 = new Casella('box57', 'normal', tema4);

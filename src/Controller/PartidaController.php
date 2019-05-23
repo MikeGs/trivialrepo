@@ -125,7 +125,7 @@ class PartidaController extends Controller
             $dificultat = $em->getRepository(Dificultat::class)->findOneById(1);
         }
 
-        $preguntes = $em->getRepository(Pregunta::class)->findBy(['idTema' => $tema, 'idDificultat' => $dificultat]);
+        $preguntes = $em->getRepository(Pregunta::class)->findBy(['idTema' => $tema, 'idDificultat' => $dificultat, 'activa' => true]);
 
         $maxRand = count($preguntes);
 
