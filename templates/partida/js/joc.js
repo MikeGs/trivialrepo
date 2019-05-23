@@ -8,11 +8,14 @@ tema2 = '';
 tema3 = ''
 tema4 = '';
 tema5 = '';
-team1nom = '';
-team2nom = '';
-team3nom = '';
-team4nom = '';
-team5nom = '';
+tema1nom = '';
+tema2nom = '';
+tema3nom = '';
+tema4nom = '';
+tema5nom = '';
+idioma = 'cat';
+params = getParams();
+contadorActiu = false;
 
 $(document).ready(function() {
     carregant();
@@ -37,40 +40,493 @@ $(document).ready(function() {
         
 
     }, 3000);
-    //
+    
 });
+
+function contador(quesito) {
+
+    count = count - 1;
+    if (count < 0) {
+        contadorActiu = false;
+        document.getElementById("timer").classList.remove('pass');
+        document.getElementById("timer").classList.remove('scalered');
+        document.getElementById("timer").classList.add('out');
+        $('.respostaOpcio').addClass('no-pointer');
+        var opcions = document.getElementsByClassName('respostaOpcio');
+
+        for (var o in opcions) {
+            if ($(opcions[o]).text().trim() == respostaCorrecta) {
+         
+                $(opcions[o]).removeClass('alert-info').addClass('alert-success');
+            }    
+        }
+        tempsFinalitzat();
+        if (quesito) {
+            restarPunts(quesito);
+        } else {
+            restarPunts(tema);
+        }
+
+        jugadorsArray[jugadorActual].finalitzaTorn();
+
+        jugadorActual++;
+        if (jugadorActual >= jugadorsArray.length) {
+            jugadorActual = 0;
+
+        }
+        setTimeout(function(){
+            jugadorsArray[jugadorActual].iniciaTorn();
+            mostrarBotoDau();
+            $('#modalPregunta').css('display', 'none');
+
+            count = params[0][0]+1; 
+            $('.respostaOpcio').removeClass('no-pointer');
+            $('.respostaOpcio').removeClass('alert-success');
+            $('.respostaOpcio').removeClass('alert-danger');
+            $('.respostaOpcio').addClass('alert-info');
+        }, 2000);
+                
+    } else {
+        
+        document.getElementById("timer").classList.add('pass');
+        document.getElementById("time").innerHTML = count;
+        if (count == (params[0][0]/2)) {
+            document.getElementById("timer").classList.remove('pass');
+             document.getElementById("timer").classList.add('scalered');           
+        }
+    
+        if (contadorActiu) 
+        {
+            window.setTimeout("contador()", 1000);
+        }
+        
+    }
+
+}
+
+function tempsFinalitzat() {
+
+}
 
 function prepararJoc() {
     var url = `{{ path('getTemes') }}`;
     $.post(url, { 'grup' : getGrup() })
     .done(function(response) {
-        console.log(response)
+
         tema1 = response.tema1;
         tema2 = response.tema2;
         tema3 = response.tema3;
         tema4 = response.tema4;
         tema5 = response.tema5;
-        team1nom = response.tema1nom;
-        team2nom = response.tema2nom;
-        team3nom = response.tema3nom;
-        team4nom = response.tema4nom;
-        team5nom = response.tema5nom;
+        tema1nom = response.tema1nom;
+        tema2nom = response.tema2nom;
+        tema3nom = response.tema3nom;
+        tema4nom = response.tema4nom;
+        tema5nom = response.tema5nom;
         {% include 'partida/js/caselles.js' %}
         loadJugadors();
+        $('#est-tema1').text(tema1nom);
+        $('#est-tema2').text(tema2nom);
+        $('#est-tema3').text(tema3nom);
+        $('#est-tema4').text(tema4nom);
+        $('#est-tema5').text(tema5nom);
+        
     });
 }
 
 function mostrarPregunta(id, tema, tipus) {
+    var url = `{{ path('getPregunta_ajax') }}`;
     desactivarCaselles();
     setTimeout(function(){ jugadorsArray[jugadorActual].canviarCasella(id); }, 500);
     if (tipus == 'doble') {
         mostrarBotoDau();
     } else if (tipus == 'quesito') {
+        $.post(url, { 'tema': tema, 'idioma': idioma, 'quesito': true })
+        .done(function(response) {
+            $('#modalTitol').text(assignarTemaModal(tema, true));
+            $('#pregunta').text(response.pregunta);
+            respostaCorrecta = response.respostaCorrecta;
+            respostes = [
+                response.respostaCorrecta, 
+                response.respostaIncorrecta1,
+                response.respostaIncorrecta2,
+                response.respostaIncorrecta3
+                ];
+             
+            shuffle(respostes);
+            assignarRespostesModal(respostes);
+            setTimeout(function(){ 
+                $('#modalPregunta').show(); 
+                $('#ui_dado').addClass('amagat');
+                $('#result').text('');
+            }, 500);
 
+            count = params[0][0]+1;
+            contadorActiu = true;
+        
+            contador(true);
+            $('body').on('click','.respostaOpcio', function() {
+
+                $('.respostaOpcio').addClass('no-pointer');
+                if ($(this).text().trim() == response.respostaCorrecta) {
+                    $(this).removeClass('alert-info').addClass('alert-success');
+
+                    assignarQuesito(tema);
+                    jugadorsArray[jugadorActual].printQuesitos();
+                    //comprovar si s'acaba partida
+                    if (jugadorsArray[jugadorActual].sumaQuesitos >= 5) {
+                        //acaba
+                    } else {
+                        setTimeout(function(){ 
+                            mostrarBotoDau();
+                        }, 2000);
+                    }
+                } else {
+                    $(this).removeClass('alert-info').addClass('alert-danger');
+                    var opcions = document.getElementsByClassName('respostaOpcio');
+                    for (var o in opcions) {
+                        if ($(opcions[o]).text().trim() == response.respostaCorrecta) {
+                            $(opcions[o]).removeClass('alert-info').addClass('alert-success');
+                        }    
+                    }
+                    restarQuesito(tema);
+                    jugadorsArray[jugadorActual].printQuesitos();
+
+                    jugadorsArray[jugadorActual].finalitzaTorn();
+
+                    jugadorActual++;
+                    if (jugadorActual >= jugadorsArray.length) {
+                        jugadorActual = 0;
+
+                    }
+                    setTimeout(function(){
+                        jugadorsArray[jugadorActual].iniciaTorn();
+                        mostrarBotoDau();
+                    }, 2000);
+                }
+                setTimeout(function(){ 
+                    $('#modalPregunta').css('display', 'none'); 
+                    count = params[0][0]+1; 
+                    $('.respostaOpcio').removeClass('no-pointer');
+                    $('.respostaOpcio').removeClass('alert-success');
+                    $('.respostaOpcio').removeClass('alert-danger');
+                    $('.respostaOpcio').addClass('alert-info');
+                }, 2000);
+                contadorActiu = false;
+                $("body").off("click",'.respostaOpcio');
+            });
+
+        });
     } else {
+        $.post(url, { 'tema': tema, 'idioma': idioma, 'quesito': false })
+        .done(function(response) {
+            $('#modalTitol').text(assignarTemaModal(tema, false));
+            $('#pregunta').text(response.pregunta);
+            respostaCorrecta = response.respostaCorrecta;
+            respostes = [
+                response.respostaCorrecta, 
+                response.respostaIncorrecta1,
+                response.respostaIncorrecta2,
+                response.respostaIncorrecta3
+                ];
+            
+            shuffle(respostes);
+            assignarRespostesModal(respostes);
+            setTimeout(function(){ 
+                $('#modalPregunta').show(); 
+                $('#ui_dado').addClass('amagat');
+                $('#result').text('');
+            }, 500);
 
+            count = params[0][0]+1;
+            contadorActiu = true;
+
+            contador(false);
+
+            $('body').on('click','.respostaOpcio', function() {
+
+                $('.respostaOpcio').addClass('no-pointer');
+                if ($(this).text().trim() == response.respostaCorrecta) {
+                    $(this).removeClass('alert-info').addClass('alert-success');
+                    
+                    sumarPunts(tema);
+                    setTimeout(function(){ 
+                        mostrarBotoDau();
+                    }, 2000);
+                    
+                } else {
+                    $(this).removeClass('alert-info').addClass('alert-danger');
+                    var opcions = document.getElementsByClassName('respostaOpcio');
+                    for (var o in opcions) {
+                        if ($(opcions[o]).text().trim() == response.respostaCorrecta) {
+                            $(opcions[o]).removeClass('alert-info').addClass('alert-success');
+                        }    
+                    }
+                    restarPunts(tema);
+                    //saltar torn
+                    jugadorsArray[jugadorActual].finalitzaTorn();
+
+                    jugadorActual++;
+                    if (jugadorActual >= jugadorsArray.length) {
+                        jugadorActual = 0;
+
+                    }
+                    setTimeout(function(){
+                        jugadorsArray[jugadorActual].iniciaTorn();
+                        mostrarBotoDau();
+                    }, 2000);
+                }
+            
+                setTimeout(function(){ 
+                    $('#modalPregunta').css('display', 'none'); 
+                    count = params[0][0]+1; 
+                    $('.respostaOpcio').removeClass('no-pointer');
+                    $('.respostaOpcio').removeClass('alert-success');
+                    $('.respostaOpcio').removeClass('alert-danger');
+                    $('.respostaOpcio').addClass('alert-info');
+                }, 2000);
+                contadorActiu = false;
+                $("body").off("click",'.respostaOpcio');
+            });
+        });
     }
-    //setTimeout(function(){ $('#modalPregunta').show(); }, 500);
+}
+
+function assignarRespostesModal(respostes) {
+    $('#respostaAText').text(respostes[0]);
+    $('#respostaBText').text(respostes[1]);
+    $('#respostaCText').text(respostes[2]);
+    $('#respostaDText').text(respostes[3]);
+}
+
+function getParams() {
+    return eval("[" + readCookie("params") + "]");
+}
+
+function assignarTemaModal(tema, quesito) {
+    var titolModal = '';
+    if (tema1 == tema) {
+        titolModal = tema1nom;
+        $('.modal-header').css({'background-color': '#5CB85C', 'border-bottom': '1px solid #5CB85C'});
+    } else if (tema2 == tema) {
+        titolModal = tema2nom;
+        $('.modal-header').css({'background-color': '#D9534F', 'border-bottom': '1px solid #D9534F'});
+    } else if (tema3 == tema) {
+        titolModal = tema3nom;
+        $('.modal-header').css({'background-color': '#5BBFDE', 'border-bottom': '1px solid #5BBFDE'});
+    } else if (tema4 == tema) {
+        titolModal = tema4nom;
+        $('.modal-header').css({'background-color': '#876EDF', 'border-bottom': '1px solid #876EDF'});
+    } else if (tema5 == tema) {
+        titolModal = tema5nom;
+        $('.modal-header').css({'background-color': '#F0D54E', 'border-bottom': '1px solid #F0D54E'});
+    }
+    if (quesito) {
+        $('.modal-header').addClass('header-quesito');
+    } else {
+        $('.modal-header').removeClass('header-quesito');
+    }
+    return titolModal;
+}
+
+function assignarQuesito(tema) {
+    var nom = jugadorsArray[jugadorActual].getElement().textContent;
+    var color = '';
+    var msg = `El jugador <strong>${nom}</strong> ha guanyat el formatget `;
+    if (tema1 == tema) {
+        jugadorsArray[jugadorActual].addQuesitoTema1();
+        msg += `verd!`;
+        color = '#5CB85C';
+        jugadorsArray[jugadorActual].tema1Encerts += 1;
+        jugadorsArray[jugadorActual].tema1Puntuacio += params[0][2];
+    } else if (tema2 == tema) {
+        jugadorsArray[jugadorActual].addQuesitoTema2();
+        msg += `vermell!`;
+        color = '#D9534F';
+        jugadorsArray[jugadorActual].tema2Encerts += 1;
+        jugadorsArray[jugadorActual].tema2Puntuacio += params[0][2];
+    } else if (tema3 == tema) {
+        jugadorsArray[jugadorActual].addQuesitoTema3();
+        msg += `blau!`;
+        color = '#5BBFDE';
+        jugadorsArray[jugadorActual].tema3Encerts += 1;
+        jugadorsArray[jugadorActual].tema3Puntuacio += params[0][2];
+    } else if (tema4 == tema) {
+        jugadorsArray[jugadorActual].addQuesitoTema4();
+        msg += `lila!`;
+        color = '#876EDF';
+        jugadorsArray[jugadorActual].tema4Encerts += 1;
+        jugadorsArray[jugadorActual].tema4Puntuacio += params[0][2];
+    } else if (tema5 == tema) {
+        jugadorsArray[jugadorActual].addQuesitoTema5();
+        msg += `groc!`;
+        color = '#F0D54E';
+        jugadorsArray[jugadorActual].tema5Encerts += 1;
+        jugadorsArray[jugadorActual].tema5Puntuacio += params[0][2];
+    }
+
+    jugadorsArray[jugadorActual].totalPuntuacio += params[0][2];
+    $('#points-span').text(jugadorsArray[jugadorActual].totalPuntuacio);
+    $('#points-shadow-span').text($('#points-span').text());
+    
+    var quesitoLog = [msg, color];
+
+    return quesitoLog;
+}
+
+function restarQuesito(tema) {
+    var nom = jugadorsArray[jugadorActual].getElement().textContent;
+    var color = '';
+    var msg = `El jugador <strong>${nom}</strong> ha perdut el formatget `;
+    if (tema1 == tema) {
+        jugadorsArray[jugadorActual].removeQuesitoTema1();
+        msg += `verd!`;
+        color = '#5CB85C';
+        jugadorsArray[jugadorActual].tema1Errors += 1;
+        jugadorsArray[jugadorActual].tema1Puntuacio -= params[0][2];
+        if (jugadorsArray[jugadorActual].tema1Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema1Puntuacio = 0;
+        } 
+    } else if (tema2 == tema) {
+        jugadorsArray[jugadorActual].removeQuesitoTema2();
+        msg += `vermell!`;
+        color = '#D9534F';
+        jugadorsArray[jugadorActual].tema2Errors += 1;
+        jugadorsArray[jugadorActual].tema2Puntuacio -= params[0][2];
+        if (jugadorsArray[jugadorActual].tema2Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema2Puntuacio = 0;
+        } 
+    } else if (tema3 == tema) {
+        jugadorsArray[jugadorActual].removeQuesitoTema3();
+        msg += `blau!`;
+        color = '#5BBFDE';
+        jugadorsArray[jugadorActual].tema3Errors += 1;
+        jugadorsArray[jugadorActual].tema3Puntuacio -= params[0][2];
+        if (jugadorsArray[jugadorActual].tema3Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema3Puntuacio = 0;
+        } 
+    } else if (tema4 == tema) {
+        jugadorsArray[jugadorActual].removeQuesitoTema4();
+        msg += `lila!`;
+        color = '#876EDF';
+        jugadorsArray[jugadorActual].tema4Errors += 1;
+        jugadorsArray[jugadorActual].tema4Puntuacio -= params[0][2];
+        if (jugadorsArray[jugadorActual].tema4Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema4Puntuacio = 0;
+        } 
+    } else if (tema5 == tema) {
+        jugadorsArray[jugadorActual].removeQuesitoTema5();
+        msg += `groc!`;
+        color = '#F0D54E';
+        jugadorsArray[jugadorActual].tema5Errors += 1;
+        jugadorsArray[jugadorActual].tema5Puntuacio -= params[0][2];
+        if (jugadorsArray[jugadorActual].tema5Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema5Puntuacio = 0;
+        } 
+    }
+    jugadorsArray[jugadorActual].totalPuntuacio -= params[0][2];
+    if (jugadorsArray[jugadorActual].totalPuntuacio < 0) {
+        jugadorsArray[jugadorActual].totalPuntuacio = 0;
+    } 
+    $('#points-span').text(jugadorsArray[jugadorActual].totalPuntuacio);
+    $('#points-shadow-span').text($('#points-span').text());
+    
+    var quesitoLog = [msg, color];
+
+    return quesitoLog;
+}
+
+function sumarPunts(tema) {
+    var nom = jugadorsArray[jugadorActual].getElement().textContent;
+    var color = '';
+    var msg = `El jugador <strong>${nom}</strong> ha guanyat ${params[0][1]} punts!`;
+    if (tema1 == tema) {
+        color = '#5CB85C';
+        jugadorsArray[jugadorActual].tema1Encerts += 1;
+        jugadorsArray[jugadorActual].tema1Puntuacio += params[0][1];
+    } else if (tema2 == tema) {
+        color = '#D9534F';
+        jugadorsArray[jugadorActual].tema2Encerts += 1;
+        jugadorsArray[jugadorActual].tema2Puntuacio += params[0][1];
+    } else if (tema3 == tema) {
+        color = '#5BBFDE';
+        jugadorsArray[jugadorActual].tema3Encerts += 1;
+        jugadorsArray[jugadorActual].tema3Puntuacio += params[0][1];
+    } else if (tema4 == tema) {
+        color = '#876EDF';
+        jugadorsArray[jugadorActual].tema4Encerts += 1;
+        jugadorsArray[jugadorActual].tema4Puntuacio += params[0][1];
+    } else if (tema5 == tema) {
+        color = '#F0D54E';
+        jugadorsArray[jugadorActual].tema5Encerts += 1;
+        jugadorsArray[jugadorActual].tema5Puntuacio += params[0][1];
+    }
+
+    jugadorsArray[jugadorActual].totalPuntuacio += params[0][1];
+    $('#points-span').text(jugadorsArray[jugadorActual].totalPuntuacio);
+    $('#points-shadow-span').text($('#points-span').text());
+    
+    var quesitoLog = [msg, color];
+
+    return quesitoLog;
+}
+
+function restarPunts(tema) {
+    var nom = jugadorsArray[jugadorActual].getElement().textContent;
+    var color = '';
+    var msg = `El jugador <strong>${nom}</strong> ha perdut ${params[0][1]} punts!`;
+    if (tema1 == tema) {
+        color = '#5CB85C';
+        jugadorsArray[jugadorActual].tema1Errors += 1;
+        jugadorsArray[jugadorActual].tema1Puntuacio -= params[0][1];
+        if (jugadorsArray[jugadorActual].tema1Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema1Puntuacio = 0;
+        } 
+        
+    } else if (tema2 == tema) {
+        color = '#D9534F';
+        jugadorsArray[jugadorActual].tema2Errors += 1;
+        jugadorsArray[jugadorActual].tema2Puntuacio -= params[0][1];
+        if (jugadorsArray[jugadorActual].tema2Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema2Puntuacio = 0;
+        } 
+        
+    } else if (tema3 == tema) {
+        color = '#5BBFDE';
+        jugadorsArray[jugadorActual].tema3Errors += 1;
+        jugadorsArray[jugadorActual].tema3Puntuacio -= params[0][1];
+        if (jugadorsArray[jugadorActual].tema3Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema3Puntuacio = 0;
+        } 
+        
+    } else if (tema4 == tema) {
+        color = '#876EDF';
+        jugadorsArray[jugadorActual].tema4Errors += 1;
+        jugadorsArray[jugadorActual].tema4Puntuacio -= params[0][1];
+        if (jugadorsArray[jugadorActual].tema4Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema4Puntuacio = 0;
+        } 
+        
+    } else if (tema5 == tema) {
+        color = '#F0D54E';
+        jugadorsArray[jugadorActual].tema5Errors += 1;
+        jugadorsArray[jugadorActual].tema5Puntuacio -= params[0][1];
+        if (jugadorsArray[jugadorActual].tema5Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema5Puntuacio = 0;
+        } 
+        
+    }
+
+    jugadorsArray[jugadorActual].totalPuntuacio -= params[0][1];
+    if (jugadorsArray[jugadorActual].totalPuntuacio < 0) {
+        jugadorsArray[jugadorActual].totalPuntuacio = 0;
+    } 
+    $('#points-span').text(jugadorsArray[jugadorActual].totalPuntuacio);
+    $('#points-shadow-span').text($('#points-span').text());
+    
+    var quesitoLog = [msg, color];
+
+    return quesitoLog;
 }
 
 function mostrarBotoDau() {
@@ -153,7 +609,7 @@ function getCookie(cname) {
 function getJugador(jugador, index) {
     var cookie = getCookie("nomjugadors");
     noms = cookie.split(',');
-    $("#mostrarJugadors").append("<div style='background-color:" + jugador[1] + ";' class='row m-0' id='" + jugador[0] + "'><div class='ranking'></div><div class='col jugador'>" + noms[index] + "</div></div>");
+    $("#mostrarJugadors").append("<div style='background-color:" + jugador[1] + ";' class='row m-0' id='" + jugador[0] + "'><div class='ranking'></div><div class='col jugador'>" + noms[index].replace(/`/g, '') + "</div></div>");
 }
 
 function shuffle(array) {
@@ -191,6 +647,7 @@ function Jugador(elementId, color) {
     this.tema5Quesito = 0;
     this.tema5Encerts = 0;
     this.tema5Errors = 0;
+    this.totalPuntuacio = 0;
     var casellaActual = document.getElementById('box_start');
 
     this.mostrarFitxa = function() {
@@ -208,6 +665,9 @@ function Jugador(elementId, color) {
 
     this.iniciaTorn = function() {
         element.classList.add('actual');
+        $('#points-span').text(jugadorsArray[jugadorActual].totalPuntuacio);
+        $('#points-shadow-span').text($('#points-span').text());
+        jugadorsArray[jugadorActual].printQuesitos();
     }
 
     this.finalitzaTorn = function() {
@@ -220,6 +680,91 @@ function Jugador(elementId, color) {
 
     this.getCasellaActual = function() {
         return casellaActual;
+    }
+
+    this.sumaQuesitos = function() {
+        return this.tema1Quesito + this.tema2Quesito + this.tema3Quesito + this.tema4Quesito + this.tema5Quesito;
+    }
+
+    this.addQuesitoTema1 = function() {
+        this.tema1Quesito = 1;
+    }
+
+    this.removeQuesitoTema1 = function() {
+        this.tema1Quesito = 0;
+    }
+
+    this.addQuesitoTema2 = function() {
+        this.tema2Quesito = 1;
+        
+    }
+
+    this.removeQuesitoTema2 = function() {
+        this.tema2Quesito = 0;
+
+
+    }
+
+    this.addQuesitoTema3 = function() {
+        this.tema3Quesito = 1;
+        
+    }
+
+    this.removeQuesitoTema3 = function() {
+        this.tema3Quesito = 0;
+       
+
+    }
+
+    this.addQuesitoTema4 = function() {
+        this.tema4Quesito = 1;
+        
+    }
+
+    this.removeQuesitoTema4 = function() {
+        this.tema4Quesito = 0;
+       
+
+    }
+
+    this.addQuesitoTema5 = function() {
+        this.tema5Quesito = 1;
+
+
+    }
+
+    this.removeQuesitoTema5 = function() {
+        this.tema5Quesito = 0;
+     
+
+    }
+
+    this.printQuesitos = function() {
+        if (this.tema1Quesito == 1) {
+            $('.verd').removeClass('no-quesito');
+        } else {
+            $('.verd').addClass('no-quesito');
+        }
+        if (this.tema2Quesito == 1) {
+            $('.vermell').removeClass('no-quesito');
+        } else {
+            $('.vermell').addClass('no-quesito');
+        }
+        if (this.tema3Quesito == 1) {
+            $('.blau').removeClass('no-quesito');
+        } else {
+            $('.blau').addClass('no-quesito');
+        }
+        if (this.tema4Quesito == 1) {
+            $('.lila').removeClass('no-quesito');
+        } else {
+            $('.lila').addClass('no-quesito');
+        }
+        if (this.tema5Quesito == 1) {
+            $('.groc').removeClass('no-quesito');
+        } else {
+            $('.groc').addClass('no-quesito');
+        }
     }
 
 }
@@ -259,10 +804,12 @@ function Casella(elementId, tipus, tema) {
 
 function dado(){
     $('#ui_dado').removeClass('amagat');
+    $('#ui_dado').css('zIndex', '2');
   $('#platform').removeClass('stop').addClass('playing');
   $('#dice');
   setTimeout(function(){
     $('#platform').removeClass('playing').addClass('stop');
+    $('#ui_dado').css('zIndex', '1');
     var number = Math.floor(Math.random() * 6) + 1;
     var x = 0, y = 20, z = -20;
     switch(number){

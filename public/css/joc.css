@@ -60,8 +60,8 @@ button {
     color: #292929;
     box-shadow: 0px 0px 5px grey;
     padding-bottom: 40px;
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
+    border-top-right-radius: .4rem;
+    border-top-left-radius: .4rem;
 }
 
 .modal-header {
@@ -69,8 +69,23 @@ button {
     margin: 0 auto;
     width: 100%;
     padding: 20px 40px;
-    background-color: #876EDF;
-    border-bottom: 1px solid #876EDF;
+    text-shadow: 1px 1px 1px #292929;
+}
+
+.modal-header h5, .modal-header #time {
+    font-weight: 800!important;
+}
+
+#timer.pass {
+    animation: scale 1s linear infinite;
+}
+
+#timer.scalered {
+    animation: scalered 1s linear infinite;
+}
+
+#timer.out {
+    animation: timeout 1s linear forwards;
 }
 
 .header-quesito {
@@ -92,6 +107,10 @@ button {
     background-color: #fff;
     overflow: hidden;
     box-shadow: 4px 2px 10px #191919;
+}
+
+.quesitos > div {
+    transition: all 0.3s ease-out;
 }
 
 .quesitos::after {
@@ -569,6 +588,7 @@ button:focus {
     display: inline-block;
     padding: 0 30px;
     text-shadow: 2px 2px 2px #000;
+    overflow: hidden!important;
 }
 
 .ranking {
@@ -698,6 +718,14 @@ button:focus {
     border: 1px solid #FFDB70!important;
 }
 
+.no-pointer {
+    pointer-events: none;
+}
+
+.respostaOpcio {
+    cursor: pointer;
+}
+
 .resposta {
     background-color: rgb(255, 255, 255, 0.3);
 }
@@ -782,6 +810,7 @@ button:focus {
     pointer-events: auto!important;
     border-radius: 50%;
     box-shadow: 0px 0px 10px white;
+    z-index: 4;
 }
 
 
@@ -1518,3 +1547,29 @@ button:focus {
     transform: translate(-180%, -50%);
 }
 
+@keyframes scale {
+    50% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes scalered {
+    50% {
+        transform: scale(1.2);
+        color: red;
+    }
+    100% {
+        transform: scale(1);
+        color: white;
+    }
+}
+
+@keyframes timeout {
+  100% {
+    transform: scale(4) translate(-50%, 50%);
+    color: red;
+  }
+}

@@ -12,6 +12,7 @@ use App\Entity\Grup;
 use App\Entity\Tema;
 use App\Entity\Nivell;
 use App\Entity\Pregunta;
+use App\Entity\Dificultat;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -54,22 +55,9 @@ class PartidaController extends Controller
      */
     public function jugar(Request $request) {
 
-        $em = $this->getDoctrine()->getManager();
-
-        $getJugadorNomUrl = $this->generateUrl('getJugadorNom');
-
-/*
-        $nivell = $em->getRepository(Nivell::class)->findOneById();
-        $temes = $em->getRepository(Tema::class)->findByNivell();
-        
-
-        $pteguntes = $em->getRepository(Pregunta::class)->find(['idTema' => $temesSel]);*/
-        
 
         return $this->render('partida/joc.html.twig', [
-            "getJugadorNomUrl" => $getJugadorNomUrl,
-            /*'temes' => ,
-            'preguntes' => ,*/
+           
         ]);
     }
 
@@ -116,6 +104,101 @@ class PartidaController extends Controller
             'tema5nom' => $temesPartida[4]->getNom(),
         ]);
     }
+
+    /**
+     * @Route("/get-pregunta", name="getPregunta_ajax")
+     */
+    public function getPreguntaAJAX(Request $request) : JsonResponse {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $tema = $em->getRepository(Tema::class)->findOneById($request->request->get('tema'));
+
+        if ($request->request->get('quesito') == true) {
+            $dificultat = $em->getRepository(Dificultat::class)->findOneById(2);
+        } else {
+            $dificultat = $em->getRepository(Dificultat::class)->findOneById(1);
+        }
+
+        $preguntes = $em->getRepository(Pregunta::class)->findBy(['idTema' => $tema, 'idDificultat' => $dificultat]);
+
+        $maxRand = count($preguntes);
+
+        $num = rand(1, $maxRand);
+        $pregunta = $preguntes[$num-1];
+
+        if ($request->request->get('idioma') == 'cat') {
+            if ($pregunta->getPreguntaCat() !== '') {
+                $preguntaText = $pregunta->getPreguntaCat();
+                $respostaCorrecta = $pregunta->getRespostaCorrectaCat();
+                $respostaIncorrecta1 = $pregunta->getRespostaIncorrecta1Cat();
+                $respostaIncorrecta2 = $pregunta->getRespostaIncorrecta2Cat();
+                $respostaIncorrecta3 = $pregunta->getRespostaIncorrecta3Cat();
+            } elseif ($pregunta->getPreguntaEs() !== '') {
+                $preguntaText = $pregunta->getPreguntaEs();
+                $respostaCorrecta = $pregunta->getRespostaCorrectaEs();
+                $respostaIncorrecta1 = $pregunta->getRespostaIncorrecta1Es();
+                $respostaIncorrecta2 = $pregunta->getRespostaIncorrecta2Es();
+                $respostaIncorrecta3 = $pregunta->getRespostaIncorrecta3Es();
+            } elseif ($pregunta->getPreguntaEn() !== '') {
+                $preguntaText = $pregunta->getPreguntaEn();
+                $respostaCorrecta = $pregunta->getRespostaCorrectaEn();
+                $respostaIncorrecta1 = $pregunta->getRespostaIncorrecta1En();
+                $respostaIncorrecta2 = $pregunta->getRespostaIncorrecta2En();
+                $respostaIncorrecta3 = $pregunta->getRespostaIncorrecta3En();
+            }
+            
+        } elseif ($request->request->get('idioma') == 'es') {
+            if ($pregunta->getPreguntaEs() !== '') {
+                $preguntaText = $pregunta->getPreguntaEs();
+                $respostaCorrecta = $pregunta->getRespostaCorrectaEs();
+                $respostaIncorrecta1 = $pregunta->getRespostaIncorrecta1Es();
+                $respostaIncorrecta2 = $pregunta->getRespostaIncorrecta2Es();
+                $respostaIncorrecta3 = $pregunta->getRespostaIncorrecta3Es();
+            } elseif ($pregunta->getPreguntaCat() !== '') {
+                $preguntaText = $pregunta->getPreguntaCat();
+                $respostaCorrecta = $pregunta->getRespostaCorrectaCat();
+                $respostaIncorrecta1 = $pregunta->getRespostaIncorrecta1Cat();
+                $respostaIncorrecta2 = $pregunta->getRespostaIncorrecta2Cat();
+                $respostaIncorrecta3 = $pregunta->getRespostaIncorrecta3Cat();
+            } elseif ($pregunta->getPreguntaEn() !== '') {
+                $preguntaText = $pregunta->getPreguntaEn();
+                $respostaCorrecta = $pregunta->getRespostaCorrectaEn();
+                $respostaIncorrecta1 = $pregunta->getRespostaIncorrecta1En();
+                $respostaIncorrecta2 = $pregunta->getRespostaIncorrecta2En();
+                $respostaIncorrecta3 = $pregunta->getRespostaIncorrecta3En();
+            }
+            
+        } elseif ($request->request->get('idioma') == 'en') {
+            if ($pregunta->getPreguntaEn() !== '') {
+                $preguntaText = $pregunta->getPreguntaEn();
+                $respostaCorrecta = $pregunta->getRespostaCorrectaEn();
+                $respostaIncorrecta1 = $pregunta->getRespostaIncorrecta1En();
+                $respostaIncorrecta2 = $pregunta->getRespostaIncorrecta2En();
+                $respostaIncorrecta3 = $pregunta->getRespostaIncorrecta3En();
+            } elseif ($pregunta->getPreguntaEs() !== '') {
+                $preguntaText = $pregunta->getPreguntaEs();
+                $respostaCorrecta = $pregunta->getRespostaCorrectaEs();
+                $respostaIncorrecta1 = $pregunta->getRespostaIncorrecta1Es();
+                $respostaIncorrecta2 = $pregunta->getRespostaIncorrecta2Es();
+                $respostaIncorrecta3 = $pregunta->getRespostaIncorrecta3Es();
+            } elseif ($pregunta->getPreguntaCat() !== '') {
+                $preguntaText = $pregunta->getPreguntaCat();
+                $respostaCorrecta = $pregunta->getRespostaCorrectaCat();
+                $respostaIncorrecta1 = $pregunta->getRespostaIncorrecta1Cat();
+                $respostaIncorrecta2 = $pregunta->getRespostaIncorrecta2Cat();
+                $respostaIncorrecta3 = $pregunta->getRespostaIncorrecta3Cat();
+            }
+        }
+
+        return new JsonResponse([
+            'pregunta' => $preguntaText,
+            'respostaCorrecta' => $respostaCorrecta,
+            'respostaIncorrecta1' => $respostaIncorrecta1,
+            'respostaIncorrecta2' => $respostaIncorrecta2,
+            'respostaIncorrecta3' => $respostaIncorrecta3
+        ]);
+    } 
 
     /**
      * @Route("/getPartidaPortait", name="getPartidaPortait")
@@ -504,6 +587,8 @@ class PartidaController extends Controller
         'background-color': color[1],
     })
 
+    delete_cookie('params');
+    writeCookie('params', '[" . $grup->getTempsResposta() . ", " . $grup->getPuntuacioFacil() .", " . $grup->getPuntuacioDificil() . "]');
     </script>
 
     <div id='multiplayerLobby' class='row p-4 col-9'>
