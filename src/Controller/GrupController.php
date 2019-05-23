@@ -132,6 +132,97 @@ class GrupController extends Controller
 
     }
 
+    public function getPartidesAlumnes($alumnes) {
+
+        $temes_partides = [];
+        $counter = [];
+
+        $idx = 0;
+        foreach($alumnes as $alumne) {
+
+            $numPartides = 0;
+
+            $em = $this->getDoctrine()->getManager();
+
+            $connection = $em->getConnection();
+            $statement = $connection->prepare("SELECT *
+            from tema_partida p where id = " . $alumne["usuari_id"]);
+            $statement->execute();
+
+            $temes_partides_array = $statement->fetchAll();
+
+            //var_dump($temes_partides_array);
+
+            $temes_partides[$idx][0] = $alumne["usuari_id"];
+
+            if ($temes_partides_array != null) {
+                $temes_partides[$idx][1] = $temes_partides_array;
+                
+                /*if (is_array($temes_partides[$idx][1])) {
+                    var_dump($temes_partides[$idx][1][0]);
+                }*/
+
+            } else {
+                $temes_partides[$idx][1] = null;
+            }
+
+            //var_dump($alumne["usuari_id"]);
+
+            $idx++;
+        }
+
+        return $temes_partides;
+
+    }
+
+    public function comptarPartides() {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $connection = $em->getConnection();
+        $statement = $connection->prepare("SELECT usuari_id, partida_id, count(DISTINCT partida_id) as partides from tema_partida p");
+        $statement->execute();
+
+        $numPartides = $statement->fetchAll();
+            
+        //var_dump($numPartides);
+
+        return $numPartides;
+
+    }
+
+    public function getPartidesUsuaris() {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $connection = $em->getConnection();
+        $statement = $connection->prepare("SELECT usuari_id, partida_id as partida, par.data as data, par.id_tipus_partida_id as tipus from tema_partida p inner join partida par on p.partida_id = par.id GROUP BY partida_id"); 
+        $statement->execute();
+
+        $partides = $statement->fetchAll();
+            
+        //var_dump($partides);
+
+        return $partides;
+    }
+
+    public function getDetallsPartides() {
+        // SELECT usuari_id, partida_id, sum(puntuacio) as puntuacio, sum(encerts) as encerts, sum(errors) as errors FROM `tema_partida` group by partida_id
+
+        $em = $this->getDoctrine()->getManager();
+
+        $connection = $em->getConnection();
+        $statement = $connection->prepare("SELECT usuari_id, partida_id, sum(puntuacio) as puntuacio, sum(encerts) as encerts, sum(errors) as errors FROM `tema_partida` group by partida_id"); 
+        $statement->execute();
+
+        $partides = $statement->fetchAll();
+            
+        //var_dump($partides);
+
+        return $partides;
+
+    }
+
     /**
      * @Route("/grup/{id}", name="alumnesGrup")
      */
@@ -145,13 +236,19 @@ class GrupController extends Controller
 
         $totsalumnes = $this->getTotsAlumnes();
 
+        $temes_partides = $this->getPartidesAlumnes($alumnes);
+        $comptadorPartides = $this->comptarPartides();
+        $partides = $this->getPartidesUsuaris();
+
         return $this->render('grup/llistatalumnes.html.twig',[
             'controller_name' => 'GrupController',
             'grup' =>  $grup,
             'administradors' => $administradors,
             'alumnes' => $alumnes,
             'totsalumnes' => $totsalumnes,
-            'title' => $title
+            'title' => $title,
+            'temes_partides' => $temes_partides,
+            'comptadorPartides' => $comptadorPartides,
         ]);
 
     }
@@ -167,6 +264,10 @@ class GrupController extends Controller
         $administradors = $this->getAdministradors();
         $alumnes = $this->getAlumnesCurs($grupid);
         $alumneSeleccionat = null;
+
+        $comptadorPartides = $this->comptarPartides();
+        $partides = $this->getPartidesUsuaris();
+        $detallsPartides = $this->getDetallsPartides();
 
         foreach($alumnes as $alumne) {
             if ($alumne['usuari_id'] == $alumneid) {
@@ -188,7 +289,10 @@ class GrupController extends Controller
             'grup' =>  $grup,
             'alumnes' => $alumnes,
             'alumne' => $alumneSeleccionat,
-            'title' => $title
+            'title' => $title,
+            'comptadorPartides' => $comptadorPartides,
+            'partides' => $partides,
+            'detallsPartides' => $detallsPartides
         ]);
 
     }
