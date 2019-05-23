@@ -65,6 +65,39 @@
                     </tr>
                 </thead>
                 <tbody>
+
+                {% for partida in partides %}
+
+                    {% if partida["usuari_id"] == alumne.id %}
+                    <tr>
+                        <td scope='col'>{{partida["data"]}}</td>
+                        <td scope='col'>
+
+                            {% if partida["tipus"] == 1 %}
+                                Multijugador
+                            {% elseif partida["tipus"] == 2 %}
+                                Entrenament
+                            {% endif %}
+
+                        </td>
+                        <td scope='col'>
+                        
+                            {% for detallsPartida in detallsPartides %}
+
+                                {% if partida["partida"] == detallsPartida["partida_id"] and detallsPartida["usuari_id"] == alumne.id %}
+                                    {{detallsPartida["puntuacio"]}}
+                                {% endif %}
+
+                            {% endfor %}
+
+                        </td>
+                        <td scope="col">
+                            <a href="#"><i class="fas fa-eye link-blue mr-2"></i></a>
+                        </td>
+                    </tr>
+                    {% endif %}
+
+                {% endfor %}
                     <!--<tr>
                         <td scope="col">Dataprtida</td>
                         <td scope="col">TipusPartida</td>
