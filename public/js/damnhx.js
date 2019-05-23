@@ -30,6 +30,10 @@ function clearHTML() {
 
 }
 
+function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+}
+
 function clearHTMLModalTemes() {
 
     while($("#temesGrupTable").html() != "") {
@@ -116,7 +120,7 @@ function decrypt (transitmessage, pass) {
 
 $(document).ready(function() {
 
-    $(window).trigger('resize');
+$(window).trigger('resize');
 
 });
 
@@ -137,6 +141,13 @@ $(window).on('resize', function () {
     $("#containerComençarPartida").css({
         "width": $("#containerNormesStart").width() - $("#containerNormes").width() - 30,
     });
+
+    if ($('#containerCursosEntrenament').hasClass('container')) {
+        $("#containerComençarPartida").attr('style','padding-left: 30px!important');
+        $("#containerComençarPartida").css({
+            "width": $("#containerCursosEntrenament").width() - $("#containerCursos").width(),
+        });
+    }
 
 });
 

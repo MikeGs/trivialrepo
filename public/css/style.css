@@ -986,10 +986,12 @@ input[type=password] {
 
 #containerCursosEntrenament {
 	padding-left: 0px!important;
+	margin-top: 20px!important;
 }
 
 #containerNormes, #containerCursosEntrenament {
-	margin: 0px!important;
+	margin-left: 0px!important;
+	margin-right: 0px!important;
 }
 
 /* #containerCursos */
@@ -1118,7 +1120,139 @@ input[type=password] {
 	filter: brightness(1.5);
 }
 
+#selectPreguntesDiv {
+	color: white!important;
+	border-top: 1px dotted white;
+	margin-top: 20px;
+	padding-top: 15px;
+}
+
+#selectPreguntesDiv label, #selectPreguntesDiv select {
+	width: 100%;
+}
+
+#selectPreguntesDiv label {
+	padding-bottom: 15px;
+	margin-bottom: 0px!important;
+}
+
+#selectPreguntesDiv select {
+	background-color: rgba(255,255,255,0.2);
+	border: 0px!important;
+	padding: 10px;
+	color: white;
+}
+
+#selectPreguntesDiv select option {
+	color: black;
+}
+
 /* ENTRENAMENT END */
+
+/* ENTRENAMENT PLAY */
+
+#entrenamentBodyInt {
+	height: 100%;
+	width: 100%;
+	display: block;
+	overflow: hidden;
+	box-sizing: border-box;
+
+	display: table;
+	position: relative;
+}
+
+#preguntaOutDiv {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+#preguntaDiv {
+	display: block;
+	margin: 0 auto;
+
+	max-width: 900px!important;
+
+	background-color: rgba(0,0,0,0.5);
+
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+#preguntaHead, #preguntaContingut {
+	display: block;
+	width: 100%;
+}
+
+#preguntaHead {
+	background-color: purple;
+	padding: 0px 25px;
+}
+
+#titleHead {
+	padding: 20px 0px;
+	margin-bottom: 0px!important;
+}
+
+#preguntaTitle, #titleHead, .respostaCasella {
+	color: white;
+}
+
+#preguntaTitle {
+	margin-bottom: 25px!important;
+}
+
+.respostaCasella {
+	padding-bottom: 20px;
+	overflow: hidden;
+	min-height: 130px;
+}
+
+.respostaCasella .respostaInt {
+	background-color: rgba(255,255,255,0.1);
+	height: 100%;
+	display: block;
+	padding: 10px;
+
+	border-radius: 5px;
+	border: 2px solid transparent;
+}
+
+.respostaCasella:hover > .respostaInt {
+	background-color: rgba(255,255,255,0.3);
+}
+
+.respostaInt p {
+	display: block;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	box-sizing: border-box;
+
+	word-wrap: break-word;
+
+	margin-bottom: 0px!important;
+}
+
+#preguntaRespostes .row {
+	padding: 0px!important;
+	margin: 0px!important;
+	max-width: none!important;
+}
+
+#primeraResposta, #terceraResposta {
+	padding-left: 0px;
+}
+
+#segonaResposta, #quartaResposta {
+	padding-right: 0px;
+}
+
+#preguntaContingut {
+	padding: 25px;
+}
+
+/* ENTRENAMENT PLAY END */
 
 /* TRANSICIONS */
 
