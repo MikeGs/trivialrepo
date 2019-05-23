@@ -19,6 +19,19 @@
 
     {% block body %}
 
+    <div id='usuariFloat' class="alltransition3">
+        <div id='usuariFloatInt'>
+
+            <div id='perfilNom'>
+                <label>{{app.user.nom}}</label>
+            </div>
+
+            <div id='perfilFloat' class='alltransition3'>
+                <label class="alltransition3">{{app.user.nom|slice(0, 1)}}</label>
+            </div>
+        </div>
+    </div>
+
         <div id='entrenamentBodyInt' class=''>
 
             <div id='preguntaOutDiv' class=''>
