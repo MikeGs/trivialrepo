@@ -1199,8 +1199,10 @@ class PartidaController extends Controller
             </li>
             ";
 
+            $grupObject = "`{'id':'" . $grup->getId() . "','puntuacio_facil':'" . $grup->getPuntuacioFacil() . "','puntuacio_dificil':'" . $grup->getPuntuacioDificil() . "','nom':'" . $grup->getNom() . "'}`";
+
             $grupArray = $grupArray . "
-                [" . $grup->getId() . ",[]],
+                [" . $grup->getId() . ",[], " .  $grupObject . "],
             ";
 
             $nivellId = $grup->getIdNivell()->getId();
@@ -1240,6 +1242,7 @@ class PartidaController extends Controller
         delete_cookie('temes');
         delete_cookie('preguntesNum');
         delete_cookie('nivell');
+        delete_cookie('temesGrup');
 
         cursosArray = [];
 
@@ -1334,6 +1337,8 @@ class PartidaController extends Controller
                         </a>
 
                     </div>
+                    
+                    <label id='partidaWarning'>Es necessita un tema com a mínim</label>
 
                 </div>
 
@@ -1406,6 +1411,24 @@ class PartidaController extends Controller
 
         <script>
 
+        checkTemesMin();
+
+            function checkTemesMin() {
+                if (temes.length < 1) {
+                    $('.playPartidaCard a, .playPartidaCard').addClass('disabledBtn');
+                    $('#partidaWarning').css({
+                        'display': 'block',
+                    });
+                } else {
+                    $('.playPartidaCard a, .playPartidaCard').removeClass('disabledBtn');
+                    $('#partidaWarning').css({
+                        'display': 'none',
+                    });
+                }
+        
+                return eval('[' + readCookie('jugadors') + ']').length;
+            }
+
             $('#tipusPartidaSlider').carousel({
                 interval: false
             });
@@ -1415,10 +1438,40 @@ class PartidaController extends Controller
             });
 
             $('body').on( 'click', '#PlayPButton', function() {
-                if (checkTemes() > 1) {
+                if (checkTemes() >= 1) {
 
                     writeCookie('temes', temes, 1);
                     writeCookie('preguntesNum', opcionsNumPreguntes.opcions[preguntesNumIndex], 1);
+                    
+                    var temesGrupCookie = '';
+
+                    temesGrup.forEach(function(tgrup, itx) {
+
+                        temesGrupCookie += '[' + tgrup[0] + ',[';
+
+                        tgrup[1].forEach(function(tema, idx) {
+
+                            if (idx != tgrup[1].length - 1) {
+                                temesGrupCookie += tema + ',';
+                            } else {
+                                temesGrupCookie += tema;
+                            }
+                        })
+
+                        if (itx != tgrup.length - 1) {
+                            temesGrupCookie += '],' + tgrup[2] + '],';
+                            //temesGrupCookie += ']],';
+                        } else {
+                            temesGrupCookie += '],' + tgrup[2] + ']';
+                            //temesGrupCookie += ']]';
+                        }
+
+                    })
+
+                    alert(temesGrupCookie);
+                    //console.log(temesGrupCookie);
+
+                    writeCookie('temesGrup', temesGrupCookie, 1);
 
                     writeCookie('nivell', '" . $nivellId . "');
 
@@ -1471,6 +1524,8 @@ class PartidaController extends Controller
                     $(this).removeClass('temaSeleccionat');
                 }
 
+                console.log(temesGrup);
+
                 var temestext = '';
 
                 temesGrup[posicioGrupArray][1].forEach(function(tema, idx) {
@@ -1482,8 +1537,10 @@ class PartidaController extends Controller
                     }
                 });
 
-                console.log(temes);
+                //console.log(temes);
                 $('.entrenamentCurs#' + lastgrupid + ' .grupTemes').html(temestext);
+
+                checkTemesMin()
 
             });
 
@@ -1597,6 +1654,7 @@ class PartidaController extends Controller
         $urlGetResposta = $this->generateUrl('getRespostaPregunta');
         $urlPujarPartida = $this->generateUrl('pujarPartida');
         $urlPujarTemes = $this->generateUrl('urlPujarTemes');
+        $urlGetGrupJson = $this->generateUrl('urlGetGrupJson');
 
         $title = "Partida d'entrenament | Trivial UB";
 
@@ -1607,6 +1665,7 @@ class PartidaController extends Controller
             'urlGetResposta' => $urlGetResposta,
             'urlPujarPartida' => $urlPujarPartida,
             'urlPujarTemes' => $urlPujarTemes,
+            'urlGetGrupJson' => $urlGetGrupJson,
         ]);
 
 
@@ -1726,6 +1785,34 @@ class PartidaController extends Controller
 
         return new Response(
             $pregunta
+        );
+
+    }
+
+    /**
+     * @Route("/urlGetGrupJson", name="urlGetGrupJson")
+     */
+    function urlGetGrupJson(Request $request) {
+
+        $idGrup = $request->request->get('grupid');
+
+        $em = $this->getDoctrine()->getManager();
+
+        /* this.id = obj.id;
+        this.puntuacio_facil = obj.puntuacio_facil;
+        this.puntuacio_dificil = obj.puntuacio_dificil;
+        this.nom = obj.nom; */
+
+        $connection = $em->getConnection();
+        $statement = $connection->prepare("SELECT id, puntuacio_facil, puntuacio_dificil, nom 
+        from grup where id = " . $idGrup);
+        $statement->execute();
+
+        $grupsTemp = $statement->fetchAll();
+        $grup = json_encode($grupsTemp[0]);
+
+        return new Response(
+            $grup
         );
 
     }

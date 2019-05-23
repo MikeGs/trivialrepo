@@ -16,6 +16,13 @@ checkTemesPartidaPujatsBool = false;
 
 nivellid = readCookie("nivell");
 
+function Grup(obj) {
+    this.id = obj.id;
+    this.puntuacio_facil = obj.puntuacio_facil;
+    this.puntuacio_dificil = obj.puntuacio_dificil;
+    this.nom = obj.nom;
+}
+
 function QuestionLoop(id) {
 
     if (id != preguntes.ids[0].length - 1) {
@@ -254,13 +261,37 @@ function actualitzarValors(boolResposta, posicioTema) {
     temesEncerts = [];
     temesErrors = [];*/
 
+    puntuacioFacil = '';
+    puntuacioDificil = '';
+
+    temesGrup.forEach(function(grup) {
+        if (grup[1].includes(parseInt(pregunta.tema))) {
+            console.log(pregunta.tema);
+            puntuacioFacil = parseInt(grup[2].puntuacio_facil);
+            puntuacioDificil = parseInt(grup[2].puntuacio_dificil);
+        }
+    });
+
     switch(boolResposta) {
+
         case true:
-            temesPuntuacio[posicioTema] = temesPuntuacio[posicioTema] + 15;
+
+            if (pregunta.dificultat == 1) {
+                temesPuntuacio[posicioTema] = temesPuntuacio[posicioTema] + puntuacioFacil;
+            } else if (pregunta.dificultat == 2) {
+                temesPuntuacio[posicioTema] = temesPuntuacio[posicioTema] + puntuacioDificil;
+            }
+
             temesEncerts[posicioTema]++;
             break;
         case false:
-            temesPuntuacio[posicioTema] = temesPuntuacio[posicioTema] - 7;
+
+            if (pregunta.dificultat == 1) {
+                temesPuntuacio[posicioTema] = temesPuntuacio[posicioTema] - puntuacioFacil;
+            } else if (pregunta.dificultat == 2) {
+                temesPuntuacio[posicioTema] = temesPuntuacio[posicioTema] - puntuacioDificil;
+            }
+
             temesErrors[posicioTema]++;
             break;
     }

@@ -105,8 +105,18 @@
         temesErrors = [];
         temes = '';
 
+        temesGrup = eval('[' + readCookie('temesGrup') + ']');
+        grupJSON = '';
+        grupJSONBool = false;
+        grupObj = '';
+
         $(document).ready(function() {
             getPreguntes();
+        });
+
+        temesGrup.forEach(function(grup) {
+            var grupObj = new Grup(grup[2]);
+            grup[2] = grupObj;
         });
 
         /* GET PREGUNTES ENTRENAMENT */
@@ -114,7 +124,9 @@
         urlGetPregunta = "{{getPreguntaUrl}}";
         urlGetResposta = "{{urlGetResposta}}";
         urlPujarTemes = "{{urlPujarTemes}}";
+        urlGetGrupJson = "{{urlGetGrupJson}}";
 
+        
         function getPreguntes() {
 
             temes = eval('[' + readCookie('temes') + ']');
