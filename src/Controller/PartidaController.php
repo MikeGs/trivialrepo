@@ -1468,7 +1468,7 @@ class PartidaController extends Controller
 
                     })
 
-                    alert(temesGrupCookie);
+                    //alert(temesGrupCookie);
                     //console.log(temesGrupCookie);
 
                     writeCookie('temesGrup', temesGrupCookie, 1);
@@ -1655,6 +1655,7 @@ class PartidaController extends Controller
         $urlPujarPartida = $this->generateUrl('pujarPartida');
         $urlPujarTemes = $this->generateUrl('urlPujarTemes');
         $urlGetGrupJson = $this->generateUrl('urlGetGrupJson');
+        $urlFiPartida = $this->generateUrl('urlFiPartida');
 
         $title = "Partida d'entrenament | Trivial UB";
 
@@ -1666,8 +1667,92 @@ class PartidaController extends Controller
             'urlPujarPartida' => $urlPujarPartida,
             'urlPujarTemes' => $urlPujarTemes,
             'urlGetGrupJson' => $urlGetGrupJson,
+            'urlFiPartida' => $urlFiPartida,
         ]);
 
+
+    }
+
+    /**
+     * @Route("/urlFiPartida", name="urlFiPartida")
+     */
+    public function urlFiPartida(Request $request) {
+
+        $temesPuntuacio = $request->request->get('temesPuntuacio');
+        $temesEncerts = $request->request->get('temesEncerts');
+        $temesErrors = $request->request->get('temesErrors');
+        $temes = $request->request->get('temes');
+        
+        $temesGrup = $request->request->get('temesGrup');
+
+        //var_dump($temes);
+        //var_dump($temesGrup);
+
+        $htmlStats = '';
+
+        foreach($temesGrup as $temaGrup) {
+
+            //var_dump($temaGrup);
+
+            $grup = $this->getGrup((int)$temaGrup[0]);
+            $puntuacioGrup = 0;
+            $encertsGrup = 0;
+            $errorsGrup = 0;
+
+            $temaAgafat = false;
+
+            $jocUrl = $this->generateUrl('joc');
+
+            $idx = 0;
+            foreach($temes as $tema) {
+
+                if (isset($temaGrup[1])) {
+
+                    $temaAgafat = true;
+
+                    if (in_array($tema, $temaGrup[1])) {
+                        $puntuacioGrup = $puntuacioGrup + $temesPuntuacio[$idx];
+                        $encertsGrup = $encertsGrup + $temesEncerts[$idx];
+                        $errorsGrup = $errorsGrup + $temesErrors[$idx];
+                    }
+                } else {
+
+                    $temaAgafat = false;
+
+                }
+                $idx++;
+            }
+
+            if ($temaAgafat == true) {
+
+                $htmlStats = $htmlStats . "<label class='grupFiEntrenament'>Grup: <span>" . $grup->getNom() . "</span></label>";
+                $htmlStats = $htmlStats . "<div class='col col-12 row fiEntrenamentLabels'><label class='col col-md-4 puntuacioGrup'>Puntuació: <p class='puntuacioGrupP'>" . $puntuacioGrup . "</p></label>";
+                $htmlStats = $htmlStats . "<label class='col col-md-4 encertsGrup'>Encerts: <p class='encertsGrupP'>" . $encertsGrup . "</p></label>";
+                $htmlStats = $htmlStats . "<label class='col col-md-4 errorsGrup'>Errors: <p class='errorsGrupP'>" . $errorsGrup . "</p></label></div>";
+
+            }
+            
+        }
+
+        /*foreach($temes as $tema) {
+
+            $htmlStats = $htmlStats . "<label></label>";
+        }*/
+
+        $html = "
+            <div id='fiPartidaDiv'>
+
+                <h2>Fi de l'entrenament!</h2>
+                " . $htmlStats . "
+
+                <div id='centerFiEntrenamentButton' class='col col-12'><a id='tornarFinalEntrenament' class='btn btn-success' href='" . $jocUrl . "'>Tornar enrere</a></div>
+
+            </div>
+        ";
+
+        return new Response(
+            $html
+        );
 
     }
 

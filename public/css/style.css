@@ -1185,7 +1185,7 @@ input[type=password] {
 }
 
 #preguntaHead {
-	background-color: purple;
+	background-color: rgba(191, 85, 236, 0.7);
 	padding: 0px 25px;
 }
 
@@ -1216,6 +1216,8 @@ input[type=password] {
 
 	border-radius: 5px;
 	border: 2px solid transparent;
+
+	cursor: pointer;
 }
 
 .respostaCasella:hover > .respostaInt {
@@ -1253,6 +1255,47 @@ input[type=password] {
 }
 
 /* ENTRENAMENT PLAY END */
+
+/* ENTRENAMENT FINAL PARTIDA */
+
+#fiPartidaDiv {
+	color: white!important;
+}
+
+#fiPartidaDiv h2 {
+	text-align: center;
+	font-weight: bold;
+	text-transform: uppercase;
+
+	margin-bottom: 10px;
+}
+
+.grupFiEntrenament {
+	width: 100%;
+	background-color: rgba(255,255,255,0.2);
+	padding: 10px;
+}
+
+.fiEntrenamentLabels {
+	margin: 0px!important;
+}
+
+.fiEntrenamentLabels label, .fiEntrenamentLabels label p {
+	text-align: center;
+}
+
+#tornarFinalEntrenament {
+	margin-top: 15px!important;
+	display: inline-block;
+}
+
+#centerFiEntrenamentButton {
+	text-align: center;
+	margin: 0 auto;
+	padding: 0px 0px!important;
+}
+
+/* ENTRENAMENT FINAL PARTIDA END */
 
 /* TRANSICIONS */
 

@@ -12,6 +12,9 @@ currentTema = '';
 PujarTemesResponse = '';
 checkTemesPartidaPujatsBool = false;
 
+FiPartidaHtml = '';
+FiPartidaCheckBool = false;
+
 //puntuacio = 0;
 
 nivellid = readCookie("nivell");
@@ -34,14 +37,46 @@ function QuestionLoop(id) {
 
         if (id == 2) {
             pujarTemes_Partida();
+            FiPartida();
         }
 
         setTimeout(function(){ checkPregunta() }, 500);
 
     } else {
         
-        alert("Fi de l'entrenament!");
+        //alert("Fi de l'entrenament!");
         pujarTemes_Partida();
+        FiPartida();
+
+    }
+
+}
+
+function FiPartida() {
+
+    $.post(urlFiPartida, { 'temesPuntuacio': temesPuntuacio, 'temesEncerts': temesEncerts, 'temesErrors': temesErrors, 'temes': temes, 'temesGrup': temesGrup }) 
+            .done(function(response) {
+                FiPartidaHtml = response;
+        });
+
+    setTimeout(function(){ checkFiPartida() }, 500);
+
+}
+
+function checkFiPartida() {
+
+    if (FiPartidaHtml == '') {
+        FiPartidaCheckBool = false;
+        checkFiPartida();
+    } else {
+        FiPartidaCheckBool = true;
+    }
+
+    if (FiPartidaCheckBool) {
+
+        console.log("Mostrar fi partida");
+        $('#preguntaContingut').html(FiPartidaHtml);
+        $("#preguntaContingut").css({"visibility": "visible"});
 
     }
 
@@ -335,7 +370,9 @@ function cleanPreg() {
         id++;
         QuestionLoop(id);
     } else {
-        alert("Fi de l'entrenament!");
+        //alert("Fi de l'entrenament!");
+        pujarTemes_Partida();
+        FiPartida();
     }
 
 }

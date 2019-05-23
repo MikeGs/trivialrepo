@@ -32,6 +32,10 @@
         </div>
     </div>
 
+    <div class="backgroundRotate">
+        <img src="{{asset('img/bgrotate.png')}}"/>
+    </div>
+
         <div id='entrenamentBodyInt' class=''>
 
             <div id='preguntaOutDiv' class=''>
@@ -89,6 +93,7 @@
 
     <script>
         urlPujarPartida = "{{urlPujarPartida}}";
+        urlFiPartida = "{{urlFiPartida}}";
     </script>
 
     <script src="{{ asset('js/entrenament.js') }}"></script>
@@ -119,13 +124,14 @@
             grup[2] = grupObj;
         });
 
+        console.log(temesGrup);
+
         /* GET PREGUNTES ENTRENAMENT */
 
         urlGetPregunta = "{{getPreguntaUrl}}";
         urlGetResposta = "{{urlGetResposta}}";
         urlPujarTemes = "{{urlPujarTemes}}";
         urlGetGrupJson = "{{urlGetGrupJson}}";
-
         
         function getPreguntes() {
 
