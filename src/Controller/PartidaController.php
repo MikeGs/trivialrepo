@@ -330,6 +330,26 @@ class PartidaController extends Controller
 
     }
 
+    public function getPregunta($id) {
+
+        $pregunta = $this->getDoctrine()
+            ->getRepository(Pregunta::class)
+            ->find($id);
+
+        return $pregunta;
+
+    }
+
+    public function getTema($id) {
+
+        $tema = $this->getDoctrine()
+            ->getRepository(Tema::class)
+            ->find($id);
+
+        return $tema;
+
+    }
+
     public function getUsuari($id) {
         
         $usuari = $this->getDoctrine()
@@ -928,9 +948,6 @@ class PartidaController extends Controller
             if (!$(latestelementllista).hasClass('usuariSeleccionat')) {
                 $(latestelementllista).addClass('usuariSeleccionat');
             } 
-            /*else {
-                $(latestelementllista).removeClass('usuariSeleccionat');
-            }*/
 
             $('#playerList ul').append(`<li class='alltransition3' id='jugli` + matchidsent + `'><a href='#' secid='` + matchidsent+ `' id='jug` + matchidsent + `'><i class='alltransition3 fas fa-user mr-2'></i>` + matchnom + `<a href='#' data='`+ matchidsent + `' class='removePlayerBtn'><i class='alltransition3 fas fa-times'></i></a></a></li>`);
 
@@ -1006,10 +1023,13 @@ class PartidaController extends Controller
         var arrJugadorsStr = '';
 
         arrJugadors.forEach(function(jugador, idx) {
+
+            var jugadorAddStr = '[' + jugador[0] + ',' + '`' + jugador[1] + '`]';
+
             if (idx === arrJugadors.length - 1) {
-                arrJugadorsStr += '[' + jugador[0] + ',' + '`' + jugador[1] + '`]';
+                arrJugadorsStr += jugadorAddStr;
             } else {
-                arrJugadorsStr += '[' + jugador[0] + ',' + '`' + jugador[1] + '`]' + ',';
+                arrJugadorsStr += jugadorAddStr + ',';
             }
         });
 
@@ -1163,6 +1183,8 @@ class PartidaController extends Controller
         $llistatGrups = "";
         $grupArray = "";
 
+        $jugarUrl = $this->generateUrl('jugarEntrenament');
+
         foreach($grups as $grup) {
             $llistatGrups = $llistatGrups . "
             <li class='entrenamentCurs row alltransition3' id='" . $grup->getId() . "' subid='gr" . $grup->getId() . "'>
@@ -1183,15 +1205,31 @@ class PartidaController extends Controller
         lastgrupclicked = '';
         lastgrupid = '';
         temes = [];
+        preguntesNumIndex = 0;
+
+        opcionsNumPreguntes = {
+
+            get opcions() {
+                return [15,30,45];
+            },
+
+        }
+
         temesGrup = [" . 
         
         $grupArray
 
         . "];
 
+        function checkTemes() {
+            return temes.length;
+        }
+
         $('.entrenamentCurs').removeClass('entrenamentCursSelected');
 
         delete_cookie('cursos');
+        delete_cookie('temes');
+        delete_cookie('preguntesNum');
 
         cursosArray = [];
 
@@ -1255,8 +1293,40 @@ class PartidaController extends Controller
                         " . $llistatGrups . "
                     </ul>
 
+                    <div id='selectPreguntesDiv'>
+
+                        <label for='preguntesNum'>Quantes preguntes vols?</label>
+
+                        <select id='preguntesNum' name='preguntesNum'>
+
+                            <script>
+
+                            opcionsNumPreguntes.opcions.forEach(function(opcio, idx) {
+                                $('#preguntesNum').append('<option id=' + idx + '>' + opcio + ' preguntes</option>');
+                            });
+
+                            </script>
+
+                        </select>
+
+                    </div>
+
                 </div>
-            
+
+                <div class='container' id='containerComençarPartida'>
+
+                    <div class='playPartidaCard'>
+
+                        <a href='#' class='alltransition3 playPartidaButton' id='PlayPButton'>
+
+                            <p class='alltransition3'>Començar partida</p>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
@@ -1330,6 +1400,20 @@ class PartidaController extends Controller
                 interval: false
             });
 
+            $('#preguntesNum').change(function(){
+                preguntesNumIndex = $(this).children('option:selected').attr('id');
+            });
+
+            $('body').on( 'click', '#PlayPButton', function() {
+                if (checkTemes() > 1) {
+
+                    writeCookie('temes', temes, 1);
+                    writeCookie('preguntesNum', opcionsNumPreguntes.opcions[preguntesNumIndex], 1);
+
+                    window.location.href = '" . $jugarUrl . "';
+                }
+            });
+
             $('body').on( 'click', '.entrenamentCurs', function() {
 
                 var id = $(this).attr('id');
@@ -1377,8 +1461,13 @@ class PartidaController extends Controller
 
                 var temestext = '';
 
-                temesGrup[posicioGrupArray][1].forEach(function(tema) {
-                    temestext += '<span>' + tema + ',' + '</span>';
+                temesGrup[posicioGrupArray][1].forEach(function(tema, idx) {
+
+                    if (idx === temesGrup[posicioGrupArray][1].length - 1) {
+                        temestext += '<span>' + tema + '</span>';
+                    } else {
+                        temestext += '<span>' + tema + ',' + '</span>';
+                    }
                 });
 
                 console.log(temes);
@@ -1429,6 +1518,194 @@ class PartidaController extends Controller
 
         return new Response(
             $html
+        );
+
+    }
+
+    /**
+     * @Route("/jugarEntrenament", name="jugarEntrenament")
+     */
+    function jugarEntrenament(Request $request) {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $getPreguntesUrl = $this->generateUrl('getPreguntesTemes');
+        $getPreguntaUrl = $this->generateUrl('getPreguntaById');
+        $urlGetResposta = $this->generateUrl('getRespostaPregunta');
+
+        $title = "Partida d'entrenament | Trivial UB";
+
+        return $this->render('partida/jocEntrenament.html.twig', [
+            "title" => $title,
+            'getPreguntesUrl' => $getPreguntesUrl,
+            'getPreguntaUrl' => $getPreguntaUrl,
+            'urlGetResposta' => $urlGetResposta,
+        ]);
+
+
+    }
+
+    /**
+     * @Route("/getRespostaPregunta", name="getRespostaPregunta")
+     */
+    public function getRespostaPregunta(Request $request) {
+
+        $idPregunta = $request->request->get('preguntaId');
+        $resposta = $request->request->get('resposta');
+
+        $em = $this->getDoctrine()->getManager();
+
+        $connection = $em->getConnection();
+        $statement = $connection->prepare("SELECT id, resposta_correcta_cat as respostaCorrecta
+        from pregunta where id = " . $idPregunta);
+        $statement->execute();
+
+        $preguntesTemp = $statement->fetchAll();
+        $pregunta = $preguntesTemp[0];
+        //var_dump($pregunta["respostaCorrecta"]);
+
+        $bool = "false";
+
+        if ($resposta == $pregunta["respostaCorrecta"]) {
+            $bool = "true";
+        }
+
+        return new Response(
+            $bool . ",`" . $pregunta["respostaCorrecta"] . "`"
+        );
+    }
+
+    /**
+     * @Route("/getPreguntaById", name="getPreguntaById")
+     */
+    public function getPreguntaById(Request $request) {
+
+        $idPregunta = $request->request->get('preguntaId');
+
+        $em = $this->getDoctrine()->getManager();
+
+        $connection = $em->getConnection();
+        $statement = $connection->prepare("SELECT id, Id_tema_id as tema, tipus_id as tipusid, id_dificultat_id as dificultatid, resposta_correcta_cat as resposta1, pregunta_cat, resposta_incorrecta1cat as resposta2, resposta_incorrecta2cat as resposta3, resposta_incorrecta3cat as resposta4
+        from pregunta where id = " . $idPregunta);
+        $statement->execute();
+
+        $preguntesTemp = $statement->fetchAll();
+        $pregunta = json_encode($preguntesTemp[0]);
+
+        return new Response(
+            $pregunta
+        );
+
+    }
+
+    function getPreguntesByTemas($idsTemes, $preguntesNum) {
+
+        $preguntes = [];
+        $preguntesTemes = [];
+
+        $temesRecollits = 0;
+
+        while($temesRecollits != sizeof($idsTemes)) {
+
+            $random = mt_rand(0, sizeof($idsTemes)-1);
+            $randomTema = $idsTemes[$random];
+
+            $em = $this->getDoctrine()->getManager();
+
+            $connection = $em->getConnection();
+            $statement = $connection->prepare("SELECT id, Id_tema_id as tema from pregunta where Id_tema_id = " . $randomTema);
+            $statement->execute();
+
+            $preguntesTemp = $statement->fetchAll();
+
+            foreach($preguntesTemp as $pregunta) {
+
+                array_push($preguntesTemes, $pregunta);
+
+            }
+
+            $temesRecollits = $temesRecollits + 1;
+
+            /*if ($usuari != null) {
+                $user = $usuari = $this->getDoctrine()
+                ->getRepository(Usuari::class)
+                ->find($usuari[0]->getId());
+            }
+
+            return $user;*/
+        }
+
+        //var_dump($preguntesTemes);
+
+        $preguntesTemesFinal = [];
+        $preguntesRecollides = 0;
+
+        while($preguntesRecollides != $preguntesNum) {
+
+            $random = mt_rand(0, sizeof($preguntesTemes)-1);
+
+            // in_array("Irix", $os)
+
+            array_push($preguntesTemesFinal, $preguntesTemes[$random]);
+            $preguntesRecollides = $preguntesRecollides + 1;
+
+        }
+
+        //var_dump($preguntesTemesFinal);
+
+        /*foreach($preguntesTemesFinal as $pregunta) {
+            $preguntaObj = $this->getPregunta((int)$pregunta["id"]);
+            array_push($preguntes, $preguntaObj);
+
+            //var_dump((int)$pregunta["id"]);
+        }
+
+        var_dump($preguntes);*/
+
+        $preguntesString = '';
+        $i = 0;
+
+        foreach($preguntesTemesFinal as $pregunta) {
+            //var_dump((int)$pregunta["id"]);
+            $preguntesString = $preguntesString . (int)$pregunta["id"];
+
+            if ($i != sizeof($preguntesTemesFinal)-1) {
+                $preguntesString = $preguntesString . ",";
+            }
+
+            $i = $i + 1;
+        }
+
+        return $preguntesString;
+
+    }
+
+    /**
+     * @Route("/getPreguntesTemes", name="getPreguntesTemes")
+     */
+    function getPreguntesTemes(Request $request) {
+
+        $idsTemes = $request->request->get('temes');
+        $preguntesNum = (int) $request->request->get('preguntesNum');
+
+        $preguntes = $this->getPreguntesByTemas($idsTemes, (int) $preguntesNum);
+
+        /*while($preguntesRecollides != $preguntesNum) {
+
+            $random = mt_rand(0, $preguntesNum);
+
+            $preguntasLength = sizeof($temes[sizeof($idsTemes)]->preguntas);
+            var_dump($preguntasLength . "<br>");
+
+            $preguntesRecollides = $preguntesRecollides + 1;
+
+        }
+
+        foreach ($temes as $tema) {
+        }*/
+
+        return new Response(
+            $preguntes
         );
 
     }
