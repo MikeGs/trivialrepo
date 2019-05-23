@@ -891,7 +891,7 @@ function Jugador(elementId, color) {
 
         $('#'+tema1est).attr('aria-valuenow', actualEncerts1);
         $('#'+tema1est).css('width', actualEncerts1 + '%');
-        if (!isNaN(actualEncerts1) || actualEncerts1 == 0) {
+        if (!isNaN(actualEncerts1) || !actualEncerts1 == 0) {
             $('#'+tema1est).html(actualEncerts1 + '%');
         }
         
@@ -900,7 +900,7 @@ function Jugador(elementId, color) {
 
         $('#'+tema2est).attr('aria-valuenow', actualEncerts2);
         $('#'+tema2est).css('width', actualEncerts2 + '%');
-        if (!isNaN(actualEncerts2) || actualEncerts2 == 0) {
+        if (!isNaN(actualEncerts2) || !actualEncerts2 == 0) {
             $('#'+tema2est).html(actualEncerts2 + '%');
         }
 
@@ -909,7 +909,7 @@ function Jugador(elementId, color) {
 
         $('#'+tema3est).attr('aria-valuenow', actualEncerts3);
         $('#'+tema3est).css('width', actualEncerts3 + '%');
-        if (!isNaN(actualEncerts3) || actualEncerts3 == 0) {
+        if (!isNaN(actualEncerts3) || !actualEncerts3 == 0) {
             $('#'+tema3est).html(actualEncerts3 + '%');
         }
 
@@ -918,7 +918,7 @@ function Jugador(elementId, color) {
 
         $('#'+tema4est).attr('aria-valuenow', actualEncerts4);
         $('#'+tema4est).css('width', actualEncerts4 + '%');
-        if (!isNaN(actualEncerts4) || actualEncerts4 == 0) {
+        if (!isNaN(actualEncerts4) || !actualEncerts4 == 0) {
             $('#'+tema4est).html(actualEncerts4 + '%');
         }
 
@@ -927,7 +927,7 @@ function Jugador(elementId, color) {
 
         $('#'+tema5est).attr('aria-valuenow', actualEncerts5);
         $('#'+tema5est).css('width', actualEncerts5 + '%');
-        if (!isNaN(actualEncerts5) || actualEncerts5 == 0) {
+        if (!isNaN(actualEncerts5) || !actualEncerts5 == 0) {
             $('#'+tema5est).html(actualEncerts5 + '%');
         }
     }
