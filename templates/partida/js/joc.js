@@ -83,7 +83,7 @@ function contador(quesito) {
             jugadorsArray[jugadorActual].iniciaTorn();
             mostrarBotoDau();
             $('#modalPregunta').css('display', 'none');
-
+            document.getElementById("timer").classList.remove('out');
             count = params[0][0]+1; 
             $('.respostaOpcio').removeClass('no-pointer');
             $('.respostaOpcio').removeClass('alert-success');
