@@ -25,9 +25,9 @@ function QuestionLoop(id) {
                 pregunta = response;
         });
 
-        /*if (id == 2) {
+        if (id == 2) {
             pujarTemes_Partida();
-        }*/
+        }
 
         setTimeout(function(){ checkPregunta() }, 500);
 
