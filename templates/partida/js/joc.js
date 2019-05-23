@@ -16,6 +16,7 @@ tema5nom = '';
 idioma = 'cat';
 params = getParams();
 contadorActiu = false;
+fiDelJoc = false;
 
 $(document).ready(function() {
     carregant();
@@ -46,7 +47,7 @@ $(document).ready(function() {
 function contador(quesito) {
 
     count = count - 1;
-    if (count < 0) {
+    if (count < 0 && !fiDelJoc) {
         contadorActiu = false;
         document.getElementById("timer").classList.remove('pass');
         document.getElementById("timer").classList.remove('scalered');
@@ -60,12 +61,18 @@ function contador(quesito) {
                 $(opcions[o]).removeClass('alert-info').addClass('alert-success');
             }    
         }
-        tempsFinalitzat();
+        var newLog = document.createElement('div');
+        newLog.style.color = 'red';
+        newLog.innerHTML = 'S\'ha acabat el temps!';
+        document.getElementById('log').appendChild(newLog);
+        updateScroll();
         if (quesito) {
-            restarPunts(quesito);
+            printLog(restarQuesito(temaGlob));
+            jugadorsArray[jugadorActual].printQuesitos();
         } else {
-            restarPunts(tema);
+            printLog(restarPunts(temaGlob));
         }
+        jugadorsArray[jugadorActual].printEstadistiques();
 
         jugadorsArray[jugadorActual].finalitzaTorn();
 
@@ -78,7 +85,7 @@ function contador(quesito) {
             jugadorsArray[jugadorActual].iniciaTorn();
             mostrarBotoDau();
             $('#modalPregunta').css('display', 'none');
-
+            document.getElementById("timer").classList.remove('out');
             count = params[0][0]+1; 
             $('.respostaOpcio').removeClass('no-pointer');
             $('.respostaOpcio').removeClass('alert-success');
@@ -104,10 +111,6 @@ function contador(quesito) {
 
 }
 
-function tempsFinalitzat() {
-
-}
-
 function prepararJoc() {
     var url = `{{ path('getTemes') }}`;
     $.post(url, { 'grup' : getGrup() })
@@ -118,6 +121,11 @@ function prepararJoc() {
         tema3 = response.tema3;
         tema4 = response.tema4;
         tema5 = response.tema5;
+        tema1est = 'est-bar2';
+        tema2est = 'est-bar5';
+        tema3est = 'est-bar4';
+        tema4est = 'est-bar3';
+        tema5est = 'est-bar1';
         tema1nom = response.tema1nom;
         tema2nom = response.tema2nom;
         tema3nom = response.tema3nom;
@@ -134,12 +142,52 @@ function prepararJoc() {
     });
 }
 
+function ordenarJugadors() {
+    jugadorsOrdenats = jugadorsArray.slice(0, jugadorsArray.length);
+    
+    jugadorsOrdenats.sort(function (a,b) {
+        return b.totalPuntuacio - a.totalPuntuacio
+    });
+    for (let j in jugadorsOrdenats) {
+        $('#' + jugadorsOrdenats[j].id + '> .ranking').html(parseInt(j)+1);
+    }
+}
+
+function printLog(log) {
+
+    var newLog = document.createElement('div');
+    newLog.style.color = log[1];
+    newLog.innerHTML = log[0];
+    document.getElementById('log').appendChild(newLog);
+    updateScroll();
+}
+
 function mostrarPregunta(id, tema, tipus) {
+    temaGlob = tema;
     var url = `{{ path('getPregunta_ajax') }}`;
     desactivarCaselles();
     setTimeout(function(){ jugadorsArray[jugadorActual].canviarCasella(id); }, 500);
     if (tipus == 'doble') {
         mostrarBotoDau();
+        var nom = jugadorsArray[jugadorActual].getElement().textContent;
+        var newLog = document.createElement('div');
+        newLog.style.color = 'blue';
+        newLog.innerHTML = `<strong>${nom.replace(/[0-9]/, '')}</strong> torna a tirar!`;
+        document.getElementById('log').appendChild(newLog);
+        updateScroll();
+    } else if (tipus =='inici') {
+        jugadorsArray[jugadorActual].finalitzaTorn();
+
+            jugadorActual++;
+            if (jugadorActual >= jugadorsArray.length) {
+                jugadorActual = 0;
+
+            }
+            setTimeout(function(){
+                jugadorsArray[jugadorActual].iniciaTorn();
+                mostrarBotoDau();
+            }, 2000);
+        
     } else if (tipus == 'quesito') {
         $.post(url, { 'tema': tema, 'idioma': idioma, 'quesito': true })
         .done(function(response) {
@@ -164,18 +212,21 @@ function mostrarPregunta(id, tema, tipus) {
             count = params[0][0]+1;
             contadorActiu = true;
         
-            contador(true);
+            contador(tema,true);
             $('body').on('click','.respostaOpcio', function() {
 
                 $('.respostaOpcio').addClass('no-pointer');
                 if ($(this).text().trim() == response.respostaCorrecta) {
                     $(this).removeClass('alert-info').addClass('alert-success');
 
-                    assignarQuesito(tema);
+                    printLog(assignarQuesito(tema));
+
                     jugadorsArray[jugadorActual].printQuesitos();
-                    //comprovar si s'acaba partida
-                    if (jugadorsArray[jugadorActual].sumaQuesitos >= 5) {
-                        //acaba
+                    jugadorsArray[jugadorActual].printEstadistiques();
+                
+                    if (jugadorsArray[jugadorActual].sumaQuesitos() == 5) {
+
+                        fiJoc();
                     } else {
                         setTimeout(function(){ 
                             mostrarBotoDau();
@@ -189,9 +240,9 @@ function mostrarPregunta(id, tema, tipus) {
                             $(opcions[o]).removeClass('alert-info').addClass('alert-success');
                         }    
                     }
-                    restarQuesito(tema);
+                    printLog(restarQuesito(tema));
                     jugadorsArray[jugadorActual].printQuesitos();
-
+                    jugadorsArray[jugadorActual].printEstadistiques();
                     jugadorsArray[jugadorActual].finalitzaTorn();
 
                     jugadorActual++;
@@ -241,7 +292,7 @@ function mostrarPregunta(id, tema, tipus) {
             count = params[0][0]+1;
             contadorActiu = true;
 
-            contador(false);
+            contador(tema,false);
 
             $('body').on('click','.respostaOpcio', function() {
 
@@ -249,7 +300,8 @@ function mostrarPregunta(id, tema, tipus) {
                 if ($(this).text().trim() == response.respostaCorrecta) {
                     $(this).removeClass('alert-info').addClass('alert-success');
                     
-                    sumarPunts(tema);
+                    printLog(sumarPunts(tema));
+                    jugadorsArray[jugadorActual].printEstadistiques();
                     setTimeout(function(){ 
                         mostrarBotoDau();
                     }, 2000);
@@ -262,8 +314,9 @@ function mostrarPregunta(id, tema, tipus) {
                             $(opcions[o]).removeClass('alert-info').addClass('alert-success');
                         }    
                     }
-                    restarPunts(tema);
-                    //saltar torn
+                    printLog(restarPunts(tema));
+                    jugadorsArray[jugadorActual].printEstadistiques();
+                
                     jugadorsArray[jugadorActual].finalitzaTorn();
 
                     jugadorActual++;
@@ -332,43 +385,48 @@ function assignarTemaModal(tema, quesito) {
 function assignarQuesito(tema) {
     var nom = jugadorsArray[jugadorActual].getElement().textContent;
     var color = '';
-    var msg = `El jugador <strong>${nom}</strong> ha guanyat el formatget `;
+    var msg = `El jugador <strong>${nom.replace(/[0-9]/, '')}</strong> ha guanyat el formatget `;
     if (tema1 == tema) {
         jugadorsArray[jugadorActual].addQuesitoTema1();
         msg += `verd!`;
-        color = '#5CB85C';
+        color = '#189218';
         jugadorsArray[jugadorActual].tema1Encerts += 1;
         jugadorsArray[jugadorActual].tema1Puntuacio += params[0][2];
+    
     } else if (tema2 == tema) {
         jugadorsArray[jugadorActual].addQuesitoTema2();
         msg += `vermell!`;
-        color = '#D9534F';
+        color = '#C12824';
         jugadorsArray[jugadorActual].tema2Encerts += 1;
         jugadorsArray[jugadorActual].tema2Puntuacio += params[0][2];
+     
     } else if (tema3 == tema) {
         jugadorsArray[jugadorActual].addQuesitoTema3();
         msg += `blau!`;
-        color = '#5BBFDE';
+        color = '#0283AC';
         jugadorsArray[jugadorActual].tema3Encerts += 1;
         jugadorsArray[jugadorActual].tema3Puntuacio += params[0][2];
+  
     } else if (tema4 == tema) {
         jugadorsArray[jugadorActual].addQuesitoTema4();
         msg += `lila!`;
-        color = '#876EDF';
+        color = '#583EB0';
         jugadorsArray[jugadorActual].tema4Encerts += 1;
         jugadorsArray[jugadorActual].tema4Puntuacio += params[0][2];
+      
     } else if (tema5 == tema) {
         jugadorsArray[jugadorActual].addQuesitoTema5();
         msg += `groc!`;
-        color = '#F0D54E';
+        color = '#DD9334';
         jugadorsArray[jugadorActual].tema5Encerts += 1;
         jugadorsArray[jugadorActual].tema5Puntuacio += params[0][2];
+       
     }
 
     jugadorsArray[jugadorActual].totalPuntuacio += params[0][2];
     $('#points-span').text(jugadorsArray[jugadorActual].totalPuntuacio);
     $('#points-shadow-span').text($('#points-span').text());
-    
+    ordenarJugadors();
     var quesitoLog = [msg, color];
 
     return quesitoLog;
@@ -377,7 +435,7 @@ function assignarQuesito(tema) {
 function restarQuesito(tema) {
     var nom = jugadorsArray[jugadorActual].getElement().textContent;
     var color = '';
-    var msg = `El jugador <strong>${nom}</strong> ha perdut el formatget `;
+    var msg = `El jugador <strong>${nom.replace(/[0-9]/, '')}</strong> ha perdut el formatget `;
     if (tema1 == tema) {
         jugadorsArray[jugadorActual].removeQuesitoTema1();
         msg += `verd!`;
@@ -430,34 +488,34 @@ function restarQuesito(tema) {
     } 
     $('#points-span').text(jugadorsArray[jugadorActual].totalPuntuacio);
     $('#points-shadow-span').text($('#points-span').text());
-    
+    msg += ' -100 punts.'
     var quesitoLog = [msg, color];
-
+    ordenarJugadors();
     return quesitoLog;
 }
 
 function sumarPunts(tema) {
     var nom = jugadorsArray[jugadorActual].getElement().textContent;
     var color = '';
-    var msg = `El jugador <strong>${nom}</strong> ha guanyat ${params[0][1]} punts!`;
+    var msg = `El jugador <strong>${nom.replace(/[0-9]/, '')}</strong> ha guanyat ${params[0][1]} punts!`;
     if (tema1 == tema) {
-        color = '#5CB85C';
+        color = '#189218';
         jugadorsArray[jugadorActual].tema1Encerts += 1;
         jugadorsArray[jugadorActual].tema1Puntuacio += params[0][1];
     } else if (tema2 == tema) {
-        color = '#D9534F';
+        color = '#C12824';
         jugadorsArray[jugadorActual].tema2Encerts += 1;
         jugadorsArray[jugadorActual].tema2Puntuacio += params[0][1];
     } else if (tema3 == tema) {
-        color = '#5BBFDE';
+        color = '#0283AC';
         jugadorsArray[jugadorActual].tema3Encerts += 1;
         jugadorsArray[jugadorActual].tema3Puntuacio += params[0][1];
     } else if (tema4 == tema) {
-        color = '#876EDF';
+        color = '#583EB0';
         jugadorsArray[jugadorActual].tema4Encerts += 1;
         jugadorsArray[jugadorActual].tema4Puntuacio += params[0][1];
     } else if (tema5 == tema) {
-        color = '#F0D54E';
+        color = '#DD9334';
         jugadorsArray[jugadorActual].tema5Encerts += 1;
         jugadorsArray[jugadorActual].tema5Puntuacio += params[0][1];
     }
@@ -467,14 +525,15 @@ function sumarPunts(tema) {
     $('#points-shadow-span').text($('#points-span').text());
     
     var quesitoLog = [msg, color];
-
+    ordenarJugadors();
     return quesitoLog;
 }
 
 function restarPunts(tema) {
+    console.log(tema);
     var nom = jugadorsArray[jugadorActual].getElement().textContent;
     var color = '';
-    var msg = `El jugador <strong>${nom}</strong> ha perdut ${params[0][1]} punts!`;
+    var msg = `El jugador <strong>${nom.replace(/[0-9]/, '')}</strong> ha perdut ${params[0][1]} punts!`;
     if (tema1 == tema) {
         color = '#5CB85C';
         jugadorsArray[jugadorActual].tema1Errors += 1;
@@ -525,8 +584,40 @@ function restarPunts(tema) {
     $('#points-shadow-span').text($('#points-span').text());
     
     var quesitoLog = [msg, color];
-
+    ordenarJugadors();
     return quesitoLog;
+}
+
+function fiJoc() {
+    fiDelJoc = true;
+    var primer = jugadorsOrdenats[0].getElement().textContent;
+    primer = primer.split(' ');
+    primer = primer[0];
+    primer = primer.replace(/[0-9]/, '');
+    var segon = jugadorsOrdenats[1].getElement().textContent;
+    segon = segon.split(' ');
+    segon = segon[0];
+    segon = segon.replace(/[0-9]/, '');
+    if (jugadorsOrdenats.length > 2) {
+        var tercer = jugadorsOrdenats[2].getElement().textContent;
+        tercer = tercer.split(' ');
+        tercer = tercer[0];
+        tercer = tercer.replace(/[0-9]/, '');
+    } else {
+        tercer = '-';
+    }
+    
+
+    setTimeout(function(){
+        $('.modal-header').css({'background-color': 'transparent', 'border-bottom': 'none', 'background-image': 'linear-gradient(90deg, #47cf73, #ae63e4, #ffdd40, #0ebeff, #47cf73, #ae63e4, #ffdd40, #0ebeff)', 'background-size': '200% 200%'});
+        $('#modalTitol').text('JOC COMPLETAT!');
+        $('#timer').hide();
+        $('.modal-body').html('<div style="height: 200px" class="mt-3 col-12 justify-content-center align-items-end d-flex"><div class="rounded-top col-2 bg-primary h-75 segon"><div><i class="fas fa-award"></i></div></div><div class="rounded-top col-2 bg-success h-100 primer"><div><i class="fas fa-trophy"></i></div></div><div class="rounded-top tercer col-2 bg-warning h-50"><div><i class="fas fa-medal"></i></div></div></div><div class="mt-2 col-12 text-center justify-content-center align-items-end d-flex numeros"><div class="col-2">2</div><div class="col-2">1</div><div class="col-2">3</div></div><div class="mt-2 col-12 text-center justify-content-center align-items-end d-flex nomswinners"><div class="col-2">' + segon + '</div><div class="col-2">' + primer + '</div><div class="col-2">' + tercer + '</div></div><div class="mt-5 col-12 text-center"><button class="btn-figame btn btn-lg btn-info">TORNAR A L\'INICI</button></div>');
+        $('#modalPregunta').show();
+        $('#confetti').addClass('yeei');
+        confetti();
+    }, 2500);
+
 }
 
 function mostrarBotoDau() {
@@ -623,6 +714,11 @@ function crearJugadors() {
     }
 }
 
+function updateScroll(){
+    var element = document.getElementById("log");
+    element.scrollTop = element.scrollHeight;
+}
+
 function Jugador(elementId, color) {
     this.id = elementId;
     var element = document.getElementById(elementId);
@@ -668,6 +764,28 @@ function Jugador(elementId, color) {
         $('#points-span').text(jugadorsArray[jugadorActual].totalPuntuacio);
         $('#points-shadow-span').text($('#points-span').text());
         jugadorsArray[jugadorActual].printQuesitos();
+        $('#'+tema1est).attr('aria-valuenow', 0);
+        $('#'+tema1est).css('width', 0 + '%');
+        $('#'+tema1est).html('');
+        $('#'+tema2est).attr('aria-valuenow', 0);
+        $('#'+tema2est).css('width', 0 + '%');
+        $('#'+tema2est).html('');
+        $('#'+tema3est).attr('aria-valuenow', 0);
+        $('#'+tema3est).css('width', 0 + '%');
+        $('#'+tema3est).html('');
+        $('#'+tema4est).attr('aria-valuenow', 0);
+        $('#'+tema4est).css('width', 0 + '%');
+        $('#'+tema4est).html('');
+        $('#'+tema5est).attr('aria-valuenow', 0);
+        $('#'+tema5est).css('width', 0 + '%');
+        $('#'+tema5est).html('');
+        jugadorsArray[jugadorActual].printEstadistiques();
+        var nom = jugadorsArray[jugadorActual].getElement().textContent;
+        var newLog = document.createElement('div');
+        newLog.style.color = 'black';
+        newLog.innerHTML = `>>> Torn de ${nom.replace(/[0-9]/, '')}`;
+        document.getElementById('log').appendChild(newLog);
+        updateScroll();
     }
 
     this.finalitzaTorn = function() {
@@ -767,6 +885,53 @@ function Jugador(elementId, color) {
         }
     }
 
+    this.printEstadistiques = function() {
+        var max1 = jugadorsArray[jugadorActual].tema1Encerts + jugadorsArray[jugadorActual].tema1Errors;
+        var actualEncerts1 = (jugadorsArray[jugadorActual].tema1Encerts / max1) * 100;
+
+        $('#'+tema1est).attr('aria-valuenow', actualEncerts1);
+        $('#'+tema1est).css('width', actualEncerts1 + '%');
+        if (!isNaN(actualEncerts1) || !actualEncerts1 == 0) {
+            $('#'+tema1est).html(actualEncerts1 + '%');
+        }
+        
+        var max2 = jugadorsArray[jugadorActual].tema2Encerts + jugadorsArray[jugadorActual].tema2Errors;
+        var actualEncerts2 = (jugadorsArray[jugadorActual].tema2Encerts / max2) * 100;
+
+        $('#'+tema2est).attr('aria-valuenow', actualEncerts2);
+        $('#'+tema2est).css('width', actualEncerts2 + '%');
+        if (!isNaN(actualEncerts2) || !actualEncerts2 == 0) {
+            $('#'+tema2est).html(actualEncerts2 + '%');
+        }
+
+        var max3 = jugadorsArray[jugadorActual].tema3Encerts + jugadorsArray[jugadorActual].tema3Errors;
+        var actualEncerts3 = (jugadorsArray[jugadorActual].tema3Encerts / max3) * 100;
+
+        $('#'+tema3est).attr('aria-valuenow', actualEncerts3);
+        $('#'+tema3est).css('width', actualEncerts3 + '%');
+        if (!isNaN(actualEncerts3) || !actualEncerts3 == 0) {
+            $('#'+tema3est).html(actualEncerts3 + '%');
+        }
+
+        var max4 = jugadorsArray[jugadorActual].tema4Encerts + jugadorsArray[jugadorActual].tema4Errors;
+        var actualEncerts4 = (jugadorsArray[jugadorActual].tema4Encerts / max4) * 100;
+
+        $('#'+tema4est).attr('aria-valuenow', actualEncerts4);
+        $('#'+tema4est).css('width', actualEncerts4 + '%');
+        if (!isNaN(actualEncerts4) || !actualEncerts4 == 0) {
+            $('#'+tema4est).html(actualEncerts4 + '%');
+        }
+
+        var max5 = jugadorsArray[jugadorActual].tema5Encerts + jugadorsArray[jugadorActual].tema5Errors;
+        var actualEncerts5 = (jugadorsArray[jugadorActual].tema5Encerts / max5) * 100;
+
+        $('#'+tema5est).attr('aria-valuenow', actualEncerts5);
+        $('#'+tema5est).css('width', actualEncerts5 + '%');
+        if (!isNaN(actualEncerts5) || !actualEncerts5 == 0) {
+            $('#'+tema5est).html(actualEncerts5 + '%');
+        }
+    }
+
 }
 
 function desactivarCaselles() {
@@ -847,4 +1012,354 @@ function dado(){
     casellaActual.activarCaselles(number);
     amagarBotoDau();
   }, 1120);
+
 };
+
+function confetti() {
+    var frameRate = 30;
+    var dt = 1.0 / frameRate;
+    var DEG_TO_RAD = Math.PI / 180;
+    var RAD_TO_DEG = 180 / Math.PI;
+    var colors = [
+        ["#df0049", "#660671"],
+        ["#00e857", "#005291"],
+        ["#2bebbc", "#05798a"],
+        ["#ffd200", "#b06c00"]
+    ];
+
+    function Vector2(_x, _y) {
+        this.x = _x, this.y = _y;
+        this.Length = function() {
+            return Math.sqrt(this.SqrLength());
+        }
+        this.SqrLength = function() {
+            return this.x * this.x + this.y * this.y;
+        }
+        this.Equals = function(_vec0, _vec1) {
+            return _vec0.x == _vec1.x && _vec0.y == _vec1.y;
+        }
+        this.Add = function(_vec) {
+            this.x += _vec.x;
+            this.y += _vec.y;
+        }
+        this.Sub = function(_vec) {
+            this.x -= _vec.x;
+            this.y -= _vec.y;
+        }
+        this.Div = function(_f) {
+            this.x /= _f;
+            this.y /= _f;
+        }
+        this.Mul = function(_f) {
+            this.x *= _f;
+            this.y *= _f;
+        }
+        this.Normalize = function() {
+            var sqrLen = this.SqrLength();
+            if (sqrLen != 0) {
+                var factor = 1.0 / Math.sqrt(sqrLen);
+                this.x *= factor;
+                this.y *= factor;
+            }
+        }
+        this.Normalized = function() {
+            var sqrLen = this.SqrLength();
+            if (sqrLen != 0) {
+                var factor = 1.0 / Math.sqrt(sqrLen);
+                return new Vector2(this.x * factor, this.y * factor);
+            }
+            return new Vector2(0, 0);
+        }
+    }
+    Vector2.Lerp = function(_vec0, _vec1, _t) {
+        return new Vector2((_vec1.x - _vec0.x) * _t + _vec0.x, (_vec1.y - _vec0.y) * _t + _vec0.y);
+    }
+    Vector2.Distance = function(_vec0, _vec1) {
+        return Math.sqrt(Vector2.SqrDistance(_vec0, _vec1));
+    }
+    Vector2.SqrDistance = function(_vec0, _vec1) {
+        var x = _vec0.x - _vec1.x;
+        var y = _vec0.y - _vec1.y;
+        return (x * x + y * y + z * z);
+    }
+    Vector2.Scale = function(_vec0, _vec1) {
+        return new Vector2(_vec0.x * _vec1.x, _vec0.y * _vec1.y);
+    }
+    Vector2.Min = function(_vec0, _vec1) {
+        return new Vector2(Math.min(_vec0.x, _vec1.x), Math.min(_vec0.y, _vec1.y));
+    }
+    Vector2.Max = function(_vec0, _vec1) {
+        return new Vector2(Math.max(_vec0.x, _vec1.x), Math.max(_vec0.y, _vec1.y));
+    }
+    Vector2.ClampMagnitude = function(_vec0, _len) {
+        var vecNorm = _vec0.Normalized;
+        return new Vector2(vecNorm.x * _len, vecNorm.y * _len);
+    }
+    Vector2.Sub = function(_vec0, _vec1) {
+        return new Vector2(_vec0.x - _vec1.x, _vec0.y - _vec1.y, _vec0.z - _vec1.z);
+    }
+
+    function EulerMass(_x, _y, _mass, _drag) {
+        this.position = new Vector2(_x, _y);
+        this.mass = _mass;
+        this.drag = _drag;
+        this.force = new Vector2(0, 0);
+        this.velocity = new Vector2(0, 0);
+        this.AddForce = function(_f) {
+            this.force.Add(_f);
+        }
+        this.Integrate = function(_dt) {
+            var acc = this.CurrentForce(this.position);
+            acc.Div(this.mass);
+            var posDelta = new Vector2(this.velocity.x, this.velocity.y);
+            posDelta.Mul(_dt);
+            this.position.Add(posDelta);
+            acc.Mul(_dt);
+            this.velocity.Add(acc);
+            this.force = new Vector2(0, 0);
+        }
+        this.CurrentForce = function(_pos, _vel) {
+            var totalForce = new Vector2(this.force.x, this.force.y);
+            var speed = this.velocity.Length();
+            var dragVel = new Vector2(this.velocity.x, this.velocity.y);
+            dragVel.Mul(this.drag * this.mass * speed);
+            totalForce.Sub(dragVel);
+            return totalForce;
+        }
+    }
+
+    function ConfettiPaper(_x, _y) {
+        this.pos = new Vector2(_x, _y);
+        this.rotationSpeed = Math.random() * 600 + 800;
+        this.angle = DEG_TO_RAD * Math.random() * 360;
+        this.rotation = DEG_TO_RAD * Math.random() * 360;
+        this.cosA = 1.0;
+        this.size = 5.0;
+        this.oscillationSpeed = Math.random() * 1.5 + 0.5;
+        this.xSpeed = 40.0;
+        this.ySpeed = Math.random() * 60 + 50.0;
+        this.corners = new Array();
+        this.time = Math.random();
+        var ci = Math.round(Math.random() * (colors.length - 1));
+        this.frontColor = colors[ci][0];
+        this.backColor = colors[ci][1];
+        for (var i = 0; i < 4; i++) {
+            var dx = Math.cos(this.angle + DEG_TO_RAD * (i * 90 + 45));
+            var dy = Math.sin(this.angle + DEG_TO_RAD * (i * 90 + 45));
+            this.corners[i] = new Vector2(dx, dy);
+        }
+        this.Update = function(_dt) {
+            this.time += _dt;
+            this.rotation += this.rotationSpeed * _dt;
+            this.cosA = Math.cos(DEG_TO_RAD * this.rotation);
+            this.pos.x += Math.cos(this.time * this.oscillationSpeed) * this.xSpeed * _dt
+            this.pos.y += this.ySpeed * _dt;
+            if (this.pos.y > ConfettiPaper.bounds.y) {
+                this.pos.x = Math.random() * ConfettiPaper.bounds.x;
+                this.pos.y = 0;
+            }
+        }
+        this.Draw = function(_g) {
+            if (this.cosA > 0) {
+                _g.fillStyle = this.frontColor;
+            } else {
+                _g.fillStyle = this.backColor;
+            }
+            _g.beginPath();
+            _g.moveTo(this.pos.x + this.corners[0].x * this.size, this.pos.y + this.corners[0].y * this.size * this.cosA);
+            for (var i = 1; i < 4; i++) {
+                _g.lineTo(this.pos.x + this.corners[i].x * this.size, this.pos.y + this.corners[i].y * this.size * this.cosA);
+            }
+            _g.closePath();
+            _g.fill();
+        }
+    }
+    ConfettiPaper.bounds = new Vector2(0, 0);
+
+    function ConfettiRibbon(_x, _y, _count, _dist, _thickness, _angle, _mass, _drag) {
+        this.particleDist = _dist;
+        this.particleCount = _count;
+        this.particleMass = _mass;
+        this.particleDrag = _drag;
+        this.particles = new Array();
+        var ci = Math.round(Math.random() * (colors.length - 1));
+        this.frontColor = colors[ci][0];
+        this.backColor = colors[ci][1];
+        this.xOff = Math.cos(DEG_TO_RAD * _angle) * _thickness;
+        this.yOff = Math.sin(DEG_TO_RAD * _angle) * _thickness;
+        this.position = new Vector2(_x, _y);
+        this.prevPosition = new Vector2(_x, _y);
+        this.velocityInherit = Math.random() * 2 + 4;
+        this.time = Math.random() * 100;
+        this.oscillationSpeed = Math.random() * 2 + 2;
+        this.oscillationDistance = Math.random() * 40 + 40;
+        this.ySpeed = Math.random() * 40 + 80;
+        for (var i = 0; i < this.particleCount; i++) {
+            this.particles[i] = new EulerMass(_x, _y - i * this.particleDist, this.particleMass, this.particleDrag);
+        }
+        this.Update = function(_dt) {
+            var i = 0;
+            this.time += _dt * this.oscillationSpeed;
+            this.position.y += this.ySpeed * _dt;
+            this.position.x += Math.cos(this.time) * this.oscillationDistance * _dt;
+            this.particles[0].position = this.position;
+            var dX = this.prevPosition.x - this.position.x;
+            var dY = this.prevPosition.y - this.position.y;
+            var delta = Math.sqrt(dX * dX + dY * dY);
+            this.prevPosition = new Vector2(this.position.x, this.position.y);
+            for (i = 1; i < this.particleCount; i++) {
+                var dirP = Vector2.Sub(this.particles[i - 1].position, this.particles[i].position);
+                dirP.Normalize();
+                dirP.Mul((delta / _dt) * this.velocityInherit);
+                this.particles[i].AddForce(dirP);
+            }
+            for (i = 1; i < this.particleCount; i++) {
+                this.particles[i].Integrate(_dt);
+            }
+            for (i = 1; i < this.particleCount; i++) {
+                var rp2 = new Vector2(this.particles[i].position.x, this.particles[i].position.y);
+                rp2.Sub(this.particles[i - 1].position);
+                rp2.Normalize();
+                rp2.Mul(this.particleDist);
+                rp2.Add(this.particles[i - 1].position);
+                this.particles[i].position = rp2;
+            }
+            if (this.position.y > ConfettiRibbon.bounds.y + this.particleDist * this.particleCount) {
+                this.Reset();
+            }
+        }
+        this.Reset = function() {
+            this.position.y = -Math.random() * ConfettiRibbon.bounds.y;
+            this.position.x = Math.random() * ConfettiRibbon.bounds.x;
+            this.prevPosition = new Vector2(this.position.x, this.position.y);
+            this.velocityInherit = Math.random() * 2 + 4;
+            this.time = Math.random() * 100;
+            this.oscillationSpeed = Math.random() * 2.0 + 1.5;
+            this.oscillationDistance = Math.random() * 40 + 40;
+            this.ySpeed = Math.random() * 40 + 80;
+            var ci = Math.round(Math.random() * (colors.length - 1));
+            this.frontColor = colors[ci][0];
+            this.backColor = colors[ci][1];
+            this.particles = new Array();
+            for (var i = 0; i < this.particleCount; i++) {
+                this.particles[i] = new EulerMass(this.position.x, this.position.y - i * this.particleDist, this.particleMass, this.particleDrag);
+            }
+        }
+        this.Draw = function(_g) {
+            for (var i = 0; i < this.particleCount - 1; i++) {
+                var p0 = new Vector2(this.particles[i].position.x + this.xOff, this.particles[i].position.y + this.yOff);
+                var p1 = new Vector2(this.particles[i + 1].position.x + this.xOff, this.particles[i + 1].position.y + this.yOff);
+                if (this.Side(this.particles[i].position.x, this.particles[i].position.y, this.particles[i + 1].position.x, this.particles[i + 1].position.y, p1.x, p1.y) < 0) {
+                    _g.fillStyle = this.frontColor;
+                    _g.strokeStyle = this.frontColor;
+                } else {
+                    _g.fillStyle = this.backColor;
+                    _g.strokeStyle = this.backColor;
+                }
+                if (i == 0) {
+                    _g.beginPath();
+                    _g.moveTo(this.particles[i].position.x, this.particles[i].position.y);
+                    _g.lineTo(this.particles[i + 1].position.x, this.particles[i + 1].position.y);
+                    _g.lineTo((this.particles[i + 1].position.x + p1.x) * 0.5, (this.particles[i + 1].position.y + p1.y) * 0.5);
+                    _g.closePath();
+                    _g.stroke();
+                    _g.fill();
+                    _g.beginPath();
+                    _g.moveTo(p1.x, p1.y);
+                    _g.lineTo(p0.x, p0.y);
+                    _g.lineTo((this.particles[i + 1].position.x + p1.x) * 0.5, (this.particles[i + 1].position.y + p1.y) * 0.5);
+                    _g.closePath();
+                    _g.stroke();
+                    _g.fill();
+                } else if (i == this.particleCount - 2) {
+                    _g.beginPath();
+                    _g.moveTo(this.particles[i].position.x, this.particles[i].position.y);
+                    _g.lineTo(this.particles[i + 1].position.x, this.particles[i + 1].position.y);
+                    _g.lineTo((this.particles[i].position.x + p0.x) * 0.5, (this.particles[i].position.y + p0.y) * 0.5);
+                    _g.closePath();
+                    _g.stroke();
+                    _g.fill();
+                    _g.beginPath();
+                    _g.moveTo(p1.x, p1.y);
+                    _g.lineTo(p0.x, p0.y);
+                    _g.lineTo((this.particles[i].position.x + p0.x) * 0.5, (this.particles[i].position.y + p0.y) * 0.5);
+                    _g.closePath();
+                    _g.stroke();
+                    _g.fill();
+                } else {
+                    _g.beginPath();
+                    _g.moveTo(this.particles[i].position.x, this.particles[i].position.y);
+                    _g.lineTo(this.particles[i + 1].position.x, this.particles[i + 1].position.y);
+                    _g.lineTo(p1.x, p1.y);
+                    _g.lineTo(p0.x, p0.y);
+                    _g.closePath();
+                    _g.stroke();
+                    _g.fill();
+                }
+            }
+        }
+        this.Side = function(x1, y1, x2, y2, x3, y3) {
+            return ((x1 - x2) * (y3 - y2) - (y1 - y2) * (x3 - x2));
+        }
+    }
+    ConfettiRibbon.bounds = new Vector2(0, 0);
+    confetti = {};
+    confetti.Context = function(parent) {
+        var i = 0;
+        var canvasParent = document.getElementById(parent);
+        var canvas = document.createElement('canvas');
+        canvas.width = canvasParent.offsetWidth;
+        canvas.height = canvasParent.offsetHeight;
+        canvasParent.appendChild(canvas);
+        var context = canvas.getContext('2d');
+        var interval = null;
+        var confettiRibbonCount = 7;
+        var rpCount = 30;
+        var rpDist = 8.0;
+        var rpThick = 8.0;
+        var confettiRibbons = new Array();
+        ConfettiRibbon.bounds = new Vector2(canvas.width, canvas.height);
+        for (i = 0; i < confettiRibbonCount; i++) {
+            confettiRibbons[i] = new ConfettiRibbon(Math.random() * canvas.width, -Math.random() * canvas.height * 2, rpCount, rpDist, rpThick, 45, 1, 0.05);
+        }
+        var confettiPaperCount = 25;
+        var confettiPapers = new Array();
+        ConfettiPaper.bounds = new Vector2(canvas.width, canvas.height);
+        for (i = 0; i < confettiPaperCount; i++) {
+            confettiPapers[i] = new ConfettiPaper(Math.random() * canvas.width, Math.random() * canvas.height);
+        }
+        this.resize = function() {
+            canvas.width = canvasParent.offsetWidth;
+            canvas.height = canvasParent.offsetHeight;
+            ConfettiPaper.bounds = new Vector2(canvas.width, canvas.height);
+            ConfettiRibbon.bounds = new Vector2(canvas.width, canvas.height);
+        }
+        this.start = function() {
+            this.stop()
+            var context = this
+            this.interval = setInterval(function() {
+                confetti.update();
+            }, 1000.0 / frameRate)
+        }
+        this.stop = function() {
+            clearInterval(this.interval);
+        }
+        this.update = function() {
+            var i = 0;
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            for (i = 0; i < confettiPaperCount; i++) {
+                confettiPapers[i].Update(dt);
+                confettiPapers[i].Draw(context);
+            }
+            for (i = 0; i < confettiRibbonCount; i++) {
+                confettiRibbons[i].Update(dt);
+                confettiRibbons[i].Draw(context);
+            }
+        }
+    }
+    var confetti = new confetti.Context('confetti');
+    confetti.start();
+    $(window).resize(function() {
+        confetti.resize();
+    });
+}
