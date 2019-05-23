@@ -65,6 +65,7 @@ function contador(quesito) {
         newLog.style.color = 'red';
         newLog.innerHTML = 'S\'ha acabat el temps!';
         document.getElementById('log').appendChild(newLog);
+        updateScroll();
         if (quesito) {
             printLog(restarQuesito(temaGlob));
             jugadorsArray[jugadorActual].printQuesitos();
@@ -158,6 +159,7 @@ function printLog(log) {
     newLog.style.color = log[1];
     newLog.innerHTML = log[0];
     document.getElementById('log').appendChild(newLog);
+    updateScroll();
 }
 
 function mostrarPregunta(id, tema, tipus) {
@@ -170,8 +172,9 @@ function mostrarPregunta(id, tema, tipus) {
         var nom = jugadorsArray[jugadorActual].getElement().textContent;
         var newLog = document.createElement('div');
         newLog.style.color = 'blue';
-        newLog.innerHTML = `<strong>${nom}</strong> torna a tirar!`;
+        newLog.innerHTML = `<strong>${nom.replace(/[0-9]/, '')}</strong> torna a tirar!`;
         document.getElementById('log').appendChild(newLog);
+        updateScroll();
     } else if (tipus =='inici') {
         jugadorsArray[jugadorActual].finalitzaTorn();
 
@@ -222,7 +225,7 @@ function mostrarPregunta(id, tema, tipus) {
                     jugadorsArray[jugadorActual].printEstadistiques();
                 
                     if (jugadorsArray[jugadorActual].sumaQuesitos() == 5) {
-                        console.log('entra')
+
                         fiJoc();
                     } else {
                         setTimeout(function(){ 
@@ -382,7 +385,7 @@ function assignarTemaModal(tema, quesito) {
 function assignarQuesito(tema) {
     var nom = jugadorsArray[jugadorActual].getElement().textContent;
     var color = '';
-    var msg = `El jugador <strong>${nom}</strong> ha guanyat el formatget `;
+    var msg = `El jugador <strong>${nom.replace(/[0-9]/, '')}</strong> ha guanyat el formatget `;
     if (tema1 == tema) {
         jugadorsArray[jugadorActual].addQuesitoTema1();
         msg += `verd!`;
@@ -432,7 +435,7 @@ function assignarQuesito(tema) {
 function restarQuesito(tema) {
     var nom = jugadorsArray[jugadorActual].getElement().textContent;
     var color = '';
-    var msg = `El jugador <strong>${nom}</strong> ha perdut el formatget `;
+    var msg = `El jugador <strong>${nom.replace(/[0-9]/, '')}</strong> ha perdut el formatget `;
     if (tema1 == tema) {
         jugadorsArray[jugadorActual].removeQuesitoTema1();
         msg += `verd!`;
@@ -494,7 +497,7 @@ function restarQuesito(tema) {
 function sumarPunts(tema) {
     var nom = jugadorsArray[jugadorActual].getElement().textContent;
     var color = '';
-    var msg = `El jugador <strong>${nom}</strong> ha guanyat ${params[0][1]} punts!`;
+    var msg = `El jugador <strong>${nom.replace(/[0-9]/, '')}</strong> ha guanyat ${params[0][1]} punts!`;
     if (tema1 == tema) {
         color = '#189218';
         jugadorsArray[jugadorActual].tema1Encerts += 1;
@@ -530,7 +533,7 @@ function restarPunts(tema) {
     console.log(tema);
     var nom = jugadorsArray[jugadorActual].getElement().textContent;
     var color = '';
-    var msg = `El jugador <strong>${nom}</strong> ha perdut ${params[0][1]} punts!`;
+    var msg = `El jugador <strong>${nom.replace(/[0-9]/, '')}</strong> ha perdut ${params[0][1]} punts!`;
     if (tema1 == tema) {
         color = '#5CB85C';
         jugadorsArray[jugadorActual].tema1Errors += 1;
@@ -540,7 +543,7 @@ function restarPunts(tema) {
         } 
         
     } else if (tema2 == tema) {
-        color = '#C12824';
+        color = '#D9534F';
         jugadorsArray[jugadorActual].tema2Errors += 1;
         jugadorsArray[jugadorActual].tema2Puntuacio -= params[0][1];
         if (jugadorsArray[jugadorActual].tema2Puntuacio < 0) {
@@ -548,7 +551,7 @@ function restarPunts(tema) {
         } 
         
     } else if (tema3 == tema) {
-        color = '#D9534F';
+        color = '#5BBFDE';
         jugadorsArray[jugadorActual].tema3Errors += 1;
         jugadorsArray[jugadorActual].tema3Puntuacio -= params[0][1];
         if (jugadorsArray[jugadorActual].tema3Puntuacio < 0) {
@@ -590,18 +593,26 @@ function fiJoc() {
     var primer = jugadorsOrdenats[0].getElement().textContent;
     primer = primer.split(' ');
     primer = primer[0];
+    primer = primer.replace(/[0-9]/, '');
     var segon = jugadorsOrdenats[1].getElement().textContent;
     segon = segon.split(' ');
     segon = segon[0];
-    var tercer = jugadorsOrdenats[2].getElement().textContent;
-    tercer = tercer.split(' ');
-    tercer = tercer[0];
+    segon = segon.replace(/[0-9]/, '');
+    if (jugadorsOrdenats.length > 2) {
+        var tercer = jugadorsOrdenats[2].getElement().textContent;
+        tercer = tercer.split(' ');
+        tercer = tercer[0];
+        tercer = tercer.replace(/[0-9]/, '');
+    } else {
+        tercer = '-';
+    }
+    
 
     setTimeout(function(){
         $('.modal-header').css({'background-color': 'transparent', 'border-bottom': 'none', 'background-image': 'linear-gradient(90deg, #47cf73, #ae63e4, #ffdd40, #0ebeff, #47cf73, #ae63e4, #ffdd40, #0ebeff)', 'background-size': '200% 200%'});
         $('#modalTitol').text('JOC COMPLETAT!');
         $('#timer').hide();
-        $('.modal-body').html('<div style="height: 200px" class="mt-3 col-12 justify-content-center align-items-end d-flex"><div class="rounded-top col-2 bg-primary h-75 segon"><div><i class="fas fa-award"></i></div></div><div class="rounded-top col-2 bg-success h-100 primer"><div><i class="fas fa-trophy"></i></div></div><div class="rounded-top tercer col-2 bg-warning h-50"><div><i class="fas fa-medal"></i></div></div></div><div class="mt-2 col-12 text-center justify-content-center align-items-end d-flex numeros"><div class="col-2">2</div><div class="col-2">1</div><div class="col-2">3</div></div><div class="mt-2 col-12 text-center justify-content-center align-items-end d-flex nomswinners"><div class="col-2">' + segon.replace('2', '') + '</div><div class="col-2">' + primer.replace('1', '') + '</div><div class="col-2">' + tercer.replace('3', '') + '</div></div><div class="mt-3 col-12 text-center"><button class="btn-figame btn btn-lg btn-info">TORNAR A L\'INICI</button></div>');
+        $('.modal-body').html('<div style="height: 200px" class="mt-3 col-12 justify-content-center align-items-end d-flex"><div class="rounded-top col-2 bg-primary h-75 segon"><div><i class="fas fa-award"></i></div></div><div class="rounded-top col-2 bg-success h-100 primer"><div><i class="fas fa-trophy"></i></div></div><div class="rounded-top tercer col-2 bg-warning h-50"><div><i class="fas fa-medal"></i></div></div></div><div class="mt-2 col-12 text-center justify-content-center align-items-end d-flex numeros"><div class="col-2">2</div><div class="col-2">1</div><div class="col-2">3</div></div><div class="mt-2 col-12 text-center justify-content-center align-items-end d-flex nomswinners"><div class="col-2">' + segon + '</div><div class="col-2">' + primer + '</div><div class="col-2">' + tercer + '</div></div><div class="mt-5 col-12 text-center"><button class="btn-figame btn btn-lg btn-info">TORNAR A L\'INICI</button></div>');
         $('#modalPregunta').show();
         $('#confetti').addClass('yeei');
         confetti();
@@ -703,24 +714,29 @@ function crearJugadors() {
     }
 }
 
+function updateScroll(){
+    var element = document.getElementById("log");
+    element.scrollTop = element.scrollHeight;
+}
+
 function Jugador(elementId, color) {
     this.id = elementId;
     var element = document.getElementById(elementId);
     this.color = color;
     this.tema1Puntuacio = 0;
-    this.tema1Quesito = 1;
+    this.tema1Quesito = 0;
     this.tema1Encerts = 0;
     this.tema1Errors = 0;
     this.tema2Puntuacio = 0;
-    this.tema2Quesito = 1;
+    this.tema2Quesito = 0;
     this.tema2Encerts = 0;
     this.tema2Errors = 0;
     this.tema3Puntuacio = 0;
-    this.tema3Quesito = 1;
+    this.tema3Quesito = 0;
     this.tema3Encerts = 0;
     this.tema3Errors = 0;
     this.tema4Puntuacio = 0;
-    this.tema4Quesito = 1;
+    this.tema4Quesito = 0;
     this.tema4Encerts = 0;
     this.tema4Errors = 0;
     this.tema5Puntuacio = 0;
@@ -764,6 +780,12 @@ function Jugador(elementId, color) {
         $('#'+tema5est).css('width', 0 + '%');
         $('#'+tema5est).html('');
         jugadorsArray[jugadorActual].printEstadistiques();
+        var nom = jugadorsArray[jugadorActual].getElement().textContent;
+        var newLog = document.createElement('div');
+        newLog.style.color = 'black';
+        newLog.innerHTML = `>>> Torn de ${nom.replace(/[0-9]/, '')}`;
+        document.getElementById('log').appendChild(newLog);
+        updateScroll();
     }
 
     this.finalitzaTorn = function() {
