@@ -43,7 +43,7 @@ $(document).ready(function() {
     
 });
 
-function contador(tema,quesito) {
+function contador(quesito) {
 
     count = count - 1;
     if (count < 0) {
@@ -60,12 +60,15 @@ function contador(tema,quesito) {
                 $(opcions[o]).removeClass('alert-info').addClass('alert-success');
             }    
         }
-        tempsFinalitzat();
+        var newLog = document.createElement('div');
+        newLog.style.color = 'red';
+        newLog.innerHTML = 'S\'ha acabat el temps!';
+        document.getElementById('log').appendChild(newLog);
         if (quesito) {
-            restarQuesito(tema);
+            printLog(restarQuesito(temaGlob));
             jugadorsArray[jugadorActual].printQuesitos();
         } else {
-            restarPunts(tema);
+            printLog(restarPunts(temaGlob));
         }
         jugadorsArray[jugadorActual].printEstadistiques();
 
@@ -106,10 +109,6 @@ function contador(tema,quesito) {
 
 }
 
-function tempsFinalitzat() {
-
-}
-
 function prepararJoc() {
     var url = `{{ path('getTemes') }}`;
     $.post(url, { 'grup' : getGrup() })
@@ -141,12 +140,26 @@ function prepararJoc() {
     });
 }
 
+function printLog(log) {
+
+    var newLog = document.createElement('div');
+    newLog.style.color = log[1];
+    newLog.innerHTML = log[0];
+    document.getElementById('log').appendChild(newLog);
+}
+
 function mostrarPregunta(id, tema, tipus) {
+    temaGlob = tema;
     var url = `{{ path('getPregunta_ajax') }}`;
     desactivarCaselles();
     setTimeout(function(){ jugadorsArray[jugadorActual].canviarCasella(id); }, 500);
     if (tipus == 'doble') {
         mostrarBotoDau();
+        var nom = jugadorsArray[jugadorActual].getElement().textContent;
+        var newLog = document.createElement('div');
+        newLog.style.color = 'blue';
+        newLog.innerHTML = `<strong>${nom}</strong> torna a tirar!`;
+        document.getElementById('log').appendChild(newLog);
     } else if (tipus =='inici') {
         jugadorsArray[jugadorActual].finalitzaTorn();
 
@@ -191,7 +204,8 @@ function mostrarPregunta(id, tema, tipus) {
                 if ($(this).text().trim() == response.respostaCorrecta) {
                     $(this).removeClass('alert-info').addClass('alert-success');
 
-                    assignarQuesito(tema);
+                    printLog(assignarQuesito(tema));
+
                     jugadorsArray[jugadorActual].printQuesitos();
                     jugadorsArray[jugadorActual].printEstadistiques();
                     //comprovar si s'acaba partida
@@ -210,7 +224,7 @@ function mostrarPregunta(id, tema, tipus) {
                             $(opcions[o]).removeClass('alert-info').addClass('alert-success');
                         }    
                     }
-                    restarQuesito(tema);
+                    printLog(restarQuesito(tema));
                     jugadorsArray[jugadorActual].printQuesitos();
                     jugadorsArray[jugadorActual].printEstadistiques();
                     jugadorsArray[jugadorActual].finalitzaTorn();
@@ -270,7 +284,7 @@ function mostrarPregunta(id, tema, tipus) {
                 if ($(this).text().trim() == response.respostaCorrecta) {
                     $(this).removeClass('alert-info').addClass('alert-success');
                     
-                    sumarPunts(tema);
+                    printLog(sumarPunts(tema));
                     jugadorsArray[jugadorActual].printEstadistiques();
                     setTimeout(function(){ 
                         mostrarBotoDau();
@@ -284,7 +298,7 @@ function mostrarPregunta(id, tema, tipus) {
                             $(opcions[o]).removeClass('alert-info').addClass('alert-success');
                         }    
                     }
-                    restarPunts(tema);
+                    printLog(restarPunts(tema));
                     jugadorsArray[jugadorActual].printEstadistiques();
                     //saltar torn
                     jugadorsArray[jugadorActual].finalitzaTorn();
@@ -359,35 +373,35 @@ function assignarQuesito(tema) {
     if (tema1 == tema) {
         jugadorsArray[jugadorActual].addQuesitoTema1();
         msg += `verd!`;
-        color = '#5CB85C';
+        color = '#189218';
         jugadorsArray[jugadorActual].tema1Encerts += 1;
         jugadorsArray[jugadorActual].tema1Puntuacio += params[0][2];
     
     } else if (tema2 == tema) {
         jugadorsArray[jugadorActual].addQuesitoTema2();
         msg += `vermell!`;
-        color = '#D9534F';
+        color = '#C12824';
         jugadorsArray[jugadorActual].tema2Encerts += 1;
         jugadorsArray[jugadorActual].tema2Puntuacio += params[0][2];
      
     } else if (tema3 == tema) {
         jugadorsArray[jugadorActual].addQuesitoTema3();
         msg += `blau!`;
-        color = '#5BBFDE';
+        color = '#0283AC';
         jugadorsArray[jugadorActual].tema3Encerts += 1;
         jugadorsArray[jugadorActual].tema3Puntuacio += params[0][2];
   
     } else if (tema4 == tema) {
         jugadorsArray[jugadorActual].addQuesitoTema4();
         msg += `lila!`;
-        color = '#876EDF';
+        color = '#583EB0';
         jugadorsArray[jugadorActual].tema4Encerts += 1;
         jugadorsArray[jugadorActual].tema4Puntuacio += params[0][2];
       
     } else if (tema5 == tema) {
         jugadorsArray[jugadorActual].addQuesitoTema5();
         msg += `groc!`;
-        color = '#F0D54E';
+        color = '#DD9334';
         jugadorsArray[jugadorActual].tema5Encerts += 1;
         jugadorsArray[jugadorActual].tema5Puntuacio += params[0][2];
        
@@ -409,7 +423,7 @@ function restarQuesito(tema) {
     if (tema1 == tema) {
         jugadorsArray[jugadorActual].removeQuesitoTema1();
         msg += `verd!`;
-        color = '#5CB85C';
+        color = '#189218';
         jugadorsArray[jugadorActual].tema1Errors += 1;
         jugadorsArray[jugadorActual].tema1Puntuacio -= params[0][2];
         if (jugadorsArray[jugadorActual].tema1Puntuacio < 0) {
@@ -418,7 +432,7 @@ function restarQuesito(tema) {
     } else if (tema2 == tema) {
         jugadorsArray[jugadorActual].removeQuesitoTema2();
         msg += `vermell!`;
-        color = '#D9534F';
+        color = '#C12824';
         jugadorsArray[jugadorActual].tema2Errors += 1;
         jugadorsArray[jugadorActual].tema2Puntuacio -= params[0][2];
         if (jugadorsArray[jugadorActual].tema2Puntuacio < 0) {
@@ -427,7 +441,7 @@ function restarQuesito(tema) {
     } else if (tema3 == tema) {
         jugadorsArray[jugadorActual].removeQuesitoTema3();
         msg += `blau!`;
-        color = '#5BBFDE';
+        color = '#0283AC';
         jugadorsArray[jugadorActual].tema3Errors += 1;
         jugadorsArray[jugadorActual].tema3Puntuacio -= params[0][2];
         if (jugadorsArray[jugadorActual].tema3Puntuacio < 0) {
@@ -436,7 +450,7 @@ function restarQuesito(tema) {
     } else if (tema4 == tema) {
         jugadorsArray[jugadorActual].removeQuesitoTema4();
         msg += `lila!`;
-        color = '#876EDF';
+        color = '#583EB0';
         jugadorsArray[jugadorActual].tema4Errors += 1;
         jugadorsArray[jugadorActual].tema4Puntuacio -= params[0][2];
         if (jugadorsArray[jugadorActual].tema4Puntuacio < 0) {
@@ -445,7 +459,7 @@ function restarQuesito(tema) {
     } else if (tema5 == tema) {
         jugadorsArray[jugadorActual].removeQuesitoTema5();
         msg += `groc!`;
-        color = '#F0D54E';
+        color = '#DD9334';
         jugadorsArray[jugadorActual].tema5Errors += 1;
         jugadorsArray[jugadorActual].tema5Puntuacio -= params[0][2];
         if (jugadorsArray[jugadorActual].tema5Puntuacio < 0) {
@@ -458,7 +472,7 @@ function restarQuesito(tema) {
     } 
     $('#points-span').text(jugadorsArray[jugadorActual].totalPuntuacio);
     $('#points-shadow-span').text($('#points-span').text());
-    
+    msg += ' -100 punts.'
     var quesitoLog = [msg, color];
 
     return quesitoLog;
@@ -469,23 +483,23 @@ function sumarPunts(tema) {
     var color = '';
     var msg = `El jugador <strong>${nom}</strong> ha guanyat ${params[0][1]} punts!`;
     if (tema1 == tema) {
-        color = '#5CB85C';
+        color = '#189218';
         jugadorsArray[jugadorActual].tema1Encerts += 1;
         jugadorsArray[jugadorActual].tema1Puntuacio += params[0][1];
     } else if (tema2 == tema) {
-        color = '#D9534F';
+        color = '#C12824';
         jugadorsArray[jugadorActual].tema2Encerts += 1;
         jugadorsArray[jugadorActual].tema2Puntuacio += params[0][1];
     } else if (tema3 == tema) {
-        color = '#5BBFDE';
+        color = '#0283AC';
         jugadorsArray[jugadorActual].tema3Encerts += 1;
         jugadorsArray[jugadorActual].tema3Puntuacio += params[0][1];
     } else if (tema4 == tema) {
-        color = '#876EDF';
+        color = '#583EB0';
         jugadorsArray[jugadorActual].tema4Encerts += 1;
         jugadorsArray[jugadorActual].tema4Puntuacio += params[0][1];
     } else if (tema5 == tema) {
-        color = '#F0D54E';
+        color = '#DD9334';
         jugadorsArray[jugadorActual].tema5Encerts += 1;
         jugadorsArray[jugadorActual].tema5Puntuacio += params[0][1];
     }
@@ -500,11 +514,12 @@ function sumarPunts(tema) {
 }
 
 function restarPunts(tema) {
+    console.log(tema);
     var nom = jugadorsArray[jugadorActual].getElement().textContent;
     var color = '';
     var msg = `El jugador <strong>${nom}</strong> ha perdut ${params[0][1]} punts!`;
     if (tema1 == tema) {
-        color = '#5CB85C';
+        color = '#189218';
         jugadorsArray[jugadorActual].tema1Errors += 1;
         jugadorsArray[jugadorActual].tema1Puntuacio -= params[0][1];
         if (jugadorsArray[jugadorActual].tema1Puntuacio < 0) {
@@ -512,7 +527,7 @@ function restarPunts(tema) {
         } 
         
     } else if (tema2 == tema) {
-        color = '#D9534F';
+        color = '#C12824';
         jugadorsArray[jugadorActual].tema2Errors += 1;
         jugadorsArray[jugadorActual].tema2Puntuacio -= params[0][1];
         if (jugadorsArray[jugadorActual].tema2Puntuacio < 0) {
@@ -528,7 +543,7 @@ function restarPunts(tema) {
         } 
         
     } else if (tema4 == tema) {
-        color = '#876EDF';
+        color = '#583EB0';
         jugadorsArray[jugadorActual].tema4Errors += 1;
         jugadorsArray[jugadorActual].tema4Puntuacio -= params[0][1];
         if (jugadorsArray[jugadorActual].tema4Puntuacio < 0) {
@@ -536,7 +551,7 @@ function restarPunts(tema) {
         } 
         
     } else if (tema5 == tema) {
-        color = '#F0D54E';
+        color = '#DD9334';
         jugadorsArray[jugadorActual].tema5Errors += 1;
         jugadorsArray[jugadorActual].tema5Puntuacio -= params[0][1];
         if (jugadorsArray[jugadorActual].tema5Puntuacio < 0) {

@@ -630,8 +630,12 @@ button:focus {
 
 .log {
     border-radius: 10px;
-    background-color: #4C4C4C;
+    background-color: #4B4B4B;
     height: 300px;
+    padding: 10px;
+    overflow: auto;
+    text-shadow: 1px 1px 1px black;
+    font-size: 0.9rem;
 }
 
 .log-title, .est-title {
