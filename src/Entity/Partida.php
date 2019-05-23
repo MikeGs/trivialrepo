@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use \Datetime;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PartidaRepository")
  */
@@ -65,6 +67,13 @@ class Partida
     {
         $this->data = $data;
 
+        return $this;
+    }
+
+    public function setDataAuto(): self {
+
+        $newData = new DateTime();
+        $this->data = $newData;
         return $this;
     }
 

@@ -13,6 +13,10 @@ use App\Entity\Tema;
 use App\Entity\Nivell;
 use App\Entity\Pregunta;
 use App\Entity\Dificultat;
+use App\Entity\Partida;
+use App\Entity\TipusPartida;
+
+use Symfony\Component\Validator\Constraints\DateTime;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -1179,6 +1183,7 @@ class PartidaController extends Controller
 
         $user = $this->getUser();
         $grups = $this->getUser()->getGrups();
+        $nivellId = '';
 
         $llistatGrups = "";
         $grupArray = "";
@@ -1196,6 +1201,9 @@ class PartidaController extends Controller
             $grupArray = $grupArray . "
                 [" . $grup->getId() . ",[]],
             ";
+
+            $nivellId = $grup->getIdNivell()->getId();
+
         }
 
         $html = "
@@ -1230,6 +1238,7 @@ class PartidaController extends Controller
         delete_cookie('cursos');
         delete_cookie('temes');
         delete_cookie('preguntesNum');
+        delete_cookie('nivell');
 
         cursosArray = [];
 
@@ -1410,6 +1419,8 @@ class PartidaController extends Controller
                     writeCookie('temes', temes, 1);
                     writeCookie('preguntesNum', opcionsNumPreguntes.opcions[preguntesNumIndex], 1);
 
+                    writeCookie('nivell', '" . $nivellId . "');
+
                     window.location.href = '" . $jugarUrl . "';
                 }
             });
@@ -1532,6 +1543,7 @@ class PartidaController extends Controller
         $getPreguntesUrl = $this->generateUrl('getPreguntesTemes');
         $getPreguntaUrl = $this->generateUrl('getPreguntaById');
         $urlGetResposta = $this->generateUrl('getRespostaPregunta');
+        $urlPujarPartida = $this->generateUrl('pujarPartida');
 
         $title = "Partida d'entrenament | Trivial UB";
 
@@ -1540,9 +1552,62 @@ class PartidaController extends Controller
             'getPreguntesUrl' => $getPreguntesUrl,
             'getPreguntaUrl' => $getPreguntaUrl,
             'urlGetResposta' => $urlGetResposta,
+            'urlPujarPartida' => $urlPujarPartida,
         ]);
 
 
+    }
+
+    function getNivell($id) {
+
+        $nivell = $this->getDoctrine()
+            ->getRepository(Nivell::class)
+            ->find($id);
+
+        return $nivell;
+
+    }
+
+    function getTipusPartida($id) {
+
+        $tipuspartida = $this->getDoctrine()
+            ->getRepository(TipusPartida::class)
+            ->find($id);
+
+        return $tipuspartida;
+
+    }
+
+    /**
+     * @Route("/pujarPartida", name="pujarPartida")
+     */
+    public function pujarPartida(Request $request) {
+        $partidaArray = $request->request->get('partida');
+
+        $usuari = $this->getUser();
+
+        $data = new DateTime();
+        var_dump($data);
+
+        $nivell = $this->getNivell((int)$partidaArray["idNivell"]);
+        $tipusPartida = $this->getTipusPartida((int)$partidaArray["idTipusPartida"]);
+
+        $partida = new Partida();
+        $partida->setDataAuto();
+        $partida->setIdNivell($nivell);
+        $partida->setidTipusPartida($tipusPartida);
+        $partida->addUsuari($usuari);
+
+        //var_dump($partida);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($partida);
+        $em->flush();
+
+        return new Response(
+            "true"
+        );
     }
 
     /**
