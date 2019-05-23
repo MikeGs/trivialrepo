@@ -109,6 +109,10 @@ button {
     box-shadow: 4px 2px 10px #191919;
 }
 
+.quesitos > div {
+    transition: all 0.3s ease-out;
+}
+
 .quesitos::after {
     position:absolute;
     content: '';

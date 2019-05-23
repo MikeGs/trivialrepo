@@ -43,7 +43,7 @@ $(document).ready(function() {
     
 });
 
-function contador() {
+function contador(quesito) {
 
     count = count - 1;
     if (count < 0) {
@@ -53,13 +53,39 @@ function contador() {
         document.getElementById("timer").classList.add('out');
         $('.respostaOpcio').addClass('no-pointer');
         var opcions = document.getElementsByClassName('respostaOpcio');
-        console.log(respostaCorrecta)
+
         for (var o in opcions) {
             if ($(opcions[o]).text().trim() == respostaCorrecta) {
-                console.log('entra')
+         
                 $(opcions[o]).removeClass('alert-info').addClass('alert-success');
             }    
         }
+        tempsFinalitzat();
+        if (quesito) {
+            restarPunts(quesito);
+        } else {
+            restarPunts(tema);
+        }
+
+        jugadorsArray[jugadorActual].finalitzaTorn();
+
+        jugadorActual++;
+        if (jugadorActual >= jugadorsArray.length) {
+            jugadorActual = 0;
+
+        }
+        setTimeout(function(){
+            jugadorsArray[jugadorActual].iniciaTorn();
+            mostrarBotoDau();
+            $('#modalPregunta').css('display', 'none');
+
+            count = params[0][0]+1; 
+            $('.respostaOpcio').removeClass('no-pointer');
+            $('.respostaOpcio').removeClass('alert-success');
+            $('.respostaOpcio').removeClass('alert-danger');
+            $('.respostaOpcio').addClass('alert-info');
+        }, 2000);
+                
     } else {
         
         document.getElementById("timer").classList.add('pass');
@@ -75,6 +101,10 @@ function contador() {
         }
         
     }
+
+}
+
+function tempsFinalitzat() {
 
 }
 
@@ -134,20 +164,23 @@ function mostrarPregunta(id, tema, tipus) {
             count = params[0][0]+1;
             contadorActiu = true;
         
-            contador(respostaCorrecta);
+            contador(true);
             $('body').on('click','.respostaOpcio', function() {
 
                 $('.respostaOpcio').addClass('no-pointer');
                 if ($(this).text().trim() == response.respostaCorrecta) {
                     $(this).removeClass('alert-info').addClass('alert-success');
-                    //sumar punts i quesito
+
+                    assignarQuesito(tema);
+                    jugadorsArray[jugadorActual].printQuesitos();
                     //comprovar si s'acaba partida
                     if (jugadorsArray[jugadorActual].sumaQuesitos >= 5) {
                         //acaba
                     } else {
-                        mostrarBotoDau();
+                        setTimeout(function(){ 
+                            mostrarBotoDau();
+                        }, 2000);
                     }
-                    //--> no --> tirar un altre cop
                 } else {
                     $(this).removeClass('alert-info').addClass('alert-danger');
                     var opcions = document.getElementsByClassName('respostaOpcio');
@@ -156,14 +189,15 @@ function mostrarPregunta(id, tema, tipus) {
                             $(opcions[o]).removeClass('alert-info').addClass('alert-success');
                         }    
                     }
-                    //restar punts i quesito
-                    //saltar torn
+                    restarQuesito(tema);
+                    jugadorsArray[jugadorActual].printQuesitos();
+
                     jugadorsArray[jugadorActual].finalitzaTorn();
-                    console.log(jugadorActual);
+
                     jugadorActual++;
                     if (jugadorActual >= jugadorsArray.length) {
                         jugadorActual = 0;
-                        console.log('reinicio player');
+
                     }
                     setTimeout(function(){
                         jugadorsArray[jugadorActual].iniciaTorn();
@@ -207,21 +241,19 @@ function mostrarPregunta(id, tema, tipus) {
             count = params[0][0]+1;
             contadorActiu = true;
 
-            contador(respostaCorrecta);
+            contador(false);
 
             $('body').on('click','.respostaOpcio', function() {
 
                 $('.respostaOpcio').addClass('no-pointer');
                 if ($(this).text().trim() == response.respostaCorrecta) {
                     $(this).removeClass('alert-info').addClass('alert-success');
-                    //sumar punts i quesito
-                    //comprovar si s'acaba partida
-                    if (jugadorsArray[jugadorActual].sumaQuesitos >= 5) {
-                        //acaba
-                    } else {
+                    
+                    sumarPunts(tema);
+                    setTimeout(function(){ 
                         mostrarBotoDau();
-                    }
-                    //--> no --> tirar un altre cop
+                    }, 2000);
+                    
                 } else {
                     $(this).removeClass('alert-info').addClass('alert-danger');
                     var opcions = document.getElementsByClassName('respostaOpcio');
@@ -230,14 +262,14 @@ function mostrarPregunta(id, tema, tipus) {
                             $(opcions[o]).removeClass('alert-info').addClass('alert-success');
                         }    
                     }
-                    //restar punts i quesito
+                    restarPunts(tema);
                     //saltar torn
                     jugadorsArray[jugadorActual].finalitzaTorn();
-                    console.log(jugadorActual);
+
                     jugadorActual++;
                     if (jugadorActual >= jugadorsArray.length) {
                         jugadorActual = 0;
-                        console.log('player reinicio');
+
                     }
                     setTimeout(function(){
                         jugadorsArray[jugadorActual].iniciaTorn();
@@ -295,6 +327,206 @@ function assignarTemaModal(tema, quesito) {
         $('.modal-header').removeClass('header-quesito');
     }
     return titolModal;
+}
+
+function assignarQuesito(tema) {
+    var nom = jugadorsArray[jugadorActual].getElement().textContent;
+    var color = '';
+    var msg = `El jugador <strong>${nom}</strong> ha guanyat el formatget `;
+    if (tema1 == tema) {
+        jugadorsArray[jugadorActual].addQuesitoTema1();
+        msg += `verd!`;
+        color = '#5CB85C';
+        jugadorsArray[jugadorActual].tema1Encerts += 1;
+        jugadorsArray[jugadorActual].tema1Puntuacio += params[0][2];
+    } else if (tema2 == tema) {
+        jugadorsArray[jugadorActual].addQuesitoTema2();
+        msg += `vermell!`;
+        color = '#D9534F';
+        jugadorsArray[jugadorActual].tema2Encerts += 1;
+        jugadorsArray[jugadorActual].tema2Puntuacio += params[0][2];
+    } else if (tema3 == tema) {
+        jugadorsArray[jugadorActual].addQuesitoTema3();
+        msg += `blau!`;
+        color = '#5BBFDE';
+        jugadorsArray[jugadorActual].tema3Encerts += 1;
+        jugadorsArray[jugadorActual].tema3Puntuacio += params[0][2];
+    } else if (tema4 == tema) {
+        jugadorsArray[jugadorActual].addQuesitoTema4();
+        msg += `lila!`;
+        color = '#876EDF';
+        jugadorsArray[jugadorActual].tema4Encerts += 1;
+        jugadorsArray[jugadorActual].tema4Puntuacio += params[0][2];
+    } else if (tema5 == tema) {
+        jugadorsArray[jugadorActual].addQuesitoTema5();
+        msg += `groc!`;
+        color = '#F0D54E';
+        jugadorsArray[jugadorActual].tema5Encerts += 1;
+        jugadorsArray[jugadorActual].tema5Puntuacio += params[0][2];
+    }
+
+    jugadorsArray[jugadorActual].totalPuntuacio += params[0][2];
+    $('#points-span').text(jugadorsArray[jugadorActual].totalPuntuacio);
+    $('#points-shadow-span').text($('#points-span').text());
+    
+    var quesitoLog = [msg, color];
+
+    return quesitoLog;
+}
+
+function restarQuesito(tema) {
+    var nom = jugadorsArray[jugadorActual].getElement().textContent;
+    var color = '';
+    var msg = `El jugador <strong>${nom}</strong> ha perdut el formatget `;
+    if (tema1 == tema) {
+        jugadorsArray[jugadorActual].removeQuesitoTema1();
+        msg += `verd!`;
+        color = '#5CB85C';
+        jugadorsArray[jugadorActual].tema1Errors += 1;
+        jugadorsArray[jugadorActual].tema1Puntuacio -= params[0][2];
+        if (jugadorsArray[jugadorActual].tema1Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema1Puntuacio = 0;
+        } 
+    } else if (tema2 == tema) {
+        jugadorsArray[jugadorActual].removeQuesitoTema2();
+        msg += `vermell!`;
+        color = '#D9534F';
+        jugadorsArray[jugadorActual].tema2Errors += 1;
+        jugadorsArray[jugadorActual].tema2Puntuacio -= params[0][2];
+        if (jugadorsArray[jugadorActual].tema2Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema2Puntuacio = 0;
+        } 
+    } else if (tema3 == tema) {
+        jugadorsArray[jugadorActual].removeQuesitoTema3();
+        msg += `blau!`;
+        color = '#5BBFDE';
+        jugadorsArray[jugadorActual].tema3Errors += 1;
+        jugadorsArray[jugadorActual].tema3Puntuacio -= params[0][2];
+        if (jugadorsArray[jugadorActual].tema3Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema3Puntuacio = 0;
+        } 
+    } else if (tema4 == tema) {
+        jugadorsArray[jugadorActual].removeQuesitoTema4();
+        msg += `lila!`;
+        color = '#876EDF';
+        jugadorsArray[jugadorActual].tema4Errors += 1;
+        jugadorsArray[jugadorActual].tema4Puntuacio -= params[0][2];
+        if (jugadorsArray[jugadorActual].tema4Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema4Puntuacio = 0;
+        } 
+    } else if (tema5 == tema) {
+        jugadorsArray[jugadorActual].removeQuesitoTema5();
+        msg += `groc!`;
+        color = '#F0D54E';
+        jugadorsArray[jugadorActual].tema5Errors += 1;
+        jugadorsArray[jugadorActual].tema5Puntuacio -= params[0][2];
+        if (jugadorsArray[jugadorActual].tema5Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema5Puntuacio = 0;
+        } 
+    }
+    jugadorsArray[jugadorActual].totalPuntuacio -= params[0][2];
+    if (jugadorsArray[jugadorActual].totalPuntuacio < 0) {
+        jugadorsArray[jugadorActual].totalPuntuacio = 0;
+    } 
+    $('#points-span').text(jugadorsArray[jugadorActual].totalPuntuacio);
+    $('#points-shadow-span').text($('#points-span').text());
+    
+    var quesitoLog = [msg, color];
+
+    return quesitoLog;
+}
+
+function sumarPunts(tema) {
+    var nom = jugadorsArray[jugadorActual].getElement().textContent;
+    var color = '';
+    var msg = `El jugador <strong>${nom}</strong> ha guanyat ${params[0][1]} punts!`;
+    if (tema1 == tema) {
+        color = '#5CB85C';
+        jugadorsArray[jugadorActual].tema1Encerts += 1;
+        jugadorsArray[jugadorActual].tema1Puntuacio += params[0][1];
+    } else if (tema2 == tema) {
+        color = '#D9534F';
+        jugadorsArray[jugadorActual].tema2Encerts += 1;
+        jugadorsArray[jugadorActual].tema2Puntuacio += params[0][1];
+    } else if (tema3 == tema) {
+        color = '#5BBFDE';
+        jugadorsArray[jugadorActual].tema3Encerts += 1;
+        jugadorsArray[jugadorActual].tema3Puntuacio += params[0][1];
+    } else if (tema4 == tema) {
+        color = '#876EDF';
+        jugadorsArray[jugadorActual].tema4Encerts += 1;
+        jugadorsArray[jugadorActual].tema4Puntuacio += params[0][1];
+    } else if (tema5 == tema) {
+        color = '#F0D54E';
+        jugadorsArray[jugadorActual].tema5Encerts += 1;
+        jugadorsArray[jugadorActual].tema5Puntuacio += params[0][1];
+    }
+
+    jugadorsArray[jugadorActual].totalPuntuacio += params[0][1];
+    $('#points-span').text(jugadorsArray[jugadorActual].totalPuntuacio);
+    $('#points-shadow-span').text($('#points-span').text());
+    
+    var quesitoLog = [msg, color];
+
+    return quesitoLog;
+}
+
+function restarPunts(tema) {
+    var nom = jugadorsArray[jugadorActual].getElement().textContent;
+    var color = '';
+    var msg = `El jugador <strong>${nom}</strong> ha perdut ${params[0][1]} punts!`;
+    if (tema1 == tema) {
+        color = '#5CB85C';
+        jugadorsArray[jugadorActual].tema1Errors += 1;
+        jugadorsArray[jugadorActual].tema1Puntuacio -= params[0][1];
+        if (jugadorsArray[jugadorActual].tema1Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema1Puntuacio = 0;
+        } 
+        
+    } else if (tema2 == tema) {
+        color = '#D9534F';
+        jugadorsArray[jugadorActual].tema2Errors += 1;
+        jugadorsArray[jugadorActual].tema2Puntuacio -= params[0][1];
+        if (jugadorsArray[jugadorActual].tema2Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema2Puntuacio = 0;
+        } 
+        
+    } else if (tema3 == tema) {
+        color = '#5BBFDE';
+        jugadorsArray[jugadorActual].tema3Errors += 1;
+        jugadorsArray[jugadorActual].tema3Puntuacio -= params[0][1];
+        if (jugadorsArray[jugadorActual].tema3Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema3Puntuacio = 0;
+        } 
+        
+    } else if (tema4 == tema) {
+        color = '#876EDF';
+        jugadorsArray[jugadorActual].tema4Errors += 1;
+        jugadorsArray[jugadorActual].tema4Puntuacio -= params[0][1];
+        if (jugadorsArray[jugadorActual].tema4Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema4Puntuacio = 0;
+        } 
+        
+    } else if (tema5 == tema) {
+        color = '#F0D54E';
+        jugadorsArray[jugadorActual].tema5Errors += 1;
+        jugadorsArray[jugadorActual].tema5Puntuacio -= params[0][1];
+        if (jugadorsArray[jugadorActual].tema5Puntuacio < 0) {
+            jugadorsArray[jugadorActual].tema5Puntuacio = 0;
+        } 
+        
+    }
+
+    jugadorsArray[jugadorActual].totalPuntuacio -= params[0][1];
+    if (jugadorsArray[jugadorActual].totalPuntuacio < 0) {
+        jugadorsArray[jugadorActual].totalPuntuacio = 0;
+    } 
+    $('#points-span').text(jugadorsArray[jugadorActual].totalPuntuacio);
+    $('#points-shadow-span').text($('#points-span').text());
+    
+    var quesitoLog = [msg, color];
+
+    return quesitoLog;
 }
 
 function mostrarBotoDau() {
@@ -415,6 +647,7 @@ function Jugador(elementId, color) {
     this.tema5Quesito = 0;
     this.tema5Encerts = 0;
     this.tema5Errors = 0;
+    this.totalPuntuacio = 0;
     var casellaActual = document.getElementById('box_start');
 
     this.mostrarFitxa = function() {
@@ -432,6 +665,9 @@ function Jugador(elementId, color) {
 
     this.iniciaTorn = function() {
         element.classList.add('actual');
+        $('#points-span').text(jugadorsArray[jugadorActual].totalPuntuacio);
+        $('#points-shadow-span').text($('#points-span').text());
+        jugadorsArray[jugadorActual].printQuesitos();
     }
 
     this.finalitzaTorn = function() {
@@ -448,6 +684,87 @@ function Jugador(elementId, color) {
 
     this.sumaQuesitos = function() {
         return this.tema1Quesito + this.tema2Quesito + this.tema3Quesito + this.tema4Quesito + this.tema5Quesito;
+    }
+
+    this.addQuesitoTema1 = function() {
+        this.tema1Quesito = 1;
+    }
+
+    this.removeQuesitoTema1 = function() {
+        this.tema1Quesito = 0;
+    }
+
+    this.addQuesitoTema2 = function() {
+        this.tema2Quesito = 1;
+        
+    }
+
+    this.removeQuesitoTema2 = function() {
+        this.tema2Quesito = 0;
+
+
+    }
+
+    this.addQuesitoTema3 = function() {
+        this.tema3Quesito = 1;
+        
+    }
+
+    this.removeQuesitoTema3 = function() {
+        this.tema3Quesito = 0;
+       
+
+    }
+
+    this.addQuesitoTema4 = function() {
+        this.tema4Quesito = 1;
+        
+    }
+
+    this.removeQuesitoTema4 = function() {
+        this.tema4Quesito = 0;
+       
+
+    }
+
+    this.addQuesitoTema5 = function() {
+        this.tema5Quesito = 1;
+
+
+    }
+
+    this.removeQuesitoTema5 = function() {
+        this.tema5Quesito = 0;
+     
+
+    }
+
+    this.printQuesitos = function() {
+        if (this.tema1Quesito == 1) {
+            $('.verd').removeClass('no-quesito');
+        } else {
+            $('.verd').addClass('no-quesito');
+        }
+        if (this.tema2Quesito == 1) {
+            $('.vermell').removeClass('no-quesito');
+        } else {
+            $('.vermell').addClass('no-quesito');
+        }
+        if (this.tema3Quesito == 1) {
+            $('.blau').removeClass('no-quesito');
+        } else {
+            $('.blau').addClass('no-quesito');
+        }
+        if (this.tema4Quesito == 1) {
+            $('.lila').removeClass('no-quesito');
+        } else {
+            $('.lila').addClass('no-quesito');
+        }
+        if (this.tema5Quesito == 1) {
+            $('.groc').removeClass('no-quesito');
+        } else {
+            $('.groc').addClass('no-quesito');
+        }
     }
 
 }
