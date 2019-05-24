@@ -35,10 +35,10 @@ function QuestionLoop(id) {
                 pregunta = response;
         });
 
-        if (id == 2) {
+        /*if (id == 2) {
             pujarTemes_Partida();
             FiPartida();
-        }
+        }*/
 
         setTimeout(function(){ checkPregunta() }, 500);
 
@@ -74,7 +74,7 @@ function checkFiPartida() {
 
     if (FiPartidaCheckBool) {
 
-        console.log("Mostrar fi partida");
+        //console.log("Mostrar fi partida");
         $('#preguntaContingut').html(FiPartidaHtml);
         $("#preguntaContingut").css({"visibility": "visible"});
 
@@ -97,7 +97,7 @@ function pujarTemes_Partida() {
 
     });
 
-    console.log(Temes_partida);
+    //console.log(Temes_partida);
 
     Temes_partidaJSON = JSON.stringify(Temes_partida);
 
@@ -119,9 +119,9 @@ function checkTemesPartidaPujats() {
         checkTemesPartidaPujatsBool = true;
     }
 
-    if (checkTemesPartidaPujatsBool) {
+    /*if (checkTemesPartidaPujatsBool) {
         console.log("Temes_partida pujats correctament");
-    }
+    }*/
 
 }
 
@@ -162,8 +162,8 @@ function checkPartidaPujada() {
     }
 
     if (checkPartidaPujadaBool) {
-        console.log("Partida pujada correctament");
-        console.log("partidaid: " + respostaPartidaPujada[0]);
+        //console.log("Partida pujada correctament");
+        //console.log("partidaid: " + respostaPartidaPujada[0]);
         partidaId = respostaPartidaPujada[0];
     }
 
@@ -273,10 +273,10 @@ function checkIfCorrecte() {
         checkRespostaBool = true;
     }
 
-    console.log(respostaFinale);
+    //console.log(respostaFinale);
 
     var posicioTema = getTemaPos();
-    console.log("Current tema: " + currentTema + " Posició: " + posicioTema);
+    //console.log("Current tema: " + currentTema + " Posició: " + posicioTema);
 
     actualitzarValors(respostaFinale[0], posicioTema);
 
@@ -301,7 +301,7 @@ function actualitzarValors(boolResposta, posicioTema) {
 
     temesGrup.forEach(function(grup) {
         if (grup[1].includes(parseInt(pregunta.tema))) {
-            console.log(pregunta.tema);
+            //console.log(pregunta.tema);
             puntuacioFacil = parseInt(grup[2].puntuacio_facil);
             puntuacioDificil = parseInt(grup[2].puntuacio_dificil);
         }
@@ -331,9 +331,9 @@ function actualitzarValors(boolResposta, posicioTema) {
             break;
     }
 
-    console.log(temesPuntuacio);
+    /*console.log(temesPuntuacio);
     console.log(temesEncerts);
-    console.log(temesErrors);
+    console.log(temesErrors);*/
 
 }
 

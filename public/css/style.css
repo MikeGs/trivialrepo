@@ -361,19 +361,23 @@ table.aligncenter .col {
 
 /* LLISTAT ALUMNES ETC */
 
-.elementLlistaAlumnes, .elementLlistaAlumnesTd, .elementLlistaJugadors, .elementLlistaJugadorsTd, .elementLlistaTemes, .elementLlistaTemesTd {
+.elementLlistaAlumnes, .elementLlistaAlumnesTd, .elementLlistaJugadors, .elementLlistaJugadorsTd, .elementLlistaTemes, .elementLlistaTemesTd, .elementLlistaGrupsTd {
 	width: 100%;
+	display: block!important;
+}
+
+.elementLlistaGrups {
 	display: block;
 }
 
-.elementLlistaAlumnes, .elementLlistaJugadors, .elementLlistaTemes {
+.elementLlistaAlumnes, .elementLlistaJugadors, .elementLlistaTemes, .elementLlistaGrups {
 	padding: 10px;
 	transition: background-color .4s ease-in-out;
 	border: 2px solid transparent;
 	border-bottom: 1px solid rgba(41,41,41,0.2);
 }
 
-.elementLlistaAlumnes:hover, .elementLlistaJugadors:hover, .elementLlistaTemes:hover {
+.elementLlistaAlumnes:hover, .elementLlistaJugadors:hover, .elementLlistaTemes:hover, .elementLlistaGrups:hover {
 	background-color: rgba(0,0,0,0.1);
 }
 
@@ -1582,7 +1586,7 @@ input[type=password] {
 	font-weight: bold;
 }
 
-#iniciarSessioTitle {
+#iniciarSessioTitle, #nomGrupTitle {
 	color: black;
 	text-transform: none!important;
 	font-size: 22px;
@@ -1591,11 +1595,11 @@ input[type=password] {
 	border-bottom: 1px dotted rgba(41,41,41,0.2);
 }
 
-#iniciarSessioModal label, #iniciarSessioModal input {
+#iniciarSessioModal label, #iniciarSessioModal input, .afegirseGrupForm input, .afegirseGrupForm label {
 	width: 100%;
 }
 
-#iniciarSessioModal input[type="text"], #iniciarSessioModal input[type="password"] {
+#iniciarSessioModal input[type="text"], #iniciarSessioModal input[type="password"], .afegirseGrupForm input[type='text'], #codiGrup {
 	padding: .375rem .75rem;
 	border-radius: .25rem;
 	border: 1px solid #ced4da;

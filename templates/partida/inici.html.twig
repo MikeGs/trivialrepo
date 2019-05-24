@@ -51,6 +51,7 @@
             <li>
             <a id="partidaBtn" class="buttonStart list-group-item" href="#">Partida</a>
             <ul id="llistatGrupsJoc">
+             <li><a id='veureGrups' class="buttonStart list-group-item" href='#'> <i class="fas fa-plus link-white mr-2"></i> Afegir-se a un grup</a></li>
                 {% for grup in app.user.grups %}
                 <li><a id='{{ grup.id }}' class="buttonStart partidaBtnGrup list-group-item" href='#'> - {{ grup.nom }}</a></li>
                 {% endfor %}
@@ -73,7 +74,155 @@
         <img src="{{asset('img/bgrotate.png')}}"/>
     </div>
 
+    <div id='seleccionarGrupModal' class='modal fade' tabindex='-1' role='dialog'>
+            <div class='modal-dialog' role='document'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <h6 class='modal-title' id='seleccionarGrupModal'>Afegir-se a un grup</h6>
+                        <button id='seleccionarGrupModalClose' type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                            <span aria-hidden='true'>&times;</span>
+                        </button>
+                    </div>
+                    <div class='modal-body'>
+                        <div id='seleccionarGrupModalMsg'>
+
+                            <div class='form-group'>
+                            <table class='col-12' id='seleccionarGrupsTable'>
+
+                                <tr><th>Grups disponibles</th></tr>
+
+                                {% for grup in grups %}
+
+                                        {% if grup in app.user.grups %}
+                                        {% else %}
+
+                                            <tr>
+                                                <td class="elementLlistaGrupsTd" scope='col' name='{{grup.nom}}' id='{{grup.id}}'><a href='#' secid='{{grup.id}}' class='elementLlistaGrups nodeco'>{{grup.nom}} | {{grup.idNivell.nom}}</a></td>
+                                            </tr>
+
+                                        {% endif %}
+
+                                {% endfor %}
+                            
+                                </div>
+
+                            </table>
+    
+                        </div>
+
+                        </div>
+                    </div>
+                    <div class='modal-footer' id='seleccionarGrupModalBtns'>
+                        <input type='submit' name='Submit' value='Tancar' class='btn btn-success' id='tancarGrupsBtn'>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <div id='afegirseGrupModal' class='modal fade' tabindex='-1' role='dialog'>
+            <div class='modal-dialog' role='document'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <h6 class='modal-title' id='afegirseGrupModal'>Afegir-se a un grup</h6>
+                        <button id='afegirseGrupModalClose' type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                            <span aria-hidden='true'>&times;</span>
+                        </button>
+                    </div>
+                    <div class='modal-body'>
+                        <div id='afegirseGrupModalMsg'>
+
+                            <div class='form-group afegirseGrupForm'>
+
+                                <h2 id='nomGrupTitle' style='color: black!important'></h2>
+
+                                <label for='codi'>Codi del grup: </label>
+                                <input id='codiGrup' type="password" name='codi' placeholder='Codi'/>
+                                
+                            </div>
+    
+                        </div>
+
+                    </div>
+                    
+                    <div class='modal-footer' id='afegirseGrupModalBtns'>
+                        <input type='submit' name='Submit' value='Accedir' class='btn btn-success' id='AccedirGrupBtn'>
+                    </div>
+                </div>
+            </div>
+    </div>
+
     <script>
+
+    idgrupAfegir = '';
+    nomGrupAfegir = '';
+    credencialsGrupValids = '';
+    credencialsGrupValidsBool = false;
+
+    $('#tancarGrupsBtn').click(function() {
+        $("#seleccionarGrupModal").modal("hide");
+    })
+
+    $('#veureGrups').click(function() {
+
+        $('#seleccionarGrupModal').modal('show');
+
+    });
+
+    $('.elementLlistaGrupsTd').click(function() {
+
+        idgrupAfegir = $(this).attr('id');
+        nomGrupAfegir = $(this).attr('name');
+
+        console.log(nomGrupAfegir);
+
+        $('#seleccionarGrupModal').modal('hide');
+
+        $("#nomGrupTitle").html(nomGrupAfegir);
+
+        $('#afegirseGrupModal').modal('show');
+
+    })
+
+    $('#AccedirGrupBtn').click(function() {
+
+        var url = "{{ path('checkCredencialsGrup') }}";
+        var codi = $("#codiGrup").val();
+
+        credencialsGrupValids = '';
+
+        $.post(url, { 'grupid': idgrupAfegir, 'codi': codi}) 
+		    .done(function(response) {
+                credencialsGrupValids = response;
+			});
+
+        setTimeout(function(){ checkCredencialsGrup() }, 500);
+
+    })
+
+    function checkCredencialsGrup() {
+
+        if (credencialsGrupValids == '') {
+            credencialsGrupValidsBool = false;
+            checkCredencialsGrup();
+        } else {
+            credencialsGrupValidsBool = true;
+        }
+
+        console.log(credencialsGrupValids);
+
+        if (credencialsGrupValids == "true") {
+            $('#seleccionarGrupModal').modal('hide');
+            location.reload();
+        } else if (credencialsGrupValids == "false") {
+            alert("Credencials invàlides");
+            $('#codiGrup').val('');
+            $('#afegirseGrupModal').modal('hide');
+            $('#seleccionarGrupModal').modal('show');
+        }
+
+        credencialsGrupValidsBool = false;
+
+    }
 
     $(document).ready(function() {
         if (readCookie('ferEntreno') == "redirect") {

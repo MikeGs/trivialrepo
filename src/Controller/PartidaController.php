@@ -31,11 +31,61 @@ class PartidaController extends Controller
     {
 
         $title = "Trivial | UB";
+        $grups = $this->getGrups();
+        $checkCredencialsGrupUrl = $this->generateUrl('checkCredencialsGrup');
 
         return $this->render('partida/inici.html.twig', [
             'controller_name' => 'PartidaController',
             'title' => $title,
+            'grups' => $grups,
+            'checkCredencialsGrupUrl' => $checkCredencialsGrupUrl,
         ]);
+    }
+
+    /**
+     * @Route("/checkCredencialsGrup", name="checkCredencialsGrup")
+     */
+    public function checkCredencialsGrup(Request $request) {
+
+        $grupid = $request->request->get('grupid');
+        $codi = $request->request->get('codi');
+
+        $em = $this->getDoctrine()->getManager();
+
+        //var_dump($grupid);
+
+        $grup = $this->getGrup($grupid);
+        
+        $ans = "false";
+
+        if ($grup->getCodi() == $codi) {
+            //var_dump(true);
+            $ans = "true";
+
+            $grup->addIdUsuari($this->getUser());
+            $em->persist($grup);
+            $em->flush();
+
+            $this->redirectToRoute('joc');
+
+        } else {
+            $ans = "false";
+        }
+
+        return new Response(
+            $ans
+        );
+
+    }
+
+    public function getGrups() {
+
+        $grups = $this->getDoctrine()
+            ->getRepository(Grup::class)
+            ->findAll();
+    
+        return $grups;
+    
     }
 
     public function getNivells($grup) {
@@ -974,7 +1024,7 @@ class PartidaController extends Controller
                 writeCookie('nomjugadorsString', readCookie('nomjugadorsString') + ',`' + matchnom + '`', 1);
             }
 
-            console.log(readCookie('nomjugadors'))
+            //console.log(readCookie('nomjugadors'))
             
         } else {
             errormatch();
@@ -1524,7 +1574,7 @@ class PartidaController extends Controller
                     $(this).removeClass('temaSeleccionat');
                 }
 
-                console.log(temesGrup);
+                //console.log(temesGrup);
 
                 var temestext = '';
 
